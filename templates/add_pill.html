@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container_form_pills">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="content-form_pills">
+                <form method="POST">
+                    {{form.hidden_tag()}}
+                    <div class="row">
+                        <div class="col-md-12 title">
+                            <h1 class="text-center title">Add Pills</h1>
+                            <p class="text-center des">Fill out form below to add pill to our database.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.name.label}}</label>
+                                <input type="text" name="name" class="form-control" value="{{ name }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.amount.label}}</label>
+                                <input type="text" name="amount" class="form-control" value="{{ amount }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.date_week.label}}</label>
+                                <input type="text" name="date_week" class="form-control" value="{{ date_week }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.user_id.label}}</label>
+                                <input type="text" name="user_id" class="form-control" value="{{ user_id }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a href="{{url_for('list_pill')}}">
+                            <input type="submit" value="Add pills" class="btn btn-lg btn_add_pills">
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="img"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<div class="jumbotron">
+    <h1>Add pill which You use during pregnant</h1>
+    <p>Fill out form below to add pill to our database.</p>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.name.label}}{{form.name()}}<br>
+        {{form.amount.label}}{{form.amount()}}<br>
+        {{form.date_week.label}}{{form.date_week()}}<br>
+        {{form.user_id.label}}{{form.user_id()}}<br>
+        {{form.submit}}
+    </form>
+</div>

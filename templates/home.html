@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="htop">
+        <h1>Welcome to Pregnant pills Page</h1>
+        <hr>
+        <p class="mx-auto info" >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et finibus sem. 
+            Fusce maximus neque vel turpis faucibus, ac fermentum nunc varius. 
+            Morbi dolor dolor, semper ac aliquam semper, rutrum id neque. 
+            Donec quis mollis tellus. Sed a rutrum nunc. </p>
+        <a href="{{url_for('add_user')}}">
+            <input type="submit" value="Start" class="btn btn-lg btn_start" id="btn_start">
+        </a>
+    </div>
+{% endblock %}

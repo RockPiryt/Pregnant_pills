@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container_list">
+    <div class="grid_list">
+        <div class="row">
+            <div class="col-md-12 title">
+                <h1 class="text-center title">List of your pills</h1>
+                <p  class="text-center des">Pills info:</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-group">
+                    {% for pill in pills %}
+                        <li class="list-group-item">{{pill}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <a href="#">
+                <input type="submit" value="PDF REPORT" class="btn btn-lg btn_pdf">
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<div class="jumbotron">
+    <h1>List of pills which You use during pregnant</h1>
+    <p>Pills:</p>
+    <ul>
+        {% for pill in pills %}
+            <li>{{pill}}</li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+#mainNav{
+    background-color: lightcoral;
+}
+
+.htop{
+    position: relative;
+    padding: 7% 0 30% 0;
+    width: 100%;
+    text-align: center;
+    background-image: url("pills.jpg") ;
+    background-size: cover;
+    background-position: 90% 50% 0 50%;
+    min-height: auto;
+    color:rgb(63, 131, 146);
+}
+
+.info{
+    width: 60%;
+}
+
+.pill_logo{
+    color:rgb(63, 131, 146);
+}
+
+.btn_start{
+    transition: all 0.5s ease-in-out;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    padding: 1%;
+    margin-top: 0%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 10%;
+    min-width: 100px;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+#footer{
+    background-color: rgb(63, 131, 146);
+}
+
+/* Add user */
+
+.container_form{
+    background-image: url("pregnant2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.content-form{
+    position: relative;
+    padding: 8% 4%;
+    top: 10%;
+    left: 0%;
+    max-width: 40%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.title h1{
+
+    color: rgb(63, 131, 146);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.title p{
+
+    color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+label{
+    color: white;
+    margin-top: 5%;
+}
+
+.form-control{
+    background: transparent;
+    border-color: transparent;
+    border-bottom: 1px solid rgb(63, 131, 146);
+}
+
+.form-control:focus{
+    background: transparent;
+    border-color: rgb(63, 131, 146);
+    box-shadow: 1px 1px 1px rgb(63, 131, 146) inset, 1px 1px 1px rgb(63, 131, 146);
+}
+
+
+.btn_user{
+    transition: all 0.5s ease-in-out;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 2% 3%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 30%;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn:hover{
+    background: white;
+    color: rgb(63, 131, 146);
+    border-color: white;
+}
+
+/* Add pills */
+.container_form_pills{
+    background-image: url("pills2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.content-form_pills{
+    position: relative;
+    padding: 15%;
+    top: 0%;
+    left: 0%;
+    max-width: 80%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_add_pills{
+    transition: all 0.5s ease-in-out;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 8% 8%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 200%;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_add_pills:hover{
+    background: white;
+    color: rgb(63, 131, 146);
+    border-color: white;
+}
+
+/* Remove pills */
+.container_form_del{
+    background-image: url("pills3.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.content-form_del{
+    position: relative;
+    padding: 15%;
+    top: 0%;
+    left: 0%;
+    max-width: 80%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_add_pills{
+    transition: all 0.5s ease-in-out;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 8% 8%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 200%;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_add_pills:hover{
+    background: white;
+    color: rgb(63, 131, 146);
+    border-color: white;
+}
+
+/* List pills */
+.container_list{
+    background-color: white;
+}
+
+.grid_list{
+    position: relative;
+    padding: 10%;
+    top: 0%;
+    left: 20%;
+    max-width: 60%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_pdf{
+    transition: all 0.5s ease-in-out;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 8% 0%;
+    margin-top: 50%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 200%;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+.btn_pdf:hover{
+    background: white;
+    color: rgb(63, 131, 146);
+    border-color: white;
+}
+
+.list-group-item{
+    color: white;
+    background: transparent;
+    border-color: rgb(63, 131, 146);
+    box-shadow: 1px 1px 1px rgb(63, 131, 146) inset, 1px 1px 1px rgb(63, 131, 146);
+}
