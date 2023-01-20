@@ -10,7 +10,7 @@
                     {{form.hidden_tag()}}
                     <div class="row">
                         <div class="col-md-12 title">
-                            <h1 class="text-center title">Add Pills</h1>
+                            <h1 class="text-center title">Add Pills </h1>
                             <p class="text-center des">Fill out form below to add pill to our database.</p>
                         </div>
                     </div>
@@ -31,14 +31,36 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>{{form.date_week.label}}</label>
-                                <input type="text" name="date_week" class="form-control" value="{{ date_week }}">
+                                <label>{{form.type_pill.label}}</label>
+                                <input type="text" name="type_pill" class="form-control" value="{{ type_pill }}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>{{form.user_id.label}}</label>
                                 <input type="text" name="user_id" class="form-control" value="{{ user_id }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.week_start.label}}</label>
+                                <input type="text" name="week_start" class="form-control" value="{{ week_start }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{form.week_end.label}}</label>
+                                <input type="text" name="week_end" class="form-control" value="{{ week_end }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{form.reason.label}}</label>
+                                <input type="text" name="reason" class="form-control" value="{{ reason }}">
                             </div>
                         </div>
                     </div>

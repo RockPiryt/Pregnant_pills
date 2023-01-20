@@ -6,23 +6,44 @@
     <div class="grid_list">
         <div class="row">
             <div class="col-md-12 title">
-                <h1 class="text-center title">List of your pills</h1>
-                <p  class="text-center des">Pills info:</p>
+                <h1 class="text-center title">List of pills during pregnant</h1>
+                <p  class="text-center des">Pills info for user: {{user.name}} {{user.surname}} </p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <ul class="list-group">
-                    {% for pill in pills %}
-                        <li class="list-group-item">{{pill}}</li>
-                    {% endfor %}
-                </ul>
+                <table class="table">
+                    <thead class="thead-info">
+                      <tr>
+                        <th scope="col">Pregnant week - start</th>
+                        <th scope="col">Pregnant week - end</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for pill in pills %}
+                            <tr>
+                                <td>{{ pill.week_start }}</td>
+                                <td>{{ pill.week_end }}</td>
+                                <td>{{ pill.name }}</td>
+                                <td>{{ pill.amount }}</td>
+                                <td>{{ pill.reason }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+                                    <a href="#" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4"></div>
-            <a href="#">
-                <input type="submit" value="PDF REPORT" class="btn btn-lg btn_pdf">
+            <a href="{{url_for('pdf_create')}}">
+                <input type="submit" value="pdf_report" class="btn btn-lg btn_pdf">
             </a>
         </div>
     </div>

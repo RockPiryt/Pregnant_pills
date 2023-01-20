@@ -23,32 +23,52 @@ Migrate(app, db)
 class Pill(db.Model):
     __tablename__ = 'pills'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
-    amount = db.Column(db.Integer)
-    date_week = db.Column(db.Integer)
+    name = db.Column(db.Text, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    type_pill = db.Column(db.Text)
+    week_start = db.Column(db.Integer, nullable=False)
+    week_end = db.Column(db.Integer)
+    reason = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, amount, date_week, user_id):
+    def __init__(self, name, amount, type_pill, week_start, week_end, reason, user_id):
         self.name = name
         self.amount = amount
-        self.date_week = date_week
+        self.type_pill = type_pill
+        self.week_start = week_start
+        self.week_end = week_end
+        self.reason = reason
         self.user_id = user_id
 
     def __repr__(self):
-        return f'Pill name:{self.name}, amount: {self.amount}, pregnant week: {self.date_week} add by {self.user_id}'
+        if self.type_pill == 'special':
+            return f'Date: {self.week_start}, Pill name:{self.name}, amount: {self.amount}, (reason:{self.reason})'
+        else:
+            return f'Date: {self.week_start} - {self.week_end}, Pill name:{self.name}, amount: {self.amount}'
 
 
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
+    name = db.Column(db.Text, nullable=False)
+    surname = db.Column(db.Text)
+    preg_week = db.Column(db.Integer)
+
     pills = db.relationship('Pill', backref='user', lazy='dynamic')
 
-    def __init__(self, name):
+    def __init__(self, name, surname, preg_week):
         self.name = name
+        self.surname = surname
+        self.preg_week = preg_week
     
     def __repr__(self):
-        return f'Username: {self.name}'
+        return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}'
+
+    def report_pills(self):
+        for pill in self.pills:
+            return(pill)
+
+
 
 
 
@@ -59,30 +79,27 @@ class PDF_report():
     def __init__(self, filename):
         self.filename = filename
 
-    def generate(self, user, list_pill):
-        pass
+    def generate(self, user):
+        user_list_pills = user.report_pills()
 
-    pdf = FPDF(orientation='P', unit='pt', format='A4')
-    pdf.add_page()
+        pdf = FPDF(orientation='P', unit='pt', format='A4')
+        pdf.add_page()
 
-    #Title
-    pdf.set_font(family='Arial', size=24, style='B')
-    pdf.cell(w=0, h=80, txt='User pills during pregnant', border=1, align='C', ln=1)
+        #Title
+        pdf.set_font(family='Arial', size=24, style='B')
+        pdf.cell(w=0, h=80, txt='User pills during pregnant', border=1, align='C', ln=1)
 
-    #User info
-    pdf.set_font(family='Arial', size=18, style='B')
-    pdf.cell(w=100, h=50, txt='Username:', border=1)
-    pdf.cell(w=100, h=50, txt='Paulina', border=1, ln=1)
+        #User info
+        pdf.set_font(family='Arial', size=18, style='B')
+        pdf.cell(w=100, h=50, txt='Username:', border=1)
+        pdf.cell(w=100, h=50, txt= user.name, border=1, ln=1)
 
-    #Pills info
-    pdf.set_font(family='Arial', size=18)
-    pdf.cell(w=100, h=50, txt='Pill name:', border=1)
-    pdf.cell(w=100, h=50, txt='Nospa', border=1, ln=1)
+        #Pills info
+        pdf.set_font(family='Arial', size=18)
+        pdf.cell(w=100, h=50, txt='Pills information:', border=1)
+        pdf.cell(w=200, h=200, txt= user_list_pills , border=1, ln=1)
 
-    pdf.output('pills.pdf')
-
-    
-
+        pdf.output(self.filename)
 
 
 ############VIEWS FUNCTIONS###################
@@ -99,10 +116,13 @@ def add_pill():
     if form.validate_on_submit():
         name = form.name.data
         amount = form.amount.data
-        date_week = form.date_week.data
+        type_pill = form.type_pill.data
+        week_start = form.week_start.data
+        week_end = form.week_end.data
+        reason = form.reason.data
         user_id = form.user_id.data
 
-        pill = Pill(name, amount, date_week, user_id)
+        pill = Pill(name, amount, type_pill, week_start, week_end, reason, user_id)
         db.session.add(pill)
         db.session.commit()
         return redirect(url_for('list_pill'))
@@ -110,8 +130,9 @@ def add_pill():
 
 @app.route('/list_pill')
 def list_pill():
-    pills = Pill.query.all()
-    return render_template('list_pill.html', pills=pills)
+    pills = Pill.query.filter_by(user_id = 3).all()
+    user = User.query.filter_by(id=3).first()
+    return render_template('list_pill.html', pills=pills, user=user)
 
 @app.route('/del_pill', methods=['GET','POST'])
 def del_pill():
@@ -132,14 +153,24 @@ def add_user():
 
     if form.validate_on_submit():
         name = form.name.data
-        user=User(name)
+        surname =form.surname.data
+        preg_week = form.preg_week.data
+        user=User(name, surname, preg_week)
+
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('add_pill'))
+        return redirect(url_for('add_pill', user_id = user.id))
     return render_template('add_user.html', form=form)
+
+@app.route('/pdf_create', methods=['GET','POST'])
+def pdf_create():
+    pdf_report = PDF_report(filename='pills.pdf')
+    user = User.query.filter_by(id=3).first()
+    pdf_report.generate(user)
+    return(f'PDF report was created')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
 
