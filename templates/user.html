@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <span class="title">
+        <h1>{{ user.name }} {{ user.surname }}</h1>
+    </span>
+    <div class="content">
+        <div class="student">
+            <p><b>#{{ user.id }}</b></p>
+            <b>
+                <p class="name">{{ user.name }} {{ user.surname }}</p>
+            </b>
+            <p>Pregnant week: {{ user.preg_week }}</p>
+            <a href="{{ url_for('add_pill', user_primary_key=user.id) }}">Add pill</a>
+        </div>
+    </div>
+{% endblock %}

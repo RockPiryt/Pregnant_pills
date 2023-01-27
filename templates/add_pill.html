@@ -10,7 +10,7 @@
                     {{form.hidden_tag()}}
                     <div class="row">
                         <div class="col-md-12 title">
-                            <h1 class="text-center title">Add Pills </h1>
+                            <h1 class="text-center title">Add Pills for {{ user.name }} {{ user.surname }}</h1>
                             <p class="text-center des">Fill out form below to add pill to our database.</p>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <a href="{{url_for('list_pill')}}">
+                        <a href="#">
                             <input type="submit" value="Add pills" class="btn btn-lg btn_add_pills">
                         </a>
                     </div>

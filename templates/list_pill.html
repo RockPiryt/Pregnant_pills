@@ -32,7 +32,7 @@
                                 <td>{{ pill.reason }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                    <a href="{{ url_for('del_pill', user_primary_key=user.id) }}" class="btn btn-danger btn-sm" role="button">Delete</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -61,3 +61,5 @@
         {% endfor %}
     </ul>
 </div>
+
+
