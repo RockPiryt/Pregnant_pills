@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-12 title">
                             <h1 class="text-center title">Add Pills for {{ user.name }} {{ user.surname }}</h1>
-                            <p class="text-center des">Fill out form below to add pill to our database.</p>
+                            <p class="text-center des">Fill out form below to add pill to our database.Your user ID: {{user.id}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -31,14 +31,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>{{form.type_pill.label}}</label>
-                                <input type="text" name="type_pill" class="form-control" value="{{ type_pill }}">
+                                <p>Rutine or special?</p>
+                                <select name="type_pill" id="type_pill">
+                                    <option value="Rutine">Rutine</option>
+                                    <option value="Special">Special</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>{{form.user_id.label}}</label>
-                                <input type="text" name="user_id" class="form-control" value="{{ user_id }}">
+                                <label>{{form.reason.label}}</label>
+                                <input type="text" name="reason" class="form-control" value="{{ reason }}">
                             </div>
                         </div>
                     </div>
@@ -56,14 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>{{form.reason.label}}</label>
-                                <input type="text" name="reason" class="form-control" value="{{ reason }}">
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row">
                         <a href="#">
                             <input type="submit" value="Add pills" class="btn btn-lg btn_add_pills">
@@ -90,4 +86,11 @@
         {{form.user_id.label}}{{form.user_id()}}<br>
         {{form.submit}}
     </form>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>{{form.type_pill.label}}</label>
+        <input type="text" name="type_pill" class="form-control" value="{{ type_pill }}">
+    </div>
 </div>

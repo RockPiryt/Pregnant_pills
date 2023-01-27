@@ -217,12 +217,15 @@ label{
 
 /* List pills */
 .container_list{
-    background-color: white;
+    background-image: url("list2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .grid_list{
     position: relative;
-    padding: 10%;
+    padding: 2%;
     top: 0%;
     left: 10%;
     max-width: 80%;
@@ -260,4 +263,113 @@ label{
     background: transparent;
     border-color: rgb(63, 131, 146);
     box-shadow: 1px 1px 1px rgb(63, 131, 146) inset, 1px 1px 1px rgb(63, 131, 146);
+}
+
+.pdf_info{
+    color: white;
+}
+
+#add_button{
+    position: relative;
+    top: 1%;
+    left: 45%;
+    max-width: 40%;
+}
+
+#download{
+    position: relative;
+    margin-top: 5%;
+    top: 5%;
+    left: 20%;
+    max-width: 80%;
+    color: white;
+}
+
+#pdf_button{
+    position: relative;
+    top: 1%;
+    left: 45%;
+    max-width: 40%;
+}
+
+/* User info */
+.content{
+    background-image: url("user.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.user{
+    position: relative;
+    padding: 10%;
+    top: 0%;
+    left: 10%;
+    max-width: 40%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    color:white;
+}
+
+/* All User list */
+#users_list{
+    background-image: url("list3.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    color: rgb(63, 131, 146);
+}
+
+#all_users{
+    position: relative;
+    padding: 10%;
+    top: 0%;
+    left: 10%;
+    max-width: 40%;
+    height: auto;
+    background-color: rgba(106, 103, 103, 0.5);
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    color:white;
+}
+
+.btn_user_info{
+    transition: all 0.5s ease-in-out;
+    font-size: 0.7em;
+    letter-spacing: 0.1em;
+    padding: 1%;
+    margin-top: 0%;
+    border-radius: 50px;
+    background: white;
+    color: rgb(63, 131, 146);
+    border-color: white;
+    width: 10%;
+    min-width: 100px;
+    margin-bottom: 5%;
+}
+
+.btn_add_pill{
+    transition: all 0.5s ease-in-out;
+    font-size: 0.7em;
+    letter-spacing: 0.1em;
+    padding: 1%;
+    margin-top: 0%;
+    border-radius: 50px;
+    background: rgb(63, 131, 146);
+    color: white;
+    border-color: rgb(63, 131, 146);
+    width: 10%;
+    min-width: 100px;
+    margin-bottom: 5%;
+}
+
+.name_user{
+    color: rgb(63, 131, 146);
+    font-size: 1.6em;
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
 }

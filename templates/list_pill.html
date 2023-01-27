@@ -40,10 +40,19 @@
                   </table>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="add_button">
+            <div class="col-md-12"></div>
+            <a href="{{ url_for('add_pill', user_primary_key=user.id) }}" class="btn btn-success btn-md btn_add" role="button">Add another pill</a>
+            </a>
+        </div>
+        <div class="row" id="download">
             <div class="col-md-4"></div>
+            <h3 class="pdf_info">You can download your pill's list in PDF file below!</h3>
+        </div>
+        <div class="row" id="pdf_button">
+            <div class="col-md-12"></div>
             <a href="{{url_for('pdf_create')}}">
-                <input type="submit" value="pdf_report" class="btn btn-lg btn_pdf">
+                <input type="submit" value="pdf_report" class="btn btn-md btn_pdf">
             </a>
         </div>
     </div>

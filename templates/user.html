@@ -2,17 +2,17 @@
 
 
 {% block content %}
-    <span class="title">
-        <h1>{{ user.name }} {{ user.surname }}</h1>
-    </span>
     <div class="content">
-        <div class="student">
-            <p><b>#{{ user.id }}</b></p>
-            <b>
-                <p class="name">{{ user.name }} {{ user.surname }}</p>
-            </b>
-            <p>Pregnant week: {{ user.preg_week }}</p>
-            <a href="{{ url_for('add_pill', user_primary_key=user.id) }}">Add pill</a>
+        <div class="user">
+            <span class="title">
+                <h1>{{ user.name }} {{ user.surname }}</h1>
+            </span>
+            <p>User ID: <b>#{{ user.id }}</b></p>
+            <p>Pregnant week: <b>{{ user.preg_week }}</b></p>
+            <hr>
+            <a class="btn btn-primary btn-sm btn_user_info" role="button" href="{{ url_for('add_pill', user_primary_key=user.id) }}">Add pill</a>
+            <br>
+            <a class="btn btn-primary btn-sm btn_add_pill" role="button" href="{{ url_for('list_pill', user_primary_key=user.id) }}">List pill</a>
         </div>
     </div>
 {% endblock %}

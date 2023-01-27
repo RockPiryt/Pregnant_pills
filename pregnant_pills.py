@@ -103,11 +103,42 @@ class PDF_report():
         pdf.output(self.filename)
 
 
-############VIEWS FUNCTIONS###################
+############MAIN VIEWS###################
 
 @app.route('/')
 def index():
     return render_template('home.html')
+
+##################USER VIEWS####################
+@app.route('/add_user', methods=['GET','POST'])
+def add_user():
+
+    form = AddUserForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        surname =form.surname.data
+        preg_week = form.preg_week.data
+        user=User(name, surname, preg_week)
+
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('user', user_primary_key=user.id))
+    return render_template('add_user.html', form=form)
+
+
+@app.route('/<int:user_primary_key>/user/')
+def user(user_primary_key):
+    user = User.query.get_or_404(user_primary_key) #to sortuje po primary key zawsze
+    return render_template('user.html', user=user, user_primary_key=user.id)
+
+
+@app.route('/all_users')
+def all_users():
+    users = User.query.all()
+    return render_template('all_users.html', users=users)
+
+##################PILLS VIEWS####################
 
 @app.route('/add_pill/<int:user_primary_key>', methods=['GET','POST'])
 def add_pill(user_primary_key):
@@ -134,8 +165,8 @@ def add_pill(user_primary_key):
 def list_pill(user_primary_key):
     user = User.query.get_or_404(user_primary_key)
     pills = Pill.query.filter_by(user_id=user.id).all() # user_id to one to many powiązanie
-    pill = Pill.query.get_or_404(pill_primary_key)
-    return render_template('list_pill_test.html', pills=pills, user=user)
+    # pill = Pill.query.get_or_404(pill_primary_key)
+    return render_template('list_pill.html', pills=pills, user=user)
 
 # @app.route('/del_pill', methods=['GET','POST'])
 # def del_pill_by_id():
@@ -168,33 +199,7 @@ def del_pill():
 #     db.session.commit()
 #     return redirect(url_for('list_pill', user_primary_key=user.id))
 
-@app.route('/add_user', methods=['GET','POST'])
-def add_user():
-
-    form = AddUserForm()
-
-    if form.validate_on_submit():
-        name = form.name.data
-        surname =form.surname.data
-        preg_week = form.preg_week.data
-        user=User(name, surname, preg_week)
-
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('user', user_primary_key=user.id))
-    return render_template('add_user.html', form=form)
-
-
-@app.route('/<int:user_primary_key>/user/')
-def user(user_primary_key):
-    user = User.query.get_or_404(user_primary_key) #to sortuje po primary key zawsze
-    return render_template('user.html', user=user, user_primary_key=user.id)
-
-
-@app.route('/all_users')
-def all_users():
-    users = User.query.all()
-    return render_template('all_users.html', users=users)
+##################PDF VIEWS####################
 
 @app.route('/pdf_create', methods=['GET','POST'])
 def pdf_create():
