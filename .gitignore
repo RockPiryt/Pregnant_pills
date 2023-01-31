@@ -3,3 +3,7 @@ __pycache__/
 static/style_add_user.css
 static/style_ex.css
 templates/form222.html
+static/unused/
+fpdf_test.py
+add_pill copy.html
+list_pill_test.html

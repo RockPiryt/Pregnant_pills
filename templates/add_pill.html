@@ -38,12 +38,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>{{form.reason.label}}</label>
-                                <input type="text" name="reason" class="form-control" value="{{ reason }}">
+                        
+                        {% if type_pill=="Special" %}
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>{{form.reason.label}}</label>
+                                    <input type="text" name="reason" class="form-control" value="{{ reason }}">
+                                </div>
                             </div>
-                        </div>
+                            
+                        {% endif %}
+                            
                     </div>
                     <div class="row">
                         <div class="col-md-6">
