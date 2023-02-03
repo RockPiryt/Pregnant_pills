@@ -5,12 +5,23 @@
     <div class="htop">
         <h1>Welcome to Pregnant pills Page</h1>
         <hr>
-        <p class="mx-auto info" >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et finibus sem. 
-            Fusce maximus neque vel turpis faucibus, ac fermentum nunc varius. 
-            Morbi dolor dolor, semper ac aliquam semper, rutrum id neque. 
-            Donec quis mollis tellus. Sed a rutrum nunc. </p>
+        <p class="mx-auto info" >On this website you can create your 
+            own list of pills, 
+            which you are taking during your pregnancy.
+            It is very useful for your gynecologist and in case of hospital stay. 
+            You can specify if the pill is rutine or special.
+            Rutine pills are vitamins and other complex nutrients,
+            which you should take every day in pregnant.
+            Special pills you use if you have illness 
+            for example flu, heartburn or gestational diabetes.
+            You can download your pill's list as PDF Report.  </p>
+
+        <h3>Continue as guest or register to save your profile!</h3>
         <a href="{{url_for('add_user')}}">
-            <input type="submit" value="Start" class="btn btn-lg btn_start" id="btn_start">
+            <input type="submit" value="Guest" class="btn btn-lg btn_start" id="btn_start">
+        </a>
+        <a href="#">
+            <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
         </a>
     </div>
 {% endblock %}

@@ -224,9 +224,35 @@ class PDF_report():
         pdf.output(self.filename)
 
 
+############ERRORS################
+#bad_request - brak jakiś danych w zapytaniu
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('400.html'), 400
+
+#unauthorized
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('401.html'), 401
+
+#page_not_found - brak rekordu w bd
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+#unsupported_media
+@app.errorhandler(415)
+def unsupported_media(e):
+    return render_template('415.html'), 415
+
+#internal_server_error
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 
+################################################
 
 if __name__ == '__main__':
     app.run(debug=True)
