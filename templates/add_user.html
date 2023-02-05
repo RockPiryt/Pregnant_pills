@@ -33,14 +33,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>{{form.preg_week.label}}</label>
-                        <select  class="form-control" value="{{ preg_week }}">
-                            
-                            {% for week in preg_list_whole %}
-                                <option name="preg_week" value="{{ preg_week }}">{{ week }}</option>
-                            {% endfor %}
-                                
-                        </select>
+                        {{ form.preg_week.label }} {{ form.preg_week() }}
                     </div>
                 </div>
             </div>
@@ -79,4 +72,15 @@
             <input type="text" name="preg_week" class="form-control" value="{{ preg_week }}">
         </div>
     </div>
+</div>
+
+<div class="form-group">
+    <label>{{form.preg_week.label}}</label>
+    <select  class="form-control" value="{{ preg_week }}">
+        
+        {% for week in preg_list_whole %}
+            <option name="preg_week" value="{{ preg_week }}">{{ week }}</option>
+        {% endfor %}
+            
+    </select>
 </div>

@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from forms import AddPillForm, DelPillForm, AddUserForm
 from fpdf import FPDF
+from sqlalchemy.sql import func
 
 
 app = Flask(__name__)
@@ -24,26 +25,31 @@ Migrate(app, db)
 class Pill(db.Model):
     __tablename__ = 'pills'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
+    name = db.Column(db.String(100))
+    choose_pill = db.Column(db.String(100))
     amount = db.Column(db.Integer, nullable=False)
-    type_pill = db.Column(db.Text)
-    week_start = db.Column(db.Integer, nullable=False)
+    type_pill = db.Column(db.String(40))
+    week_start = db.Column(db.Integer)
     week_end = db.Column(db.Integer)
+    add_date =db.Column(db.DateTime(timezone=True), server_default=func.now())
     reason = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, amount, type_pill, week_start, week_end, reason, user_id):
+    def __init__(self, name, choose_pill, amount, type_pill, week_start, week_end, add_date, reason, user_id):
         self.name = name
+        self.choose_pill = choose_pill
         self.amount = amount
         self.type_pill = type_pill
         self.week_start = week_start
         self.week_end = week_end
+        self.add_date = add_date
         self.reason = reason
         self.user_id = user_id
 
     def __repr__(self):
             return f'Pill name:{self.name}'
         
+
 
 
     # def __repr__(self):
@@ -127,17 +133,21 @@ def add_pill(user_primary_key):
 
     if form.validate_on_submit():
         name = form.name.data
+        choose_pill = form.choose_pill.data
         amount = form.amount.data
         type_pill = form.type_pill.data
         week_start = form.week_start.data
         week_end = form.week_end.data
+        add_date = form.add_date.data
         reason = form.reason.data
         user_id = user_primary_key
 
-        pill = Pill(name, amount, type_pill, week_start, week_end, reason, user_id)
+        pill = Pill(name, choose_pill, amount, type_pill, week_start, week_end, add_date, reason, user_id)
         db.session.add(pill)
         db.session.commit()
-        return redirect(url_for('list_pill', user_primary_key=user.id))
+        flash(f'You add new pills {pill.name} to your medical diary!')
+        return redirect(url_for('add_pill', user_primary_key=user.id))
+        # return redirect(url_for('list_pill', user_primary_key=user.id))
     return render_template('add_pill.html', form=form, user_id = user_primary_key, user=user)
 
 @app.route('/list_pill/<int:user_primary_key>')

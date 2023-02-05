@@ -140,34 +140,67 @@ label{
     padding: 15%;
     top: 0%;
     left: 0%;
-    max-width: 80%;
+    max-width: 100%;
     height: auto;
     background-color: rgba(106, 103, 103, 0.5);
     -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
 }
+.info_user{
+    color: white;
+    text-transform: uppercase;
+    margin-top: 8%;
+    text-align: center;
+}
 
-.btn_add_pills{
+#special{
+    margin-left: 35%;
+}
+
+#btn_nadd_pills{
     transition: all 0.5s ease-in-out;
     font-size: 15px;
     letter-spacing: 2px;
-    padding: 8% 8%;
+    padding: 2% 2%;
     margin-top: 5%;
     margin-bottom: 5%;
     border-radius: 50px;
     background: rgb(63, 131, 146);
     color: white;
     border-color: rgb(63, 131, 146);
-    width: 200%;
+    width: 100%;
     -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
 }
 
-.btn_add_pills:hover{
+#btn_nadd_pills:hover{
     background: white;
     color: rgb(63, 131, 146);
+    border-color: white;
+}
+
+#btn_ladd_pills{
+    transition: all 0.5s ease-in-out;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 2% 2%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 50px;
+    background: lightcoral;
+    color: white;
+    border-color: lightcoral;
+    width: 100%;
+    -webkit-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
+}
+
+#btn_ladd_pills:hover{
+    background: white;
+    color: lightcoral;
     border-color: white;
 }
 
@@ -192,7 +225,7 @@ label{
     box-shadow: 10px 10px 20px 0px rgba(0,0,0,0.75);
 }
 
-.btn_add_pills{
+.btn_remove_pills{
     transition: all 0.5s ease-in-out;
     font-size: 15px;
     letter-spacing: 2px;
