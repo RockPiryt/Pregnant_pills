@@ -1,7 +1,5 @@
 # Pregnant_Pills
-
-
-On this website you can create yourown list of pills,which you are taking during your pregnancy. It is very useful for your gynecologist and in case of hospital stay. You can specify if the pill is rutine or special.Rutine pills are vitamins and other complex nutrients, which you should take every day in pregnant. Special pills you use if you have illnessfor example flu, heartburn or gestational diabetes.You can download your pill's list as PDF Report.
+This app is for pregnant women to keep information about pills, which they took during pregnancy. On home page user can register a new account or continue as guest. When user is logged in, it is possible to create a list with pills. User can add a new pill or choose from database. Pregnancy week is also required. After that user gets a list with pills (with dates and type of pills), which is avaiable to  download this list as PDF file.
 
 ## Table of Contents
 
@@ -17,8 +15,7 @@ On this website you can create yourown list of pills,which you are taking during
 
 ## General Information
 
-This web is for pregnant women to keep information about pills, which they taken during pregnancy. On home page User can register a new account. When user is logged in, she can create a list with pills. She can add a new pill or choose from database. She also add information about time (pregnancy week). After that user get all listed pills with dates and kind of pills. User can download this list as PDF file. 
-
+On this website you can create your list of pills, which you are taking during your pregnancy. It is very useful for your gynecologist or in the event of a hospital stay. You can specify the type of pill (rutine / special). Rutine pills are vitamins and other complex nutrients, which you should take every day in pregnant. Special pills are pills, which you take during disease.You can download your pill's list as PDF Report to show this list your doctor.
 This application was created using Flask and SQLite database.
 
 ## Technologies Used
