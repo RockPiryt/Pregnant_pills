@@ -13,7 +13,7 @@ body{
     padding: 7% 0 30% 0;
     width: 100%;
     text-align: center;
-    background-image: url("pills.jpg") ;
+    background-image: url("../files/img/pills/pills.jpg") ;
     background-size: cover;
     background-position: 90% 50% 0 50%;
     min-height: auto;
@@ -52,7 +52,7 @@ body{
 /* Add user */
 
 .container_form{
-    background-image: url("pregnant2.jpg");
+    background-image: url("../files/img/user/pregnant2.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -129,7 +129,7 @@ label{
 
 /* Add pills */
 .container_form_pills{
-    background-image: url("pills2.jpg");
+    background-image: url("../files/img/pills/pills2.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -206,7 +206,7 @@ label{
 
 /* Remove pills */
 .container_form_del{
-    background-image: url("pills3.jpg");
+    background-image: url("../files/img/pills/pills3.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -250,7 +250,7 @@ label{
 
 /* List pills */
 .container_list{
-    background-image: url("list2.jpg");
+    background-image: url("../files/img/list/list2.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -327,7 +327,7 @@ label{
 
 /* User info */
 .content{
-    background-image: url("user.jpg");
+    background-image: url("../files/img/user/user.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -349,7 +349,7 @@ label{
 
 /* All User list */
 #users_list{
-    background-image: url("list3.jpg");
+    background-image: url("../files/img/list/list3.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
