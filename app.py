@@ -1,91 +1,48 @@
 import os
+# from os.path import join, dirname
+from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from forms import AddPillForm, DelPillForm, AddUserForm
 from fpdf import FPDF
-from sqlalchemy.sql import func
+from forms import AddPillForm, DelPillForm, AddUserForm
+from models import User, Pill
+
+# ------------------------Get secrets
+load_dotenv(find_dotenv())
+SECRET_KEY_VAR = os.getenv("secret_key")
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '4piers.teach.4Sows.3convex'
-app.app_context().push()
+app.config['SECRET_KEY'] = SECRET_KEY_VAR
 
-############### DATABASE SQLITE#####################
+# ---------------------- DATABASES
+# #SQLite database
+# basedir = os.path.abspath(os.path.dirname(__file__))
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+#     os.path.join(basedir, 'pill_db.sqlite')
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    os.path.join(basedir, 'pill_db.sqlite')
+# PostgreSQL database
+username_postdb = os.getenv("postgreSQL_username")
+password_postdb = os.getenv("postgreSQL_password")
+database_postdb = os.getenv("postgreSQL_database")
+host_postdb = os.getenv("postgreSQL_host")
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username_postdb}:{password_postdb}@{host_postdb}/{database_postdb}"
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 Migrate(app, db)
-
-######################### MODELS##########################
-
-
-class Pill(db.Model):
-    __tablename__ = 'pills'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    choose_pill = db.Column(db.String(100))
-    amount = db.Column(db.Integer, nullable=False)
-    type_pill = db.Column(db.String(40))
-    week_start = db.Column(db.Integer)
-    week_end = db.Column(db.Integer)
-    add_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    reason = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    def __init__(self, name, choose_pill, amount, type_pill, week_start, week_end, add_date, reason, user_id):
-        self.name = name
-        self.choose_pill = choose_pill
-        self.amount = amount
-        self.type_pill = type_pill
-        self.week_start = week_start
-        self.week_end = week_end
-        self.add_date = add_date
-        self.reason = reason
-        self.user_id = user_id
-
-    def __repr__(self):
-        return f'Pill name:{self.name}'
-
-    # def __repr__(self):
-    #     if self.type_pill == 'special':
-    #         return f'Date: {self.week_start}, Pill name:{self.name}, amount: {self.amount}, (reason:{self.reason})'
-    #     else:
-    #         return f'Date: {self.week_start} - {self.week_end}, Pill name:{self.name}, amount: {self.amount}'
-
-
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
-    surname = db.Column(db.Text)
-    preg_week = db.Column(db.Integer)
-
-    pills = db.relationship('Pill', backref='user', lazy='dynamic')
-
-    def __init__(self, name, surname, preg_week):
-        self.name = name
-        self.surname = surname
-        self.preg_week = preg_week
-
-    def __repr__(self):
-        return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}'
-
-    def report_pills(self):
-        for pill in self.pills:
-            return pill
+app.app_context().push()
 
 
 ############ MAIN VIEWS###################
 @app.route('/')
 def index():
+    db.create_all()
     return render_template('home.html')
 
-################## USER VIEWS####################
+
+##################USER VIEWS####################
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     preg_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -116,6 +73,7 @@ def user(user_primary_key):
 def all_users():
     users = User.query.all()
     return render_template('all_users.html', users=users)
+
 
 ################## PILLS VIEWS####################
 @app.route('/add_pill/<int:user_primary_key>', methods=['GET', 'POST'])
@@ -235,7 +193,7 @@ class PDF_report():
 
 
 ############ ERRORS################
-# bad_request - brak jakiś danych w zapytaniu
+# bad_request - wrong data in request
 @app.errorhandler(400)
 def bad_request(e):
     return render_template('400.html'), 400
@@ -245,7 +203,7 @@ def bad_request(e):
 def unauthorized(e):
     return render_template('401.html'), 401
 
-# page_not_found - brak rekordu w bd
+# page_not_found = no record in db
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
