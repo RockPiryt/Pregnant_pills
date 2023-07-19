@@ -1,53 +1,83 @@
-import os
-# from os.path import join, dirname
-from dotenv import load_dotenv, find_dotenv
-from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask import Flask, render_template, redirect, url_for, flash
+from config import config_dict #Dict with configurations name
 from fpdf import FPDF
 from forms import AddPillForm, DelPillForm, AddUserForm
-from models import User, Pill
-
-# ------------------------Get secrets
-load_dotenv(find_dotenv())
-SECRET_KEY_VAR = os.getenv("secret_key")
 
 
+#--------------Create app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY_VAR
-
-# ---------------------- DATABASES
-# #SQLite database
-# basedir = os.path.abspath(os.path.dirname(__file__))
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-#     os.path.join(basedir, 'pill_db.sqlite')
-
-# PostgreSQL database
-username_postdb = os.getenv("postgreSQL_username")
-password_postdb = os.getenv("postgreSQL_password")
-database_postdb = os.getenv("postgreSQL_database")
-host_postdb = os.getenv("postgreSQL_host")
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username_postdb}:{password_postdb}@{host_postdb}/{database_postdb}"
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(config_dict['development'])
 db = SQLAlchemy(app)
-Migrate(app, db)
 app.app_context().push()
 
 
+
+
+from sqlalchemy.sql import func
+######################### MODELS##########################
+class Pill(db.Model):
+    __tablename__ = 'pills'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    choose_pill = db.Column(db.String(100))
+    amount = db.Column(db.Integer, nullable=False)
+    type_pill = db.Column(db.String(40))
+    week_start = db.Column(db.Integer)
+    week_end = db.Column(db.Integer)
+    add_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    reason = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, name, choose_pill, amount, type_pill, week_start, week_end, add_date, reason, user_id):
+        self.name = name
+        self.choose_pill = choose_pill
+        self.amount = amount
+        self.type_pill = type_pill
+        self.week_start = week_start
+        self.week_end = week_end
+        self.add_date = add_date
+        self.reason = reason
+        self.user_id = user_id
+
+    def __repr__(self):
+        return f'Pill name:{self.name}'
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False)
+    surname = db.Column(db.Text)
+    preg_week = db.Column(db.Integer)
+
+    pills = db.relationship('Pill', backref='user', lazy='dynamic')
+
+    def __init__(self, name, surname, preg_week):
+        self.name = name
+        self.surname = surname
+        self.preg_week = preg_week
+
+    def __repr__(self):
+        return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}'
+
+    def report_pills(self):
+        for pill in self.pills:
+            return pill
 ############ MAIN VIEWS###################
 @app.route('/')
 def index():
-    db.create_all()
+    # db.create_all()
     return render_template('home.html')
 
 
 ##################USER VIEWS####################
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
-    preg_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
 
+    #Create list with pregnant weeks
+    week_preg = list(range(1,41))
     form = AddUserForm()
 
     if form.validate_on_submit():
@@ -59,7 +89,7 @@ def add_user():
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user', user_primary_key=user.id))
-    return render_template('add_user.html', form=form, preg_list_whole=preg_list)
+    return render_template('add_user.html', form=form, preg_list_whole=week_preg)
 
 
 @app.route('/<int:user_primary_key>/user/')
@@ -222,3 +252,12 @@ def internal_server_error(e):
 ################################################
 if __name__ == '__main__':
     app.run(debug=True)
+
+# db = SQLAlchemy()
+# db.init_app(app)
+# migrate=Migrate()
+# migrate.init_app(app, db)
+
+# # # THIS WILL CREATE THE SCHEMA INTO THE DATABASE (only needs to be done when first creating the database)
+# with app.app_context():
+#     db.create_all()

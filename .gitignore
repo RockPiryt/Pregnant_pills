@@ -11,3 +11,5 @@ pregnant_pills copy.py
 forms copy.py
 add_pill copy 2.html
 .env
+test.py
+pregnant_pills_app/
