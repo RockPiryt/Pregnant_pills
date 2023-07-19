@@ -21,14 +21,3 @@ class DelPillForm(FlaskForm):
     id_pill = IntegerField('Add ID_pill')
     submit = SubmitField('Delete pill')
 
-
-class AddUserForm(FlaskForm):
-    name = StringField('Add name: ')
-    surname = StringField('Add surname: ')
-    # email = StringField('Add email:', validators=[Email()])
-    preg_week = SelectField(u'Add actual pregnant week: ', choices=[('1', 'L_1'), ('2', 'L_2'), ('3', 'L_3'), ('4', 'L_4'),
-                                                                    ('5', 'L_5'), ('6', '6'), ('7', '7'), ('8', 'L_8'),
-                                                                    ('9', 'L_9'), ('10', 'L_10'), ('11', 'L_11'), ('12', 'L_12'),])
-
-    submit = SubmitField('Add User')
-

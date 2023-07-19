@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container_list">
+    <div class="grid_list">
+        <div class="row">
+            <div class="col-md-12 title">
+                <h1 class="text-center title">List of pills during pregnant</h1>
+                <p  class="text-center des">Pills info for user: {{user.name}} {{user.surname}} </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="thead-info">
+                      <tr>
+                        <th scope="col">Pregnant week - start</th>
+                        <th scope="col">Pregnant week - end</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for pill in pills %}
+                            <tr>
+                                <td>{{ pill.week_start }}</td>
+                                <td>{{ pill.week_end }}</td>
+                                <td>{{ pill.name }}</td>
+                                <td>{{ pill.amount }}</td>
+                                <td>{{ pill.reason }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+                                    <a href="{{ url_for('del_pill', one_pill_p_key=3) }}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="row" id="add_button">
+            <div class="col-md-12"></div>
+            <a href="{{ url_for('add_pill', user_primary_key=user.id) }}" class="btn btn-success btn-md btn_add" role="button">Add another pill</a>
+            </a>
+        </div>
+        <div class="row" id="download">
+            <div class="col-md-4"></div>
+            <h3 class="pdf_info">You can download your pill's list in PDF file below!</h3>
+        </div>
+        <div class="row" id="pdf_button">
+            <div class="col-md-12"></div>
+            <a href="{{url_for('pdf_create', user_primary_key=user.id)}}">
+                <input type="submit" value="pdf_report" class="btn btn-md btn_pdf">
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<div class="jumbotron">
+    <h1>List of pills which You use during pregnant</h1>
+    <p>Pills:</p>
+    <ul>
+        {% for pill in pills %}
+            <li>{{pill}}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+

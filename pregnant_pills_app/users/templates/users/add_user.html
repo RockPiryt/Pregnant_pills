@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container_form">
+    <div class="content-form">
+        <form method="POST">
+            {{html_form.hidden_tag()}}
+            <div class="row">
+                <div class="col-md-12 title">
+                    <h1 class="text-center title">Add User</h1>
+                    <p  class="text-center des">Please fill out form below</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>{{html_form.name.label}}</label>
+                        {{html_form.name(class_="form-control", placeholder="Name")}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{html_form.surname.label}}
+                        {{html_form.surname(class_="form-control", placeholder="Surname")}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{ html_form.preg_week_form.label }} {{ html_form.preg_week_form(class_="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <a href="#"></a>
+                    <input type="submit" value="Add user" class="btn btn-lg btn_user">
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

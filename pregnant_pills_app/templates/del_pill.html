@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container_form_del">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="content-form_del">
+                <form method="POST">
+                    {{form.hidden_tag()}}
+                    <div class="row">
+                        <div class="col-md-12 title">
+                            <h1 class="text-center title">Delete pill</h1>
+                            <p class="text-center des">Fill out form below to remove pill form our database</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{form.id_pill.label}}</label>
+                                <input type="text" name="name" class="form-control" value="{{ one_pill_p_key }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a href="#">
+                            <input type="submit" value="Remove pills" class="btn btn-lg btn_remove_pills">
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="img"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<div class="jumbotron">
+    <h1>Delete pill</h1>
+    <p>Fill out form below to remove pill form our database.</p>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.id_pill.label}}{{form.id_pill()}}
+        {{form.submit}}
+    </form>
+</div>
+

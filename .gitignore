@@ -12,4 +12,6 @@ forms copy.py
 add_pill copy 2.html
 .env
 test.py
-pregnant_pills_app/
+app2.py
+formsaaa.py
+modelsaaa.py

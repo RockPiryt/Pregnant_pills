@@ -1,9 +1,11 @@
-from app import db
+from pregnant_pills_app import db
 from sqlalchemy.sql import func
+
 
 ######################### MODELS##########################
 class Pill(db.Model):
     __tablename__ = 'pills'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     choose_pill = db.Column(db.String(100))
@@ -32,6 +34,7 @@ class Pill(db.Model):
 
 class User(db.Model):
     __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     surname = db.Column(db.Text)
