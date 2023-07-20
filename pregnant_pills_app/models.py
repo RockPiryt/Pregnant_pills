@@ -1,5 +1,6 @@
 from pregnant_pills_app import db
 from sqlalchemy.sql import func
+from flask_login import UserMixin
 
 
 ######################### MODELS##########################
@@ -32,22 +33,24 @@ class Pill(db.Model):
         return f'Pill name:{self.name}'
 
 
-class User(db.Model):
+class User(UserMixin,db.Model):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
-    surname = db.Column(db.Text)
+    surname = db.Column(db.Text, nullable=False)
     preg_week = db.Column(db.Integer)
-    email = db.Column(db.Text)
+    email = db.Column(db.Text, nullable=False, unique=True)
+    password = db.Column(db.String(100))
 
     pills = db.relationship('Pill', backref='user', lazy='dynamic')
 
-    def __init__(self, name, surname, preg_week, email):
+    def __init__(self, name, surname, preg_week, email, password):
         self.name = name
         self.surname = surname
         self.preg_week = preg_week
         self.email = email
+        self.password = password
 
     def __repr__(self):
         return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}, Email: {self.email}'

@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from config import config_dict #Dict with configurations name
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 
 
@@ -9,10 +10,15 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config.from_object(config_dict['testing'])
 db = SQLAlchemy(app)
-migrate = Migrate(app,db)
+migrate = Migrate(app,db, render_as_batch=True)
 
 app.app_context().push()
-# db.create_all()
+db.create_all()
+
+# -------------------Flask- Login
+# Create login_manager class
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 # -----------------------------------Register Blueprints
 from pregnant_pills_app.users.views import users_blueprint
