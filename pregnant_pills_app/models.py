@@ -39,16 +39,18 @@ class User(db.Model):
     name = db.Column(db.Text, nullable=False)
     surname = db.Column(db.Text)
     preg_week = db.Column(db.Integer)
+    email = db.Column(db.Text)
 
     pills = db.relationship('Pill', backref='user', lazy='dynamic')
 
-    def __init__(self, name, surname, preg_week):
+    def __init__(self, name, surname, preg_week, email):
         self.name = name
         self.surname = surname
         self.preg_week = preg_week
+        self.email = email
 
     def __repr__(self):
-        return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}'
+        return f'Username: {self.name}, Surname: {self.surname}, Pregnant week: {self.preg_week}, Email: {self.email}'
 
     def report_pills(self):
         for pill in self.pills:

@@ -8,8 +8,8 @@ users_blueprint = Blueprint(
 
 
 ################## USER VIEWS####################
-@users_blueprint.route('/add_user', methods=['GET', 'POST'])
-def add_user():
+@users_blueprint.route('/register_user', methods=['GET', 'POST'])
+def register_user():
     '''Add new user to database'''
 
     # Create list with pregnant weeks
@@ -28,12 +28,13 @@ def add_user():
         name = form_add_user.name.data
         surname = form_add_user.surname.data
         preg_week_form = form_add_user.preg_week_form.data
-        user = User(name, surname, preg_week_form)
+        email = form_add_user.email.data
+        user = User(name, surname, preg_week_form, email)
 
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('users.user', user_primary_key=user.id))
-    return render_template('add_user.html', html_form=form_add_user)
+    return render_template('register_user.html', html_form=form_add_user)
 
 
 @users_blueprint.route('/<int:user_primary_key>/user/')

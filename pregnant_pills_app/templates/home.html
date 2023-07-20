@@ -16,12 +16,12 @@
             for example flu, heartburn or gestational diabetes.
             You can download your pill's list as PDF Report.  </p>
 
-        <h3>Continue as guest or register to save your profile!</h3>
-        <a href="{{url_for('users.add_user')}}">
-            <input type="submit" value="Guest" class="btn btn-lg btn_start" id="btn_start">
+        <h3>Register or Login to save your list with pills!</h3>
+        <a href="{{url_for('users.register_user')}}">
+            <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
         </a>
         <a href="#">
-            <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
+            <input type="submit" value="Login" class="btn btn-lg btn_start" id="btn_start">
         </a>
     </div>
 {% endblock %}
