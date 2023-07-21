@@ -12,38 +12,40 @@ pills_blueprint = Blueprint("pills", __name__, template_folder="templates/pills"
 @pills_blueprint.route('/add_pill', methods=['GET', 'POST'])
 @login_required
 def add_pill():
+    '''Use form to add pill, which takes pregnant user.'''
 
+    #Create form to add pill
     form_add_pill = AddPillForm()
-    
-
-    # if form_add_pill.validate_on_submit():
-    #     name = form_add_pill.name.data
-    #     choose_pill = form_add_pill.choose_pill.data
-    #     amount = form_add_pill.amount.data
-    #     type_pill = form_add_pill.type_pill.data
-    #     week_start = form_add_pill.week_start.data
-    #     week_end = form_add_pill.week_end.data
-    #     add_date = form_add_pill.add_date.data
-    #     reason = form_add_pill.reason.data
-    #     user_id = user_primary_key
-
-    #     pill = Pill(name, choose_pill, amount, type_pill,
-    #                 week_start, week_end, add_date, reason, user_id)
-    #     db.session.add(pill)
-    #     db.session.commit()
-    #     flash(f'You add new pills {pill.name} to your medical diary!')
-    #     return redirect(url_for('add_pill', user_primary_key=current_user.id))
-    #     # return redirect(url_for('list_pill', user_primary_key=user.id))
+    if form_add_pill.validate_on_submit():
+        name = form_add_pill.name.data
+        choose_pill = form_add_pill.choose_pill.data
+        amount = form_add_pill.amount.data
+        type_pill = form_add_pill.type_pill.data
+        week_start = form_add_pill.week_start.data
+        week_end = form_add_pill.week_end.data
+        add_date = form_add_pill.add_date.data
+        reason = form_add_pill.reason.data
+        user_id = current_user.id
+        #Create pill object with information passed by form
+        pill = Pill(name, choose_pill, amount, type_pill,
+                    week_start, week_end, add_date, reason, user_id)
+        #Add pill to database
+        db.session.add(pill)
+        db.session.commit()
+        flash(f'You add new pills {pill.name} to your medical diary!')
+        #Redirect to list with all user's pills
+        return redirect(url_for('pills.list_pill'))
     return render_template('add_pill.html', form=form_add_pill, html_current_user=current_user)
 
 
 @pills_blueprint.route('/list_pill')
 @login_required
 def list_pill():
+    '''Show list with all user's pills.'''
 
     pills = Pill.query.filter_by(user_id=current_user.id).all()
     return render_template('list_pill.html', pills=pills, html_current_user=current_user)
-    # return render_template('list_pill.html', pills=pills, user=user, one_pill_p_key=one_pill.id)
+###########################################################
 
 # @app.route('/del_pill', methods=['GET','POST'])
 # def del_pill_by_id():

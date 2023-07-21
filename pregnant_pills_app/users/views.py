@@ -5,7 +5,7 @@ from flask import redirect, render_template, url_for, Blueprint, flash
 
 from pregnant_pills_app import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, current_user, login_required, logout_user
 
 users_blueprint = Blueprint(
     "users", __name__, template_folder="templates/users")
@@ -59,11 +59,11 @@ def register_pregnant_user():
 
         #Login new user
         login_user(new_user)
-        return redirect(url_for('users.user'))
+        return redirect(url_for('users.user_info'))
     return render_template('register_user.html', html_form=register_form)
 
 
-@users_blueprint.route('/login-pregnant-user')
+@users_blueprint.route('/login-pregnant-user', methods=['GET', 'POST'])
 def login_pregnant_user():
     '''Login existing user'''
 
@@ -78,26 +78,34 @@ def login_pregnant_user():
         user_db = User.query.filter_by(email=email_login_form).first()
 
         #If user with that email doesn't exist in database
-        if not user:
+        if not user_db:
             flash("Invalid credentials. Please try again.")
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users.login_pregnant_user'))
         #Check passwords
         if check_password_hash(user_db.password, password_login_form):
         #Login user if the user exist in db and user gives correct password
             login_user(user_db)
-            return redirect(url_for('pills.add_pills', user_primary_key=user_db.id))
+            return redirect(url_for('users.user_info'))
         else:
             flash("Invalid credentials. Please try again.")
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users.login_pregnant_user'))
         
     return render_template('login_user.html', html_form=login_form)
 
 
 @users_blueprint.route('/user')
 @login_required
-def user():
+def user_info():
     '''Show information about user'''
     return render_template('user.html', html_current_user=current_user)
+
+@users_blueprint.route('/logout')
+@login_required
+def logout_pregnant_user():
+    '''Logout user'''
+    logout_user()
+    return redirect(url_for('index'))
+
 
 
 @users_blueprint.route('/all_users')

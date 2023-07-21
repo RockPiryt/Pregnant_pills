@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-12 title">
                 <h1 class="text-center title">List of pills during pregnant</h1>
-                <p  class="text-center des">Pills info for user: {{user.name}} {{user.surname}} </p>
+                <p  class="text-center des">Pills info for user: {{html_current_user.name}} {{html_current_user.surname}} </p>
             </div>
         </div>
         <div class="row">
@@ -32,7 +32,7 @@
                                 <td>{{ pill.reason }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
-                                    <a href="{{ url_for('pills.del_pill', one_pill_p_key=3) }}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                    <a href="{{ url_for('pills.del_pill', one_pill_p_key=1) }}" class="btn btn-danger btn-sm" role="button">Delete</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -42,7 +42,7 @@
         </div>
         <div class="row" id="add_button">
             <div class="col-md-12"></div>
-            <a href="{{ url_for('pills.add_pill', user_primary_key=user.id) }}" class="btn btn-success btn-md btn_add" role="button">Add another pill</a>
+            <a href="{{ url_for('pills.add_pill') }}" class="btn btn-success btn-md btn_add" role="button">Add another pill</a>
             </a>
         </div>
         <div class="row" id="download">
@@ -51,24 +51,11 @@
         </div>
         <div class="row" id="pdf_button">
             <div class="col-md-12"></div>
-            <a href="{{url_for('pdf_create', user_primary_key=user.id)}}">
+            <a href="{{url_for('report_pdf.pdf_create', user_primary_key=html_current_user.id)}}">
                 <input type="submit" value="pdf_report" class="btn btn-md btn_pdf">
             </a>
         </div>
     </div>
 </div>
-
-
 {% endblock %}
-
-<div class="jumbotron">
-    <h1>List of pills which You use during pregnant</h1>
-    <p>Pills:</p>
-    <ul>
-        {% for pill in pills %}
-            <li>{{pill}}</li>
-        {% endfor %}
-    </ul>
-</div>
-
 

@@ -23,51 +23,22 @@
               <a class="nav-link" href="{{url_for('index')}}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active px-3">
-              <a class="nav-link" href="{{url_for('users.add_user')}}">Guest <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{url_for('users.register_pregnant_user')}}">Register<span class="sr-only"></span></a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="{{url_for('users.add_user')}}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Guest
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Create diary(add_pill)</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Your list(list_pill)</a></li>
-              </ul>
+            <li class="nav-item active px-3">
+              <a class="nav-link" href="{{url_for('users.login_pregnant_user')}}">Login<span class="sr-only"></span></a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Pills action
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Add pill</a></li>
-                <li><a class="dropdown-item" href="#">Delete pill</a></li>
-                <li><a class="dropdown-item" href="#">Edit pill</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">PDF Report</a></li>
-              </ul>
+            <li class="nav-item active px-3">
+              <a class="nav-link" href="{{url_for('users.logout_pregnant_user')}}">Logout<span class="sr-only"></span></a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="{{url_for('users.add_user')}}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Login
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-                <li><a class="dropdown-item" href="#">User info</a></li>
-                <li><a class="dropdown-item" href="#">User list of pills</a></li>
-              </ul>
-            </li>
-            
-            <li class="nav-item px-3">
-              <a class="nav-link" href="#">Register</a>
-            </li>
+
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Admin Section
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{url_for('users.all_users', users=users)}}">All users</a></li>
+                <li><a class="dropdown-item" href="#">All users</a></li>
                 <li><a class="dropdown-item" href="#">All pills</a></li>
               </ul>
             </li>
