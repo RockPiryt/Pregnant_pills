@@ -17,10 +17,10 @@
             You can download your pill's list as PDF Report.  </p>
 
         <h3>Register or Login to save your list with pills!</h3>
-        <a href="{{url_for('users.register_user')}}">
+        <a href="{{url_for('users.register_pregnant_user')}}">
             <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
         </a>
-        <a href="#">
+        <a href="{{url_for('users.login_pregnant_user')}}">
             <input type="submit" value="Login" class="btn btn-lg btn_start" id="btn_start">
         </a>
     </div>

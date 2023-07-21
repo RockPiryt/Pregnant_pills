@@ -2,44 +2,47 @@ from pregnant_pills_app import app, db
 from pregnant_pills_app.models import User, Pill
 from flask import flash, redirect, render_template, url_for, Blueprint
 from pregnant_pills_app.pills.forms import AddPillForm, DelPillForm
+from flask_login import login_required, current_user
+
 
 pills_blueprint = Blueprint("pills", __name__, template_folder="templates/pills")
 
 ################## PILLS VIEWS####################
-@pills_blueprint.route('/add_pill/<int:user_primary_key>', methods=['GET', 'POST'])
-def add_pill(user_primary_key):
+# @pills_blueprint.route('/add_pill/<int:user_primary_key>', methods=['GET', 'POST'])
+@pills_blueprint.route('/add_pill', methods=['GET', 'POST'])
+@login_required
+def add_pill():
 
-    form = AddPillForm()
-    user = User.query.get_or_404(user_primary_key)
+    form_add_pill = AddPillForm()
+    
 
-    if form.validate_on_submit():
-        name = form.name.data
-        choose_pill = form.choose_pill.data
-        amount = form.amount.data
-        type_pill = form.type_pill.data
-        week_start = form.week_start.data
-        week_end = form.week_end.data
-        add_date = form.add_date.data
-        reason = form.reason.data
-        user_id = user_primary_key
+    # if form_add_pill.validate_on_submit():
+    #     name = form_add_pill.name.data
+    #     choose_pill = form_add_pill.choose_pill.data
+    #     amount = form_add_pill.amount.data
+    #     type_pill = form_add_pill.type_pill.data
+    #     week_start = form_add_pill.week_start.data
+    #     week_end = form_add_pill.week_end.data
+    #     add_date = form_add_pill.add_date.data
+    #     reason = form_add_pill.reason.data
+    #     user_id = user_primary_key
 
-        pill = Pill(name, choose_pill, amount, type_pill,
-                    week_start, week_end, add_date, reason, user_id)
-        db.session.add(pill)
-        db.session.commit()
-        flash(f'You add new pills {pill.name} to your medical diary!')
-        return redirect(url_for('add_pill', user_primary_key=user.id))
-        # return redirect(url_for('list_pill', user_primary_key=user.id))
-    return render_template('add_pill.html', form=form, user_id=user_primary_key, user=user)
+    #     pill = Pill(name, choose_pill, amount, type_pill,
+    #                 week_start, week_end, add_date, reason, user_id)
+    #     db.session.add(pill)
+    #     db.session.commit()
+    #     flash(f'You add new pills {pill.name} to your medical diary!')
+    #     return redirect(url_for('add_pill', user_primary_key=current_user.id))
+    #     # return redirect(url_for('list_pill', user_primary_key=user.id))
+    return render_template('add_pill.html', form=form_add_pill, html_current_user=current_user)
 
 
-@pills_blueprint.route('/list_pill/<int:user_primary_key>')
-def list_pill(user_primary_key):
-    user = User.query.get_or_404(user_primary_key)
-    # user_id to one to many powiązanie
-    pills = Pill.query.filter_by(user_id=user.id).all()
-    # one_pill = Pill.query.filter(db.and_(Pill.user_id==user.id, Pill.id==pills.id)).all()
-    return render_template('list_pill.html', pills=pills, user=user)
+@pills_blueprint.route('/list_pill')
+@login_required
+def list_pill():
+
+    pills = Pill.query.filter_by(user_id=current_user.id).all()
+    return render_template('list_pill.html', pills=pills, html_current_user=current_user)
     # return render_template('list_pill.html', pills=pills, user=user, one_pill_p_key=one_pill.id)
 
 # @app.route('/del_pill', methods=['GET','POST'])

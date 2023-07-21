@@ -19,6 +19,11 @@ db.create_all()
 # Create login_manager class
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.blueprint_login_views={
+    'pills': '/pregnant-pill/add_pill',
+    'users': '/pregnant-user/user',
+}
+
 
 # -----------------------------------Register Blueprints
 from pregnant_pills_app.users.views import users_blueprint

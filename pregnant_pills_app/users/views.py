@@ -5,7 +5,7 @@ from flask import redirect, render_template, url_for, Blueprint, flash
 
 from pregnant_pills_app import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user
+from flask_login import login_user, current_user, login_required
 
 users_blueprint = Blueprint(
     "users", __name__, template_folder="templates/users")
@@ -13,11 +13,11 @@ users_blueprint = Blueprint(
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(int(user_id)) #add current_user.id to cookie
 
 ################## USER VIEWS####################
-@users_blueprint.route('/register_user', methods=['GET', 'POST'])
-def register_user():
+@users_blueprint.route('/register-pregnant-user', methods=['GET', 'POST'])
+def register_pregnant_user():
     '''Add new user to database'''
 
     # Create list with pregnant weeks
@@ -57,17 +57,47 @@ def register_user():
         db.session.add(new_user)
         db.session.commit()
 
+        #Login new user
         login_user(new_user)
-        return redirect(url_for('users.user', user_primary_key=new_user.id))
+        return redirect(url_for('users.user'))
     return render_template('register_user.html', html_form=register_form)
 
 
-@users_blueprint.route('/<int:user_primary_key>/user/')
-def user(user_primary_key):
-    '''Show information about user'''
+@users_blueprint.route('/login-pregnant-user')
+def login_pregnant_user():
+    '''Login existing user'''
 
-    user = User.query.get_or_404(user_primary_key)
-    return render_template('user.html', user=user, user_primary_key=user.id)
+    #Create form to login user
+    login_form = LoginUserForm()
+    #Get user's information
+    if login_form.validate_on_submit():
+        email_login_form = login_form.email.data
+        password_login_form = login_form.password.data
+    
+        #Find user in database by email(unique)
+        user_db = User.query.filter_by(email=email_login_form).first()
+
+        #If user with that email doesn't exist in database
+        if not user:
+            flash("Invalid credentials. Please try again.")
+            return redirect(url_for('users.login'))
+        #Check passwords
+        if check_password_hash(user_db.password, password_login_form):
+        #Login user if the user exist in db and user gives correct password
+            login_user(user_db)
+            return redirect(url_for('pills.add_pills', user_primary_key=user_db.id))
+        else:
+            flash("Invalid credentials. Please try again.")
+            return redirect(url_for('users.login'))
+        
+    return render_template('login_user.html', html_form=login_form)
+
+
+@users_blueprint.route('/user')
+@login_required
+def user():
+    '''Show information about user'''
+    return render_template('user.html', html_current_user=current_user)
 
 
 @users_blueprint.route('/all_users')
@@ -77,9 +107,3 @@ def all_users():
     users = User.query.all()
     return render_template('all_users.html', users=users)
 
-@users_blueprint.route('/login-user')
-def login():
-    '''Login existing user'''
-
-    login_form = LoginUserForm()
-    return render_template('login_user.html', html_form=login_form)

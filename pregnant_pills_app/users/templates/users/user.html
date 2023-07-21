@@ -5,14 +5,14 @@
     <div class="content">
         <div class="user">
             <span class="title">
-                <h1>{{ user.name }} {{ user.surname }}</h1>
+                <h1>{{ html_current_user.name }} {{ html_current_user.surname }}</h1>
             </span>
-            <p>User ID: <b>#{{ user.id }}</b></p>
-            <p>Pregnant week: <b>{{ user.preg_week }}</b></p>
+            <p>User ID: <b>#{{ html_current_user.id }}</b></p>
+            <p>Pregnant week: <b>{{ html_current_user.preg_week }}</b></p>
             <hr>
-            <a class="btn btn-primary btn-sm btn_user_info" role="button" href="{{ url_for('pills.add_pill', user_primary_key=user.id) }}">Add pill</a>
+            <a class="btn btn-primary btn-sm btn_user_info" role="button" href="{{ url_for('pills.add_pill', user_primary_key=html_current_user.id) }}">Add pill</a>
             <br>
-            <a class="btn btn-primary btn-sm btn_add_pill" role="button" href="{{ url_for('pills.list_pill', user_primary_key=user.id) }}">List pill</a>
+            <a class="btn btn-primary btn-sm btn_add_pill" role="button" href="{{ url_for('pills.list_pill', user_primary_key=html_current_user.id) }}">List pill</a>
         </div>
     </div>
 {% endblock %}
