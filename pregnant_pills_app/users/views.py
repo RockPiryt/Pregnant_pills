@@ -10,6 +10,13 @@ from flask_login import login_user, current_user, login_required, logout_user
 users_blueprint = Blueprint(
     "users", __name__, template_folder="templates/users")
 
+#------------Single admin
+def is_one_admin():
+    if current_user.is_authenticated and current_user.id == 1:
+        return True
+    else:
+        return False
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -97,7 +104,8 @@ def login_pregnant_user():
 @login_required
 def user_info():
     '''Show information about user'''
-    return render_template('user.html', html_current_user=current_user, logged_in=current_user.is_authenticated)
+    
+    return render_template('user.html', logged_in=current_user.is_authenticated, html_is_admin=is_one_admin())
 
 @users_blueprint.route('/logout')
 @login_required
@@ -107,11 +115,18 @@ def logout_pregnant_user():
     return redirect(url_for('index'))
 
 
-
 @users_blueprint.route('/all_users')
 def all_users():
     '''Show all users in databse for admin'''
-
     users = User.query.all()
-    return render_template('all_users.html', users=users)
+    return render_template('all_users.html', html_users=users, logged_in=current_user.is_authenticated, html_is_admin=is_one_admin())
 
+
+
+# #-----------Several Admins
+# admin_list = [1,2,3]
+# def are_admins():
+#     if current_user.is_authenticated and current_user.id in admin_list:
+#         return True
+#     else:
+#         return False

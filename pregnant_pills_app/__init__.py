@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app,db, render_as_batch=True)
 
 app.app_context().push()
-db.create_all()
+
 
 # -------------------Flask- Login
 # Create login_manager class
@@ -40,6 +40,7 @@ app.register_blueprint(report_pdf_blueprint, url_prefix="/pregnant-report-pdf")
 #-------------------------------------Main view
 @app.route('/')
 def index():
+    db.create_all()
     return render_template('home.html')
 
 

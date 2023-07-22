@@ -41,13 +41,13 @@
               </li>
             {% endif %}
 
-            {% if admin_log_in %}
+            {% if html_is_admin %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Admin Section
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">All users</a></li>
+                  <li><a class="dropdown-item" href="{{url_for('users.all_users')}}">All users</a></li>
                   <li><a class="dropdown-item" href="#">All pills</a></li>
                 </ul>
             </li>
