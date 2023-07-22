@@ -406,3 +406,8 @@ label{
     letter-spacing: 0.1em;
     text-transform: capitalize;
 }
+
+.flash_messages_style{
+    color: rgb(63, 131, 146);
+    text-align: center;
+}

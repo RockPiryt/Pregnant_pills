@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-
-
 <div class="container_form">
     <div class="content-form">
         <form method="POST">
             {{ html_form.hidden_tag() }}
+            
+            
             <div class="row">
                 <div class="col-md-12 title">
                     <h1 class="text-center title">Login</h1>
                     <p  class="text-center des">Please fill out form below</p>
                 </div>
             </div>
+            {% include 'flash_message_template.html' %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            {{ html_form.submit(class_="btn btn-primary mt-5") }}
+            {{ html_form.submit(class_="btn btn-primary mt-5 btn_start") }}
 
         </form>
     </div>

@@ -22,26 +22,36 @@
             <li class="nav-item active px-3">
               <a class="nav-link" href="{{url_for('index')}}">Home <span class="sr-only">(current)</span></a>
             </li>
+            {% if not logged_in %}
             <li class="nav-item active px-3">
               <a class="nav-link" href="{{url_for('users.register_pregnant_user')}}">Register<span class="sr-only"></span></a>
             </li>
             <li class="nav-item active px-3">
               <a class="nav-link" href="{{url_for('users.login_pregnant_user')}}">Login<span class="sr-only"></span></a>
             </li>
-            <li class="nav-item active px-3">
-              <a class="nav-link" href="{{url_for('users.logout_pregnant_user')}}">Logout<span class="sr-only"></span></a>
-            </li>
+            {% else %}
+              <li class="nav-item active px-3">
+                <a class="nav-link" href="{{url_for('users.user_info')}}">User info<span class="sr-only"></span></a>
+              </li>
+              <li class="nav-item active px-3">
+                <a class="nav-link" href="{{url_for('pills.list_pill')}}">List with pills<span class="sr-only"></span></a>
+              </li>
+              <li class="nav-item active px-3">
+                <a class="nav-link" href="{{url_for('users.logout_pregnant_user')}}">Logout<span class="sr-only"></span></a>
+              </li>
+            {% endif %}
 
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Admin Section
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">All users</a></li>
-                <li><a class="dropdown-item" href="#">All pills</a></li>
-              </ul>
+            {% if admin_log_in %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Admin Section
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">All users</a></li>
+                  <li><a class="dropdown-item" href="#">All pills</a></li>
+                </ul>
             </li>
+            {% endif %}
   
           </ul>
         </div>

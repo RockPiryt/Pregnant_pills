@@ -43,7 +43,7 @@ def register_pregnant_user():
         existing_user = User.query.filter_by(email=email_form).first()
         if existing_user:
             flash("You have already signed up with that email, log in please! ")
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users.login_pregnant_user'))
         
         # Hash and salt password
         hash_salt_password = generate_password_hash(password=password_form, method="pbkdf2:sha256", salt_length=8)
@@ -97,7 +97,7 @@ def login_pregnant_user():
 @login_required
 def user_info():
     '''Show information about user'''
-    return render_template('user.html', html_current_user=current_user)
+    return render_template('user.html', html_current_user=current_user, logged_in=current_user.is_authenticated)
 
 @users_blueprint.route('/logout')
 @login_required

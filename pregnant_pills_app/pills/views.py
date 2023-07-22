@@ -44,7 +44,7 @@ def list_pill():
     '''Show list with all user's pills.'''
 
     pills = Pill.query.filter_by(user_id=current_user.id).all()
-    return render_template('list_pill.html', pills=pills, html_current_user=current_user)
+    return render_template('list_pill.html', pills=pills, html_current_user=current_user, logged_in=current_user.is_authenticated)
 ###########################################################
 
 # @app.route('/del_pill', methods=['GET','POST'])
