@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-    <title></title>
+    <title>
+      {% block title %} {% endblock %}
+    </title>
   </head>
   <body>
     <nav id="mainNav"class="navbar navbar-expand-sm navbar-dark sticky-top">
@@ -31,10 +33,10 @@
             </li>
             {% else %}
               <li class="nav-item active px-3">
-                <a class="nav-link" href="{{url_for('users.user_info')}}">User info<span class="sr-only"></span></a>
+                <a class="nav-link" href="{{url_for('users.user_info')}}">Account "{{ current_user.name }}"<span class="sr-only"></span></a>
               </li>
               <li class="nav-item active px-3">
-                <a class="nav-link" href="{{url_for('pills.list_pill')}}">List with pills<span class="sr-only"></span></a>
+                <a class="nav-link" href="{{url_for('pills.list_pill')}}">Your lists<span class="sr-only"></span></a>
               </li>
               <li class="nav-item active px-3">
                 <a class="nav-link" href="{{url_for('users.logout_pregnant_user')}}">Logout<span class="sr-only"></span></a>

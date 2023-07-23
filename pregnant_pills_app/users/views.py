@@ -6,6 +6,7 @@ from flask import redirect, render_template, url_for, Blueprint, flash
 from pregnant_pills_app import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, login_required, logout_user
+from functools import wraps
 
 users_blueprint = Blueprint(
     "users", __name__, template_folder="templates/users")
@@ -16,6 +17,18 @@ def is_one_admin():
         return True
     else:
         return False
+
+#----------Create Admin decorator
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args,**kwargs):
+        if current_user.id != 1:
+            #If id is not 1 then return abort with 403 error
+            return render_template('403.html')
+        #Otherwise continue with the route function
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 
 @login_manager.user_loader
@@ -116,17 +129,10 @@ def logout_pregnant_user():
 
 
 @users_blueprint.route('/all_users')
+@login_required
+@admin_only
 def all_users():
     '''Show all users in databse for admin'''
     users = User.query.all()
     return render_template('all_users.html', html_users=users, logged_in=current_user.is_authenticated, html_is_admin=is_one_admin())
 
-
-
-# #-----------Several Admins
-# admin_list = [1,2,3]
-# def are_admins():
-#     if current_user.is_authenticated and current_user.id in admin_list:
-#         return True
-#     else:
-#         return False
