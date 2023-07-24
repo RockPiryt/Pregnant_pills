@@ -10,7 +10,7 @@
             <p>User ID: <b>#{{ current_user.id }}</b></p>
             <p>Pregnant week: <b>{{ current_user.preg_week }}</b></p>
             <hr>
-            <a class="btn btn-primary btn-sm btn_user_info" role="button" href="{{ url_for('pills.add_pill', user_primary_key=current_user.id) }}">Add pill</a>
+            <a class="btn btn-primary btn-sm btn_user_info" role="button" href="{{ url_for('pills.category_pill', user_primary_key=current_user.id) }}">Add pill</a>
             <br>
             <a class="btn btn-primary btn-sm btn_add_pill" role="button" href="{{ url_for('pills.list_pill', user_primary_key=current_user.id) }}">List pill</a>
         </div>

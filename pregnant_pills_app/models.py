@@ -1,5 +1,5 @@
 from pregnant_pills_app import db
-from sqlalchemy.sql import func
+# from sqlalchemy.sql import func
 from flask_login import UserMixin
 
 
@@ -8,25 +8,21 @@ class Pill(db.Model):
     __tablename__ = 'pills'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    choose_pill = db.Column(db.String(100))
-    amount = db.Column(db.Integer, nullable=False)
     type_pill = db.Column(db.String(40))
-    week_start = db.Column(db.Integer)
-    week_end = db.Column(db.Integer)
-    add_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    name = db.Column(db.String(100))
+    amount = db.Column(db.Integer, nullable=False)
     reason = db.Column(db.Text)
+    date_start = db.Column(db.Integer)
+    date_end = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, choose_pill, amount, type_pill, week_start, week_end, add_date, reason, user_id):
-        self.name = name
-        self.choose_pill = choose_pill
-        self.amount = amount
+    def __init__(self, type_pill, name, amount, reason, date_start, date_end, user_id):
         self.type_pill = type_pill
-        self.week_start = week_start
-        self.week_end = week_end
-        self.add_date = add_date
+        self.name = name
+        self.amount = amount
         self.reason = reason
+        self.date_start = date_start
+        self.date_end = date_end
         self.user_id = user_id
 
     def __repr__(self):
@@ -64,3 +60,6 @@ class User(UserMixin,db.Model):
     #         return f'Date: {self.week_start}, Pill name:{self.name}, amount: {self.amount}, (reason:{self.reason})'
     #     else:
     #         return f'Date: {self.week_start} - {self.week_end}, Pill name:{self.name}, amount: {self.amount}'
+
+
+# add_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
