@@ -7,7 +7,7 @@ load_dotenv(find_dotenv())
 
 #----------Create Config class for app
 class Config(object):
-    SECRET_KEY = os.getenv("secret_key")
+    SECRET_KEY = os.getenv("secret_key") or "secret_flask"
     SQLALCHEMY_DATABASE_URI = ''  # DevelopmentConfig or TestingConfig add URI to database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
