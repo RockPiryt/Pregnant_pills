@@ -35,6 +35,7 @@ class ProductionConfig(Config):
     AWS_DB_USERNAME = os.getenv('DB_USERNAME')
     AWS_DB_PASSWORD = os.getenv('DB_PASSWORD')
     AWS_DB_NAME = os.getenv('DB_NAME')
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{AWS_DB_USERNAME}:{AWS_DB_PASSWORD}@{AWS_DB_HOST}/{AWS_DB_NAME}"
 
 # ----------------------Config dict
 config_dict = {
