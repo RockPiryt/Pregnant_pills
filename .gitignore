@@ -1,5 +1,33 @@
-venv/
+
+# Python cache
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Alembic cache
+migrations/__pycache__/
+
+# SQLite database (local dev only)
+*.sqlite
+
+# Environment variables
+.env
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+
 static/style_add_user.css
 static/style_ex.css
 templates/form222.html
@@ -10,7 +38,6 @@ list_pill_test.html
 pregnant_pills copy.py
 forms copy.py
 add_pill copy 2.html
-.env
 test.py
 app2.py
 formsaaa.py
