@@ -42,8 +42,3 @@ app.register_blueprint(report_pdf_blueprint, url_prefix="/pregnant-report-pdf")
 def index():
     db.create_all()
     return render_template('home.html')
-
-
-#-----------------------------------
-if __name__ == '__main__':
-    app.run(debug=True)
