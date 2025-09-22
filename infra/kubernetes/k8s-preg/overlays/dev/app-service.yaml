@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pregnant-pills-service
+  namespace: preg
+spec:
+  selector:
+    app: pregnant-pills
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30080
+  type: NodePort
