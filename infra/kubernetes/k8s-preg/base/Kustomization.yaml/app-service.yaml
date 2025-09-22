@@ -1,9 +1,7 @@
----
 apiVersion: v1
 kind: Service
 metadata:
   name: pregnant-pills-service
-  namespace: preg
 spec:
   selector:
     app: pregnant-pills

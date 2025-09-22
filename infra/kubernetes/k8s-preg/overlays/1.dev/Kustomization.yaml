@@ -1,0 +1,18 @@
+resources:
+- ../../base
+
+# wspólny ns dla wszytskich obiektów
+namespace: preg-dev
+
+# wspólna labela dla wszystkich obiektów
+commonLabels:
+  env: dev
+
+# dodanie prefiksu do wszystkich nazw zasobów
+namePrefix: dev-
+
+patches:
+  - path: patch-deployment.yaml
+    target:
+      kind: Deployment
+      name: pregnant-pills-app
