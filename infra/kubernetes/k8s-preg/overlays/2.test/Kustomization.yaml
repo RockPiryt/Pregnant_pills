@@ -1,0 +1,16 @@
+resources:
+  - ../../base
+  - postgres-db-secret.yaml
+  - postgres-db-deployment.yaml
+  - postgres-db-service.yaml
+
+namePrefix: test-
+namespace: preg-test
+commonLabels:
+  env: test
+
+patches:
+  - path: patch-deployment.yaml
+    target:
+      kind: Deployment
+      name: pregnant-pills-app
