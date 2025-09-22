@@ -10,7 +10,7 @@ commonLabels:
   env: test
 
 patches:
-  - path: patch-deployment.yaml
+  - path: patch-app-deployment.yaml
     target:
       kind: Deployment
       name: pregnant-pills-app

@@ -1,0 +1,19 @@
+resources:
+  - ../../base
+  - rds-db-secret.yaml
+
+namePrefix: prod-
+namespace: preg-prod
+commonLabels:
+  env: prod
+
+patches:
+  - path: patch-app-deployment.yaml
+    target:
+      kind: Deployment
+      name: pregnant-pills-app
+  
+  - path: patch-app-service.yaml
+    target:
+      kind: Service
+      name: pregnant-pills-service

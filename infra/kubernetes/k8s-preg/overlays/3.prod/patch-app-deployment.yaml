@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pregnant-pills-app
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: pregnant-pills-container
+          env:
+            - name: DB_HOST
+              value: "my-rds-instance.cleardb.us-east-1.rds.amazonaws.com"  # endpoint RDS
+            - name: DB_NAME
+              value: "pill_db"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret   # Secret z loginem do RDS
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: password
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
