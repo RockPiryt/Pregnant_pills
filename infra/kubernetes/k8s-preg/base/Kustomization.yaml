@@ -1,0 +1,7 @@
+resources:
+  - app-deployment.yaml
+  - app-service.yaml
+  - db-deployment.yaml
+  - db-service.yaml
+  - ingress-controler-service.yaml
+  - ingress-controler.yaml

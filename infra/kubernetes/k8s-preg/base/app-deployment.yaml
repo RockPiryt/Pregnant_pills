@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pregnant-pills-app
+  namespace: preg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pregnant-pills
+  template:
+    metadata:
+      labels:
+        app: pregnant-pills
+    spec:
+      containers:
+        - name: pregnant-pills-container
+          image: rockpiryt/pregnant-pills:latest
+          ports:
+            - containerPort: 8080
