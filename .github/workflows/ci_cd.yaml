@@ -27,5 +27,13 @@ jobs:
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           sudo mv kustomize /usr/local/bin/
 
+      - name: Get secrets from Github Secrets
+        run: |
+          echo "POSTGRES_USER_B64=$(echo -n ${{ secrets.POSTGRES_USER }}| base64)" >> GITHUB_ENV
+          echo "POSTGRES_PASS_B64=$(echo -n ${{ secrets.POSTGRES_PASS }} | base64)" >> $GITHUB_ENV
+          echo "RDS_USER_B64=$(echo -n ${{ secrets.RDS_USER }}| base64)" >> GITHUB_ENV
+          echo "RDS_PASS_B64=$(echo -n ${{ secrets.RDS_PASS }} | base64)" >> $GITHUB_ENV
+        # $GITHUB_ENV do ustawiania zmiennych środowiskowych na czas trwania joba
+
 
 
