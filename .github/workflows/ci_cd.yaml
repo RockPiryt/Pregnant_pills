@@ -16,10 +16,40 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Lint
+        run: |
+          echo "Linting..."
+
+
   test:
     runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install python
+        uses:
+      - name: Install dependencies
+        uses:
+      - name: Run tests
+        run: |
+        echo "run tests"
+      
+
   terraform_infra:
     runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
 
   deploy_kuberntes:
     runs-on: ubuntu-latest
