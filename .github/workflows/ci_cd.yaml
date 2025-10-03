@@ -1,5 +1,17 @@
 name: CI_CD
-on: [workflow_dispatch, push]
+on: 
+  workflow_dispatch: 
+    inputs:
+      environment:
+        description: " Choose dev/test/prod environment"
+        required: false
+        default: "dev"
+  push:
+    paths-ignore:
+      - .github/workflows/*
+
+env:
+  DEPLOY_ENV: dev
 
 jobs:
   lint:
@@ -22,7 +34,7 @@ jobs:
           version: 'v1.29.0'
           # jeśli klaster ma v1.28, to kubectl może być v1.28.x lub v1.29.x.
 
-      - name: Set up Kustomize
+      - name: Install Kustomize on runner
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           sudo mv kustomize /usr/local/bin/
@@ -35,5 +47,6 @@ jobs:
           echo "RDS_PASS_B64=$(echo -n ${{ secrets.RDS_PASS }} | base64)" >> $GITHUB_ENV
         # $GITHUB_ENV do ustawiania zmiennych środowiskowych na czas trwania joba
 
-
-
+      - name: Apply manifests
+        run: |
+          kubectl apply -k k8s-preg/overlays/$DEPLOY_ENV
