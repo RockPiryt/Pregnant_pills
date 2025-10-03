@@ -1,0 +1,31 @@
+name: CI_CD
+on: [workflow_dispatch, push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
+  terraform_infra:
+    runs-on: ubuntu-latest
+
+  deploy_kuberntes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Install kubectl binary on runner and add to PATH
+        uses: azure/setup-kubectl@v4
+        with: 
+          version: 'v1.29.0'
+          # jeśli klaster ma v1.28, to kubectl może być v1.28.x lub v1.29.x.
+
+      - name: Set up Kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+
+
+
