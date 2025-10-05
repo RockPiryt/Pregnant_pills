@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from config import config_dict #Dict with configurations name
+from config import config_dict
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
