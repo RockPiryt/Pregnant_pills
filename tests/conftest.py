@@ -24,8 +24,14 @@ def client(test_app):
     return test_app.test_client()
 
 @pytest.fixture
-def new_user():
-    user = User(name="TestUser", email="test@example.com")
+def new_user(test_app):
+    user = User(
+        name="TestUser",
+        surname="TestSurname",
+        email="test@example.com",
+        preg_week=12,            
+        password="testpassword"  
+    )
     db.session.add(user)
     db.session.commit()
     return user
