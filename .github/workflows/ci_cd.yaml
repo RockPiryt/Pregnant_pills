@@ -20,7 +20,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4
       - name: Install Python
-        uses: actions@setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12'
       - name: Install dependencies
@@ -39,12 +39,16 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4
       - name: Install python
-        uses:
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
       - name: Install dependencies
-        uses:
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Run tests
         run: |
-        echo "run tests"
+          pytest
       
   build-push-docker-image:
     runs-on: ubuntu-latest
@@ -54,8 +58,8 @@ jobs:
       - name: Install Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
-         run: |
-         docker build -t pregnant-pills-app:latest .
+        run: |
+            docker build -t pregnant-pills-app:latest .
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
