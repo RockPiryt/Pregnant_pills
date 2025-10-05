@@ -30,8 +30,11 @@ jobs:
           pip install -r requirements.txt
       - name: Lint
         run: |
-          pylint pregnant-pills-app/ --exit-zero --max-line-length=88
-        # --exit-zero → workflow nie przerwie się przy błędach Pylinta
+          pylint pregnant_pills_app/--max-line-length=88
+      - name: Check formatting with Black
+        run: |
+          black --check pregnant_pills_app/
+        
 
   test:
     runs-on: ubuntu-latest
