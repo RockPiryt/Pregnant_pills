@@ -78,6 +78,12 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -86,7 +92,7 @@ jobs:
           aws-region: eu-central-1
 
 
-  deploy_kuberntes:
+  deploy_kubernetes:
     runs-on: ubuntu-latest
 
     steps:
@@ -111,7 +117,13 @@ jobs:
           echo "RDS_USER_B64=$(echo -n ${{ secrets.RDS_USER }}| base64)" >> GITHUB_ENV
           echo "RDS_PASS_B64=$(echo -n ${{ secrets.RDS_PASS }} | base64)" >> $GITHUB_ENV
         # $GITHUB_ENV do ustawiania zmiennych środowiskowych na czas trwania joba
+      
+      - name: Deploy  cluster infrastructure 
+        run: |
+          kubectl apply -k infrastructure/ingress-nginx
+          kubectl apply -k infrastructure/cert-manager
+          kubectl apply -k infrastructure/namespace
 
-      - name: Apply manifests
+      - name: Deploy Flask app
         run: |
           kubectl apply -k k8s-preg/overlays/$DEPLOY_ENV
