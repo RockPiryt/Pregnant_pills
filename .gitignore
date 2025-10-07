@@ -27,6 +27,15 @@ migrations/__pycache__/
 .DS_Store
 Thumbs.db
 
+# Terraform state
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Secrets
+*.tfvars
+
+
 
 static/style_add_user.css
 static/style_ex.css
