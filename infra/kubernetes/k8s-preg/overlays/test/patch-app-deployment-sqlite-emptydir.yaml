@@ -18,9 +18,11 @@ spec:
           ports:
             - containerPort: 8080
           volumeMounts:
-          - name: sqlite-db-persitent
+          - name: sqlite-db
             mountPath: /data
+          env:
+            - name: DB_PATH
+              value: "/data/pill.db"
       volumes:
-      - name: sqlite-db-persitent
-        persistentVolumeClaim:
-            claimName: sqlite-pvc
+      - name: sqlite-db
+        emptyDir: {}

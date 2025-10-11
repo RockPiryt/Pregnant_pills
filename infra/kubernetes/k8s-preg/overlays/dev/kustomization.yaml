@@ -1,16 +1,17 @@
 resources:
-- ../../base
-- ns-preg-dev.yaml 
+  - ../../base
+  - ns-preg-dev.yaml 
+  - pvc-sqlite.yaml
 
 # wspólny ns dla wszytskich obiektów
 namespace: preg-dev
 
-# wspólna labela dla wszystkich obiektów
-commonLabels:
-  env: dev
+# # wspólna labela dla wszystkich obiektów
+# commonLabels:
+#   env: dev
 
-# dodanie prefiksu do wszystkich nazw zasobów
-namePrefix: dev-
+# # dodanie prefiksu do wszystkich nazw zasobów
+# namePrefix: dev-
 
 patches:
   - path: patch-app-deployment.yaml
