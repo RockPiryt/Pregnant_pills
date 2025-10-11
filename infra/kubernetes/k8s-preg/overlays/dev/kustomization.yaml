@@ -1,5 +1,6 @@
 resources:
 - ../../base
+- ns-preg-dev.yaml 
 
 # wspólny ns dla wszytskich obiektów
 namespace: preg-dev
@@ -16,3 +17,7 @@ patches:
     target:
       kind: Deployment
       name: pregnant-pills-app
+  - path: patch-app-service.yaml
+    target:
+      kind: Service
+      name: pregnant-pills-service

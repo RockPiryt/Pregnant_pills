@@ -4,8 +4,6 @@ resources:
 
 namePrefix: prod-
 namespace: preg-prod
-commonLabels:
-  env: prod
 
 patches:
   - path: patch-app-deployment.yaml

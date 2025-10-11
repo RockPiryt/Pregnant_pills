@@ -6,8 +6,6 @@ resources:
 
 namePrefix: test-
 namespace: preg-test
-commonLabels:
-  env: test
 
 patches:
   - path: patch-app-deployment.yaml
