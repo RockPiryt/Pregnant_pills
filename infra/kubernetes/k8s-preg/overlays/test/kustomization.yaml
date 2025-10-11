@@ -3,6 +3,7 @@ resources:
   - postgres-db-secret.yaml
   - postgres-db-deployment.yaml
   - postgres-db-service.yaml
+  - ns-preg-test.yaml
 
 namePrefix: test-
 namespace: preg-test

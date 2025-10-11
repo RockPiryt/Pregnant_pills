@@ -1,6 +1,7 @@
 resources:
   - ../../base
   - rds-db-secret.yaml
+  - ns-preg-prod.yaml
 
 namePrefix: prod-
 namespace: preg-prod
