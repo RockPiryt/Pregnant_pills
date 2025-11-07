@@ -13,12 +13,6 @@ data "aws_ami" "debian" {
   }
 }
 
-
-resource "aws_spot_instance_request" "preg_spot" {
-  ami           = data.aws_ami.debian.id
-  instance_type = "t3.micro"
-}
-
 resource "aws_vpc" "preg_vpc" {
   cidr_block       = "10.1.0.0/12"
   enable_dns_support  = true
@@ -29,4 +23,9 @@ resource "aws_subnet" "main" {
   vpc_id     = aws_vpc.preg_vpc.id
   cidr_block = cidrsubnet(aws_vpc.preg_spot.cidr_block, 3, 1)
   availability_zone =  var.region
+}
+
+resource "aws_spot_instance_request" "preg_spot" {
+  ami           = data.aws_ami.debian.id
+  instance_type = "t3.micro"
 }
