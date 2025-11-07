@@ -87,6 +87,8 @@ resource "aws_spot_instance_request" "preg_spot" {
   security_groups = ["${aws_security_group.ssh_preg.id}"]
   subnet_id = aws_subnet.main_preg.id
 
+  user_data_base64 = base64encode(file("${path.module}/scripts/provsion_basic.sh"))
+
   tags = {
     Name = "Preg-Spot"
   }
