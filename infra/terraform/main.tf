@@ -4,6 +4,11 @@ terraform {
       source = "hashicorp/aws"
       version = "6.15.0"
     }
+
+    terracurl = {
+      source  = "devops-rob/terracurl"
+      version = "1.2.1"
+    }
   }
 }
 
