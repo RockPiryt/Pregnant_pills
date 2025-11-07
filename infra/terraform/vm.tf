@@ -49,7 +49,7 @@ resource "aws_route_table_association" "as_preg" {
 }
 
 data "http" "myip" {
-  url = "https://ifconfig.me"
+  url = "https://checkip.amazonaws.com"
 } 
 
 # dodanie sg dla ssh
@@ -110,10 +110,13 @@ resource "aws_spot_instance_request" "preg_spot" {
   key_name                    = resource.aws_key_pair.preg_key_pair.key_name
   wait_for_fulfillment        = true
   associate_public_ip_address = true
-  security_groups = ["${aws_security_group.ssh_preg.id}"]
+  security_groups = [
+    aws_security_group.ssh_preg.id,
+    aws_security_group.http_preg.id
+  ]
   subnet_id = aws_subnet.main_preg.id
 
-  user_data_base64 = base64encode(file("${path.module}/scripts/provsion_basic.sh"))
+  user_data_base64 = base64encode(file("${path.module}/scripts/provision_basic.sh"))
 
   
 
