@@ -93,3 +93,15 @@ resource "aws_spot_instance_request" "preg_spot" {
     Name = "Preg-Spot"
   }
 }
+
+# Create a terracurl request to check if the web server is up and running
+# Wait a max of 20 minutes with a 10 second interval
+resource "terracurl_request" "preg-terracurl" {
+  name   = "preg-terracurl"
+  url    = "http://${aws_spot_instance_request.preg_spot.public_ip}"
+  method = "GET"
+
+  response_codes = [200]
+  max_retry      = 120
+  retry_interval = 10
+}
