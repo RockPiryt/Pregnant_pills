@@ -15,67 +15,76 @@ data "aws_ami" "debian" {
 
 # private cloud
 resource "aws_vpc" "preg_vpc" {
-  cidr_block       = "10.1.0.0/12"
+  cidr_block       = "10.0.0.0/16"
   enable_dns_support  = true
   enable_dns_hostnames = true
 }
 
-#  podział na podsieci
-resource "aws_subnet" "main-preg" {
+resource "aws_subnet" "main_preg" {
   vpc_id     = aws_vpc.preg_vpc.id
-  cidr_block = cidrsubnet(aws_vpc.preg_spot.cidr_block, 3, 1)
-  availability_zone =  var.region
+  cidr_block = cidrsubnet(aws_vpc.preg_vpc.cidr_block, 3, 1)
+  availability_zone =  var.az
 }
 
-# do przyjecia ruchu z zewnatrz
-resource "aws_internet_gateway" "gw-preg" {
+resource "aws_internet_gateway" "gw_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 }
 
-# tablica routingu
-resource "aws_route_table" "rt-preg" {
+resource "aws_route_table" "route_tb_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw-preg.id
+    gateway_id = aws_internet_gateway.gw_preg.id
   }
 }
 
-# security group  ssh - zezwolenie na dostep do instancji
-resource "aws_security_group" "ssh" {
+resource "aws_route_table_association" "as_preg" {
+  subnet_id      = aws_subnet.main_preg.id
+  route_table_id = aws_route_table.route_tb_preg.id
+}
+
+
+resource "aws_security_group" "ssh_preg" {
   name = "allow-all"
 
   vpc_id = aws_vpc.preg_vpc.id
 
   ingress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+resource "aws_key_pair" "preg_key_pair" {
+  key_name   = "preg-key"
+  public_key = file(var.ssh_pub_key)
 }
 
-# powiązanie route table z subnet
-resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.main-preg.id
-  route_table_id = aws_route_table.rt-preg.id
-}
 
 
 resource "aws_spot_instance_request" "preg_spot" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.micro"
+  
+  key_name                    = resource.aws_key_pair.preg_key_pair.key_name
+  wait_for_fulfillment        = true
+  associate_public_ip_address = true
+  security_groups = ["${aws_security_group.ssh_preg.id}"]
+  subnet_id = aws_subnet.main_preg.id
+
+  tags = {
+    Name = "Preg-Spot"
+  }
 }
