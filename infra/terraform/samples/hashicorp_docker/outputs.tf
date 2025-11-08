@@ -9,3 +9,8 @@ output "my_public_ip" {
   value = chomp(data.http.myip.response_body)
 }
 
+output "instance_url" {
+  description = "Adres URL aplikacji webowej"
+  value       = "http://${aws_spot_instance_request.preg_spot.public_ip}"
+}
+
