@@ -19,6 +19,10 @@ data "aws_ami" "debian" {
 }
 
 
+locals {
+  k3s_manifests = fileset("${path.module}/k3s", "*.yaml")
+}
+
 resource "aws_spot_instance_request" "preg_spot" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.micro"
@@ -32,24 +36,14 @@ resource "aws_spot_instance_request" "preg_spot" {
   ]
   subnet_id = aws_subnet.main_preg.id
 
-  user_data_base64 = base64encode(file("${path.module}/scripts/provision_basic.sh"))
-
-  
+  user_data = templatefile("${path.module}/scripts/install_k3s.sh", {
+    manifests = [for f in local.k3s_manifests : {
+      name = basename(f)
+      content = file("${path.module}/k3s/${f}")
+    }]
+  })
 
   tags = {
     Name = "Preg-Spot"
   }
-}
-
-# Create a terracurl request to check if the web server is up and running
-# sprawdzam czy instancja dla web servera jest juz gotowa, Sprawdzenie działania serwera HTTP
-# Wait a max of 20 minutes with a 10 second interval
-resource "terracurl_request" "preg-terracurl" {
-  name   = "preg-terracurl"
-  url    = "http://${aws_spot_instance_request.preg_spot.public_ip}"
-  method = "GET"
-
-  response_codes = [200]
-  max_retry      = 120
-  retry_interval = 10
 }
