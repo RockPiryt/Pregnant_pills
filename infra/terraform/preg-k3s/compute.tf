@@ -20,14 +20,14 @@ data "aws_ami" "debian" {
 
 
 locals {
-  k3s_manifests = fileset("${path.module}/k3s", "*.yaml")
+  k3s_manifests = fileset("${path.module}/k3s", "*.y*ml")
 }
 
 resource "aws_spot_instance_request" "preg_spot" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.micro"
   
-  key_name                    = resource.aws_key_pair.preg_key_pair.key_name
+  key_name                    = resource.aws_key_pair.preg_key_pair2.key_name
   wait_for_fulfillment        = true
   associate_public_ip_address = true
   security_groups = [

@@ -17,7 +17,8 @@ mkdir -p /opt/k3s
 
 # Terraform wstrzyknie tu pliki YAML
 %{ for m in manifests ~}
-cat <<'EOF' > /opt/k3s/${m.name}
+echo "Tworzę plik /opt/k3s/${m.name}"
+cat <<EOF > /opt/k3s/${m.name}
 ${m.content}
 EOF
 %{ endfor ~}
