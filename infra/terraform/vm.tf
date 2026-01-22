@@ -55,12 +55,10 @@ resource "aws_security_group" "ssh_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 
   ingress {
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
+    cidr_blocks = [var.my_ip]
   }
 
   egress {
