@@ -1,0 +1,3 @@
+terraform apply
+aws eks update-kubeconfig --name demo-eks
+kubectl get pods

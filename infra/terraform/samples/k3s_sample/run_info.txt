@@ -1,0 +1,3 @@
+terraform apply
+ssh -i ~/.ssh/id_ed25519.pem admin@<public_ip>
+sudo k3s kubectl get pods
