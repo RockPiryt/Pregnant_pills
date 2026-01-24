@@ -11,7 +11,7 @@ on:
       - .github/workflows/*
 
 env:
-  DEPLOY_ENV: dev
+  DEPLOY_ENV:  ${{ github.event.inputs.environment || 'dev' }}
 
 jobs:
   lint:
