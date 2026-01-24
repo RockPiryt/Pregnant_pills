@@ -38,7 +38,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    need: [lint]
+    needs: [lint]
     steps:
       - name: Get code
         uses: actions/checkout@v4
@@ -137,31 +137,62 @@ jobs:
   deploy_kubernetes:
     runs-on: ubuntu-latest
     needs: [lint, test, terraform_infra, build-push-docker-image]
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Get code
         uses: actions/checkout@v4
 
-      - name: Install kubectl binary on runner and add to PATH
+      - name: Install kubectl
         uses: azure/setup-kubectl@v4
-        with: 
+        with:
           version: 'v1.29.0'
-          # jeśli klaster ma v1.28, to kubectl może być v1.28.x lub v1.29.x.
 
-      - name: Install Kustomize on runner
+      - name: Install Kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           sudo mv kustomize /usr/local/bin/
 
-      - name: Get secrets from Github Secrets
+      - name: Configure AWS credentials via OIDC (Terraform role)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/gha-terraform-role
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Read k3s public IP from Terraform outputs
+        id: tfout
+        working-directory: infra/terraform
         run: |
-          echo "POSTGRES_USER_B64=$(echo -n ${{ secrets.POSTGRES_USER }}| base64)" >> GITHUB_ENV
-          echo "POSTGRES_PASS_B64=$(echo -n ${{ secrets.POSTGRES_PASS }} | base64)" >> $GITHUB_ENV
-          echo "RDS_USER_B64=$(echo -n ${{ secrets.RDS_USER }}| base64)" >> GITHUB_ENV
-          echo "RDS_PASS_B64=$(echo -n ${{ secrets.RDS_PASS }} | base64)" >> $GITHUB_ENV
-        # $GITHUB_ENV do ustawiania zmiennych środowiskowych na czas trwania joba
-      
-      - name: Deploy  cluster infrastructure 
+          terraform init -input=false
+          echo "K3S_IP=$(terraform output -raw k3s_public_ip)" >> $GITHUB_OUTPUT
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ steps.tfout.outputs.K3S_IP }} >> ~/.ssh/known_hosts
+
+      - name: Create SSH tunnel + fetch kubeconfig
+        env:
+          K3S_IP: ${{ steps.tfout.outputs.K3S_IP }}
+        run: |
+          # Start tunnel to API server (local 6443 -> EC2 127.0.0.1:6443)
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes -N -L 6443:127.0.0.1:6443 debian@$K3S_IP &
+          sleep 5
+
+          # Fetch kubeconfig
+          ssh -i ~/.ssh/id_rsa debian@$K3S_IP "sudo cat /etc/rancher/k3s/k3s.yaml" > kubeconfig
+
+          # Point kubeconfig to local tunnel
+          sed -i 's#https://127.0.0.1:6443#https://127.0.0.1:6443#g' kubeconfig
+
+          echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
+          kubectl get nodes
+
+      - name: Deploy cluster infrastructure
         run: |
           kubectl apply -k infrastructure/ingress-nginx
           kubectl apply -k infrastructure/cert-manager
@@ -169,4 +200,4 @@ jobs:
 
       - name: Deploy Flask app
         run: |
-          kubectl apply -k k8s-preg/overlays/$DEPLOY_ENV
+          kubectl apply -k k8s-preg/overlays/${{ env.DEPLOY_ENV }}
