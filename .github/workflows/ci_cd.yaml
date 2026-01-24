@@ -38,6 +38,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    need: [lint]
     steps:
       - name: Get code
         uses: actions/checkout@v4
@@ -85,9 +86,9 @@ jobs:
         working-directory: infra/terraform
         run: terraform plan
 
-      # Only on prod/main
+      # Only on production
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.event.inputs.environment == 'prod'
         working-directory: infra/terraform
         run: terraform apply -auto-approve
 
