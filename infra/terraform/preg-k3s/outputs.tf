@@ -1,7 +1,6 @@
-# wyciagniecie ip isntancji
-output "public_ip" {
-    description = "Publiczny adres IP instancji EC2"
-    value = aws_spot_instance_request.preg_spot.public_ip
+output "k3s_public_ip" {
+  description = "Publiczny adres IP instancji EC2"
+  value = aws_spot_instance_request.preg_spot.public_ip
 }
 
 output "my_public_ip" {
@@ -17,3 +16,4 @@ output "instance_url" {
 output "k3s_manifests_debug" {
   value = [for f in local.k3s_manifests : f]
 }
+
