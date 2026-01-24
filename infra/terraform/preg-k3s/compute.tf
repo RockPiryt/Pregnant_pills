@@ -18,11 +18,6 @@ data "aws_ami" "debian" {
   }
 }
 
-
-locals {
-  k3s_manifests = fileset("${path.module}/k3s", "*.y*ml")
-}
-
 resource "aws_spot_instance_request" "preg_spot" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.micro"
@@ -36,12 +31,7 @@ resource "aws_spot_instance_request" "preg_spot" {
   ]
   subnet_id = aws_subnet.main_preg.id
 
-  user_data = templatefile("${path.module}/scripts/install_k3s.sh", {
-    manifests = [for f in local.k3s_manifests : {
-      name = basename(f)
-      content = file("${path.module}/k3s/${f}")
-    }]
-  })
+  user_data = templatefile("${path.module}/scripts/install_k3s.sh")
 
   tags = {
     Name = "Preg-Spot"

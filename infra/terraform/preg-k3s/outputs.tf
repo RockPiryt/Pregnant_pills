@@ -13,7 +13,3 @@ output "instance_url" {
   value       = "http://${aws_spot_instance_request.preg_spot.public_ip}"
 }
 
-output "k3s_manifests_debug" {
-  value = [for f in local.k3s_manifests : f]
-}
-
