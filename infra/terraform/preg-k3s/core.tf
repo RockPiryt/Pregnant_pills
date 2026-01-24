@@ -48,7 +48,8 @@ resource "aws_security_group" "ssh_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 
   ingress {
-    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
+    # cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"] bezpieczne, ale zle dla runner
+    cidr_blocks = ["0.0.0.0/0"]
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
