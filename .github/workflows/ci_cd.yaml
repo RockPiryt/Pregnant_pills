@@ -155,7 +155,7 @@ jobs:
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           sudo mv kustomize /usr/local/bin/
 
-      - name: Configure AWS credentials via OIDC (Terraform role)
+      - name: Configure AWS credentials via OIDC (Terraform role) to read terraform outputs
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/gha-terraform-role
