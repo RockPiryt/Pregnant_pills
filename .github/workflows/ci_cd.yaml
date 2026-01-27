@@ -215,3 +215,13 @@ jobs:
           if [ ! -z "$SSH_PID" ]; then
             kill $SSH_PID || true
           fi
+
+  health_check:
+    needs: [deploy_kubernetes]
+    uses: ./.github/workflows/health-check.yml
+    with:
+      environment: ${{ env.DEPLOY_ENV }}
+      image_tag: ${{ github.sha }}
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
