@@ -3,7 +3,7 @@ on:
   workflow_dispatch: 
     inputs:
       environment:
-        description: " Choose dev/test/prod environment"
+        description: "Choose dev/test/prod environment"
         required: false
         default: "dev"
   push:
@@ -11,7 +11,7 @@ on:
       - .github/workflows/*
 
 env:
-  DEPLOY_ENV:  ${{ github.event.inputs.environment || 'dev' }}
+  DEPLOY_ENV: ${{ github.event.inputs.environment || 'dev' }}
 
 jobs:
   lint:
@@ -26,15 +26,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pylint 
+          pip install pylint black
           pip install -r requirements.txt
       - name: Lint
         run: |
-          pylint pregnant_pills_app/--max-line-length=88
+          pylint pregnant_pills_app/ --max-line-length=88
       - name: Check formatting with Black
         run: |
           black --check pregnant_pills_app/
-        
 
   test:
     runs-on: ubuntu-latest
@@ -94,24 +93,23 @@ jobs:
 
   build-push-docker-image:
     runs-on: ubuntu-latest
+    needs: [lint, test]
     steps:
       - name: Get code
         uses: actions/checkout@v4
       - name: Install Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build Docker image
-        run: |
-            docker build -t pregnant-pills-app:latest .
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push Docker image to Docker Hub
+      - name: Build and push Docker image
         run: |
-          docker tag pregnant-pills-app:latest ${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:latest
-      
 
   deploy_s3:
     runs-on: ubuntu-latest
@@ -132,7 +130,7 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Deploy to S3
-        run: aws s3 sync ./dist s3://${{ vars.BUCKET_NAME }}/ --delete
+        run: aws s3 sync ./infra s3://${{ vars.BUCKET_NAME }}/ --delete
 
   deploy_kubernetes:
     runs-on: ubuntu-latest
@@ -180,8 +178,10 @@ jobs:
           K3S_IP: ${{ steps.tfout.outputs.K3S_IP }}
         run: |
           # Start tunnel to API server (local 6443 -> EC2 127.0.0.1:6443)
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes -N -L 6443:127.0.0.1:6443 debian@$K3S_IP &
-          sleep 5
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -N -L 6443:127.0.0.1:6443 debian@$K3S_IP &
+          SSH_PID=$!
+          echo "SSH_PID=$SSH_PID" >> $GITHUB_ENV
+          sleep 10
 
           # Fetch kubeconfig
           ssh -i ~/.ssh/id_rsa debian@$K3S_IP "sudo cat /etc/rancher/k3s/k3s.yaml" > kubeconfig
@@ -190,6 +190,8 @@ jobs:
           sed -i 's#https://127.0.0.1:6443#https://127.0.0.1:6443#g' kubeconfig
 
           echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
+          
+          # Test connection
           kubectl get nodes
 
       - name: Deploy cluster infrastructure
@@ -198,6 +200,18 @@ jobs:
           kubectl apply -k infrastructure/cert-manager
           kubectl apply -k infrastructure/namespace
 
+      - name: Update image tag in kustomization
+        run: |
+          cd k8s-preg/overlays/${{ env.DEPLOY_ENV }}
+          kustomize edit set image pregnant-pills-app=${{ secrets.DOCKER_USERNAME }}/pregnant-pills-app:${{ github.sha }}
+
       - name: Deploy Flask app
         run: |
           kubectl apply -k k8s-preg/overlays/${{ env.DEPLOY_ENV }}
+
+      - name: Cleanup SSH tunnel
+        if: always()
+        run: |
+          if [ ! -z "$SSH_PID" ]; then
+            kill $SSH_PID || true
+          fi
