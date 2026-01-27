@@ -1,0 +1,303 @@
+name: Health Check
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to check (dev/test/prod)'
+        required: true
+        type: string
+      image_tag:
+        description: 'Docker image tag to verify'
+        required: true
+        type: string
+      k3s_namespace:
+        description: 'Kubernetes namespace'
+        required: false
+        type: string
+        default: 'default'
+    secrets:
+      SSH_PRIVATE_KEY:
+        required: true
+      AWS_ACCOUNT_ID:
+        required: true
+      SLACK_WEBHOOK_URL:
+        required: false
+    outputs:
+      health_status:
+        description: 'Overall health check status'
+        value: ${{ jobs.health_check.outputs.status }}
+
+env:
+  NAMESPACE: pregnant-pills-${{ inputs.environment }}
+  APP_NAME: pregnant-pills-app
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    
+    outputs:
+      status: ${{ steps.final_status.outputs.status }}
+    
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          curl -LO "https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          
+          sudo apt-get update
+          sudo apt-get install -y jq bc apache2-utils netcat-openbsd
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/gha-terraform-role
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Get K3s IP from Terraform
+        id: tfout
+        working-directory: infra/terraform
+        run: |
+          terraform init -input=false
+          K3S_IP=$(terraform output -raw k3s_public_ip)
+          echo "K3S_IP=$K3S_IP" >> $GITHUB_OUTPUT
+          echo "Retrieved K3s IP: $K3S_IP"
+
+      - name: Setup SSH and Kubernetes connection
+        env:
+          K3S_IP: ${{ steps.tfout.outputs.K3S_IP }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $K3S_IP >> ~/.ssh/known_hosts
+          
+          # Start SSH tunnel
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -N -L 6443:127.0.0.1:6443 debian@$K3S_IP &
+          SSH_PID=$!
+          echo "SSH_PID=$SSH_PID" >> $GITHUB_ENV
+          echo "Waiting for SSH tunnel..."
+          sleep 15
+          
+          # Get kubeconfig
+          ssh -i ~/.ssh/id_rsa debian@$K3S_IP "sudo cat /etc/rancher/k3s/k3s.yaml" > kubeconfig
+          sed -i 's#https://127.0.0.1:6443#https://127.0.0.1:6443#g' kubeconfig
+          echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
+          
+          # Test connection
+          kubectl cluster-info
+          echo "Kubernetes connection established"
+
+      - name: Basic Infrastructure Check
+        id: infra_check
+        run: |
+          echo "=== Infrastructure Health Check ==="
+          kubectl get nodes -o wide
+          
+          NODE_COUNT=$(kubectl get nodes --no-headers | wc -l)
+          READY_NODES=$(kubectl get nodes --no-headers | grep -c " Ready ")
+          
+          echo "Nodes: $READY_NODES/$NODE_COUNT ready"
+          
+          if [ "$READY_NODES" -eq "$NODE_COUNT" ] && [ "$NODE_COUNT" -gt 0 ]; then
+            echo "All nodes are ready"
+            echo "nodes_status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "Some nodes are not ready"
+            echo "nodes_status=unhealthy" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Namespace and Resources Check
+        id: namespace_check
+        run: |
+          echo "=== Namespace and Resources Check ==="
+          
+          if kubectl get namespace $NAMESPACE > /dev/null 2>&1; then
+            echo "Namespace $NAMESPACE exists"
+            echo "namespace_status=exists" >> $GITHUB_OUTPUT
+          else
+            echo "Namespace $NAMESPACE does not exist"
+            echo "namespace_status=missing" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          echo "Resources in namespace $NAMESPACE:"
+          kubectl get all -n $NAMESPACE -o wide
+
+      - name: Pod Health Check
+        id: pod_check
+        run: |
+          echo "=== Pod Health Check ==="
+          kubectl get pods -n $NAMESPACE -o wide
+          
+          TOTAL_PODS=$(kubectl get pods -n $NAMESPACE --no-headers 2>/dev/null | wc -l)
+          RUNNING_PODS=$(kubectl get pods -n $NAMESPACE --field-selector=status.phase=Running --no-headers 2>/dev/null | wc -l)
+          READY_PODS=$(kubectl get pods -n $NAMESPACE -o jsonpath='{.items[*].status.containerStatuses[*].ready}' 2>/dev/null | grep -o true | wc -l)
+          
+          echo "Pod Status: $RUNNING_PODS/$TOTAL_PODS running, $READY_PODS ready"
+          
+          if [ "$TOTAL_PODS" -eq 0 ]; then
+            echo "No pods found in namespace"
+            echo "pod_status=no_pods" >> $GITHUB_OUTPUT
+          elif [ "$RUNNING_PODS" -eq "$TOTAL_PODS" ] && [ "$READY_PODS" -gt 0 ]; then
+            echo "All pods are running and ready"
+            echo "pod_status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "Some pods are not ready"
+            echo "pod_status=degraded" >> $GITHUB_OUTPUT
+            
+            # Show problematic pods
+            echo "Problematic pods:"
+            kubectl get pods -n $NAMESPACE --field-selector=status.phase!=Running
+            kubectl describe pods -n $NAMESPACE | grep -A 10 "Events:"
+          fi
+
+      - name: Service and Ingress Check
+        id: service_check
+        run: |
+          echo "=== Service and Ingress Check ==="
+          
+          echo "Services:"
+          kubectl get services -n $NAMESPACE
+          echo "Endpoints:"
+          kubectl get endpoints -n $NAMESPACE
+          echo "Ingress:"
+          kubectl get ingress -n $NAMESPACE -o wide
+          
+          # Get application URL
+          APP_URL=$(kubectl get ingress -n $NAMESPACE -o jsonpath='{.items[0].spec.rules[0].host}' 2>/dev/null || echo "")
+          
+          if [ ! -z "$APP_URL" ]; then
+            echo "APP_URL=$APP_URL" >> $GITHUB_ENV
+            echo "Application URL found: $APP_URL"
+            echo "ingress_status=configured" >> $GITHUB_OUTPUT
+          else
+            echo "No ingress URL found"
+            echo "ingress_status=missing" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Application Connectivity Test
+        id: app_test
+        if: env.APP_URL != ''
+        run: |
+          echo "=== Application Connectivity Test ==="
+          APP_URL="${{ env.APP_URL }}"
+          MAX_ATTEMPTS=30
+          ATTEMPT=1
+          
+          echo "Testing application at: https://$APP_URL"
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS: Testing connectivity..."
+            
+            if curl -f -s -m 10 "https://$APP_URL" > /dev/null 2>&1; then
+              echo "Application is responding"
+              echo "app_connectivity=healthy" >> $GITHUB_OUTPUT
+              break
+            else
+              echo "Application not ready, waiting 10 seconds..."
+              sleep 10
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+            
+            if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+              echo "Application failed to respond after $((MAX_ATTEMPTS * 10)) seconds"
+              echo "app_connectivity=failed" >> $GITHUB_OUTPUT
+            fi
+          done
+
+      - name: Health Endpoint Test
+        id: health_endpoint
+        if: env.APP_URL != ''
+        run: |
+          echo "=== Health Endpoint Test ==="
+          APP_URL="${{ env.APP_URL }}"
+          
+          # Test health endpoint
+          if curl -f -s -m 10 "https://$APP_URL/health" > /dev/null 2>&1; then
+            echo "Health endpoint is responding"
+            echo "health_endpoint=healthy" >> $GITHUB_OUTPUT
+            
+            # Get health details
+            HEALTH_RESPONSE=$(curl -s -m 10 "https://$APP_URL/health" || echo "No response")
+            echo "Health response: $HEALTH_RESPONSE"
+          else
+            echo "Health endpoint not available or not responding"
+            echo "health_endpoint=unavailable" >> $GITHUB_OUTPUT
+          fi
+
+          if curl -f -s -m 10 "https://$APP_URL/" > /dev/null 2>&1; then
+            echo "Main page accessible"
+          else
+            echo "Main page not accessible"
+          fi
+          
+          # API status (if exists)
+          if curl -f -s -m 10 "https://$APP_URL/api/status" > /dev/null 2>&1; then
+            echo "API status endpoint accessible"
+          else
+            echo "API status endpoint not accessible (may not exist)"
+          fi
+
+      - name: Image Verification
+        id: image_check
+        run: |
+          echo "=== Image Verification ==="
+          EXPECTED_IMAGE_TAG="${{ inputs.image_tag }}"
+          echo "Expected image tag: $EXPECTED_IMAGE_TAG"
+          
+          CURRENT_IMAGES=$(kubectl get pods -n $NAMESPACE -o jsonpath='{.items[*].spec.containers[*].image}' 2>/dev/null || echo "")
+          
+          echo "Current images in pods:"
+          for image in $CURRENT_IMAGES; do
+            echo "  - $image"
+            
+            if echo "$image" | grep -q "$EXPECTED_IMAGE_TAG"; then
+              echo "Found expected image tag in: $image"
+              echo "image_verification=correct" >> $GITHUB_OUTPUT
+            fi
+          done
+          
+          if [ -z "$CURRENT_IMAGES" ]; then
+            echo "No images found in pods"
+            echo "image_verification=no_images" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate Health Report
+        if: always()
+        run: |
+          echo "=== Health Check Report ==="
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Image Tag: ${{ inputs.image_tag }}"
+          echo "Namespace: $NAMESPACE"
+          echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
+          echo "Detailed Results:"
+          echo "  Infrastructure: ${{ steps.infra_check.outputs.nodes_status }}"
+          echo "  Application Pods: ${{ steps.pod_check.outputs.pod_status }}"
+          echo "  Connectivity: ${{ steps.app_test.outputs.app_connectivity }}"
+          echo ""
+          echo "Final Resource State:"
+          kubectl get all -n $NAMESPACE || echo "Could not retrieve resources"
+          
+      - name: Cleanup
+        if: always()
+        run: |
+          echo "Cleaning up resources..."
+          
+          # Kill SSH tunnel
+          if [ ! -z "$SSH_PID" ]; then
+            kill $SSH_PID 2>/dev/null || true
+            echo "SSH tunnel closed"
+          fi
+          
+          # Clean up temporary files
+          rm -f kubeconfig ~/.ssh/id_rsa 2>/dev/null || true
+          
+          echo "Cleanup completed"
