@@ -222,9 +222,10 @@ jobs:
 
   health_check:
     needs: [deploy_kubernetes]
+    if: always() && needs.deploy_kubernetes.result == 'success'
     uses: ./.github/workflows/health-check.yml
     with:
-      environment: ${{ env.DEPLOY_ENV }}
+      environment: ${{ github.event.inputs.environment || 'dev' }} 
       image_tag: ${{ github.sha }}
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
