@@ -67,8 +67,8 @@ chmod 600 kube-demo.pem
 # Create Public Node Group   
 eksctl create nodegroup --cluster=ekstest1 \
                        --region=eu-west-1 \
-                       --name=ekstest1-ng-public1 \
-                       --node-type=t3.micro \
+                       --name=ekstest1-ng-public2 \
+                       --node-type=t3.medium \
                        --nodes=2 \
                        --nodes-min=2 \
                        --nodes-max=4 \
@@ -107,5 +107,60 @@ eksctl get nodegroup --cluster=ekstest1
 kubectl get nodes -o wide
 kubectl config view --minify
 
+# remove
+eksctl delete nodegroup --cluster ekstest1 --name ekstest1-ng-public1 --region eu-west-1
+eksctl delete cluster ekstest1
 
-                       
+
+# PIA - pod identity access - aby pody miały dostep do uslug w aws
+ Amazon EKS Pod Identity enables pods in your cluster to securely assume IAM roles without managing static credentials or using IRSA 
+
+ ## Install the EKS Pod Identity Agent add-on
+EKS → Clusters → Add-ons →  Pod Identity Agent
+
+eksctl create addon \
+  --cluster ekstest1 \
+  --region eu-west-1 \
+  --name eks-pod-identity-agent
+
+## Create an IAM Role with trust policy for Pod Identity → allow Pods to access Amazon S3
+Go to IAM Console → Roles → Create Role
+Select Trusted entity type → Custom trust policy
+Add trust policy for Pod Identity, for example:
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "pods.eks.amazonaws.com"
+            },
+            "Action": [
+                "sts:AssumeRole",
+                "sts:TagSession"
+            ]
+        }
+    ]
+}
+Attach AmazonS3ReadOnlyAccess policy
+Create role → example name: EKS-PodIdentity-S3-ReadOnly-Role-101
+
+
+
+## Create a Pod Identity Association between the Kubernetes Service Account and IAM Role
+Go to EKS Console → Cluster → Access → Pod Identity Associations
+
+Create new association:
+Namespace: default
+Service Account: aws-cli-sa
+IAM Role: EKS-PodIdentity-S3-ReadOnly-Role-101
+
+## Re-test from the AWS CLI Pod, successfully list S3 buckets
+Pods don’t automatically refresh credentials after a new Pod Identity Association; they must be restarted.
+kubectl delete pod aws-cli -n default
+kubectl apply -f kube-manifests/k8s_aws_cli_pod.yaml
+kubectl get pods
+
+# List S3 buckets
+kubectl exec -it aws-cli -- aws s3 ls
+
