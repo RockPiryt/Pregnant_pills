@@ -13,3 +13,8 @@ output "instance_url" {
   value       = "http://${aws_spot_instance_request.preg_spot.public_ip}"
 }
 
+output "app_nodeport_url" {
+  description = "URL aplikacji w dev przez NodePort"
+  value       = "http://${aws_spot_instance_request.preg_spot.public_ip}:30080"
+}
+
