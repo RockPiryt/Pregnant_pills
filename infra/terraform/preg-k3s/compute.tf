@@ -32,7 +32,7 @@ resource "aws_spot_instance_request" "preg_spot" {
   
   subnet_id = aws_subnet.main_preg.id
 
-  user_data = templatefile("${path.module}/scripts/install_k3s.sh")
+  user_data = templatefile("${path.module}/scripts/install_k3s.sh", {})
 
   tags = {
     Name = "Preg-Spot"
