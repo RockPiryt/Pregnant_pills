@@ -1,6 +1,4 @@
-# ===============================
 # COMPUTE (płatne zasoby)
-# ===============================
 
 # Wyszukanie najnowszego obrazu Debian 11
 data "aws_ami" "debian" {
@@ -25,10 +23,13 @@ resource "aws_spot_instance_request" "preg_spot" {
   key_name                    = resource.aws_key_pair.preg_key_pair2.key_name
   wait_for_fulfillment        = true
   associate_public_ip_address = true
-  security_groups = [
+
+  vpc_security_group_ids = [
     aws_security_group.ssh_preg.id,
-    aws_security_group.http_preg.id
+    aws_security_group.ingress_preg.id,
+    aws_security_group.nodeport_preg.id
   ]
+  
   subnet_id = aws_subnet.main_preg.id
 
   user_data = templatefile("${path.module}/scripts/install_k3s.sh")
