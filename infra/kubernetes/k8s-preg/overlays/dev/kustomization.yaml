@@ -1,18 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - ../../base
-  - ns-preg-dev.yaml 
+  - ns-preg-dev.yaml
   - pvc-sqlite.yaml
   - pv-sqlite.yaml
 
-# wspólny ns dla wszytskich obiektów
 namespace: preg-dev
-
-# # wspólna labela dla wszystkich obiektów
-# commonLabels:
-#   env: dev
-
-# # dodanie prefiksu do wszystkich nazw zasobów
-# namePrefix: dev-
 
 patches:
   - path: patch-app-deployment.yaml
