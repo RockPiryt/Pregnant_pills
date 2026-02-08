@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: pregnant-pills-service
 spec:
-  type: NodePort
+  type: NodePort # chcę się móc dobić z zewnątrz
   ports:
     - port: 80
       targetPort: 8080
