@@ -7,19 +7,22 @@ spec:
   selector:
     matchLabels:
       app: pregnant-pills
+      env: dev
   template:
     metadata:
       labels:
         app: pregnant-pills
+        env: dev
     spec:
       containers:
         - name: pregnant-pills-container
           image: rockpiryt/pregnant-pills:latest
-          ports:
-            - containerPort: 8080
+          env:
+          - name: DATABASE_URL
+            value: "sqlite:////app/data/app.db"
           volumeMounts:
           - name: sqlite-db-persitent
-            mountPath: /data
+            mountPath: /app/data
       volumes:
       - name: sqlite-db-persitent
         persistentVolumeClaim:
