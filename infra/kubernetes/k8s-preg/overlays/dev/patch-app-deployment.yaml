@@ -17,6 +17,8 @@ spec:
       containers:
         - name: pregnant-pills-container
           image: rockpiryt/pregnant-pills:latest
+          readinessProbe: null
+          livenessProbe: null
           env:
           - name: DATABASE_URL
             value: "sqlite:////app/data/app.db"
