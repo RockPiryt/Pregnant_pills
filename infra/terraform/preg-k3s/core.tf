@@ -119,6 +119,6 @@ resource "aws_security_group" "ingress_preg" {
 
 # dodanie klucza do logowania, Klucz publiczny do SSH
 resource "aws_key_pair" "preg_key_pair2" {
-  key_name   = "preg-key-2"
+  key_name   = "preg-key-2-pkimak"
   public_key = file(var.ssh_pub_key)
 }
