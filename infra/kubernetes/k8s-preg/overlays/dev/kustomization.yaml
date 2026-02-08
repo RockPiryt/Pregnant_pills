@@ -2,6 +2,7 @@ resources:
   - ../../base
   - ns-preg-dev.yaml 
   - pvc-sqlite.yaml
+  - pv-sqlite.yaml
 
 # wspólny ns dla wszytskich obiektów
 namespace: preg-dev
