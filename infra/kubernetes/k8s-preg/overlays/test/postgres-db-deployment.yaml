@@ -5,6 +5,8 @@ metadata:
   namespace: preg-test
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: postgres
@@ -32,8 +34,9 @@ spec:
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: postgres-data
+            - name: postgres-persistent-storage
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: postgres-data
-          emptyDir: {}
+        - name: postgres-persistent-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
