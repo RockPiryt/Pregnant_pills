@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-seed-job
+  namespace: preg-test
+spec:
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: postgres:15-alpine
+          env:
+            - name: PGHOST
+              value: test-postgres-service
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              value: pill_db
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -euo pipefail
+              echo "Waiting for Postgres at ${PGHOST}:${PGPORT}..."
+              until pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"; do
+                sleep 2
+              done
+              echo "Running seed..."
+              psql -v ON_ERROR_STOP=1 -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" -f /seed/seed.sql
+              echo "Seed done."
+          volumeMounts:
+            - name: postgres-seed
+              mountPath: /seed
+      volumes:
+        - name: postgres-seed
+          configMap:
+            name: postgres-seed
