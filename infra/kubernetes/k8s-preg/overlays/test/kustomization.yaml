@@ -1,8 +1,12 @@
 resources:
   - ../../base
-  - postgres-db-secret.yaml
+  - postgres-db-clean-cm.yaml
   - postgres-db-deployment.yaml
+  - postgres-db-secret.yaml
+  - postgres-db-seed-job.yaml
   - postgres-db-service.yaml
+  - postgres-db-pv.yaml
+  - postgres-db-pvc.yaml
   - ns-preg-test.yaml
 
 namePrefix: test-
