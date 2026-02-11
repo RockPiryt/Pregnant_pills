@@ -4,5 +4,5 @@ metadata:
   name: pregnant-pills-config
   namespace: preg-test
 data:
-  APP_ENV: "development"
+  APP_ENV: ""
   FLASK_APP: "wsgi.py"
