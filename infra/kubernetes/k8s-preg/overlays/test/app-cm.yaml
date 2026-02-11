@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pregnant-pills-config-test
+  name: pregnant-pills-config
   namespace: preg-test
 data:
   APP_ENV: "testing"
