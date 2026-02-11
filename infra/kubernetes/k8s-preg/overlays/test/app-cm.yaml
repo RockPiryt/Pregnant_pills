@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pregnant-pills-config-test
+  namespace: preg-test
+data:
+  APP_ENV: "testing"
+  FLASK_APP: "wsgi.py"

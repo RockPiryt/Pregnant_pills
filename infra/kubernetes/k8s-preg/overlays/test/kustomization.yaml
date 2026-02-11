@@ -1,6 +1,7 @@
 resources:
   - ../../base
   - app-secret.yaml
+  - app-cm.yaml
   - ns-preg-test.yaml
   - postgres-db-cm-clean.yaml
   - postgres-db-deployment.yaml

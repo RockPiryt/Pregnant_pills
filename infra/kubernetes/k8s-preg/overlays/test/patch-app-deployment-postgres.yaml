@@ -26,16 +26,19 @@ spec:
           livenessProbe: null
           env:
             - name: APP_ENV
-              value: "testing"
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config-test
+                  key: APP_ENV
 
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets
+                  name: pregnant-pills-secrets-test
                   key: SECRET_KEY
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets
+                  name: pregnant-pills-secrets-test
                   key: DATABASE_URL
