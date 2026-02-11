@@ -13,7 +13,21 @@ namePrefix: test-
 namespace: preg-test
 
 patches:
-  - path: patch-app-deployment.yaml
+  - path: patch-app-deployment-postgres.yaml
     target:
       kind: Deployment
       name: pregnant-pills-app
+
+patchesJson6902:
+  - target:
+      group: ""
+      version: v1
+      kind: Service
+      name: pregnant-pills-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30080
