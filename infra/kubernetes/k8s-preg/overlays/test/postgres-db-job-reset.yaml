@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-db-reset
+  namespace: preg-test
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: db-reset
+          image: rockpiryt/pregnant-pills:latest
+          imagePullPolicy: Always
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config-test
+                  key: APP_ENV
+
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config-test
+                  key: FLASK_APP
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pregnant-pills-secrets-test
+                  key: DATABASE_URL
+
+          volumeMounts:
+            - name: reset-sql
+              mountPath: /reset
+              readOnly: true
+            - name: reset-script
+              mountPath: /scripts
+              readOnly: true
+
+          command: ["sh", "-c"]
+          args:
+            - |
+              chmod +x /scripts/db-reset.sh
+              /scripts/db-reset.sh
+
+      volumes:
+        - name: reset-sql
+          configMap:
+            name: postgres-test-reset-sql
+        - name: reset-script
+          configMap:
+            name: postgres-test-reset-script

@@ -3,10 +3,7 @@ resources:
   - app-secret.yaml
   - app-cm.yaml
   - ns-preg-test.yaml
-  - postgres-db-cm-clean.yaml
   - postgres-db-deployment.yaml
-  - postgres-db-job-migrate.yaml
-  - postgres-db-job-seed.yaml
   - postgres-db-pv.yaml
   - postgres-db-pvc.yaml
   - postgres-db-secret.yaml
@@ -34,3 +31,16 @@ patchesJson6902:
       - op: add
         path: /spec/ports/0/nodePort
         value: 30080
+
+configMapGenerator:
+  - name: postgres-reset-sql
+    files:
+      - db/clean.sql
+      - db/seed.sql
+  - name: postgres-reset-script
+    files:
+      - db/db-reset.sh
+
+
+generatorOptions:
+  disableNameSuffixHash: true
