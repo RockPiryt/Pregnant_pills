@@ -15,6 +15,10 @@ spec:
       containers:
         - name: pregnant-pills-container
           image: rockpiryt/pregnant-pills:latest
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
           ports:
             - containerPort: 8080
           readinessProbe:
