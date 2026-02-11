@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pregnant-pills-app
-  namespace: preg
+  namespace: preg-test
 spec:
   replicas: 1
   selector:
@@ -25,17 +25,17 @@ spec:
           readinessProbe: null
           livenessProbe: null
           env:
-            - name: DB_HOST
-              value: "test-postgres-service"
-            - name: DB_NAME
-              value: "pill_db"
-            - name: DB_USER
+            - name: APP_ENV
+              value: "testing"
+
+            - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
-                  key: username
-            - name: DB_PASS
+                  name: pregnant-pills-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
-                  key: password
+                  name: pregnant-pills-secrets
+                  key: DATABASE_URL
