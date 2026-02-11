@@ -15,12 +15,15 @@ spec:
       containers:
         - name: pregnant-pills-container
           image: rockpiryt/pregnant-pills:latest
+          
           resources:
             requests:
               cpu: "100m"
               memory: "128Mi"
+          
           ports:
             - containerPort: 8080
+          
           readinessProbe:
             httpGet:
               path: /health
@@ -33,3 +36,30 @@ spec:
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
+          
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config
+                  key: APP_ENV
+
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config
+                  key: FLASK_APP
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pregnant-pills-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pregnant-pills-secrets
+                  key: DATABASE_URL
+
+
