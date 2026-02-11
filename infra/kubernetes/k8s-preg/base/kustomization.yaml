@@ -1,6 +1,4 @@
 resources:
   - app-deployment.yaml
   - app-service.yaml
-  - app-secret.yaml
-  - app-cm.yaml
   - ingress.yaml
