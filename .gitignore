@@ -57,4 +57,5 @@ infra_copy/
 /infra/terraform/preg-k3s/kubeconfig
 /infra/terraform/preg-k3s/.terraform.lock.hcl
 /AWS/skrot.md
+/AWS/notatki.txt
 /infra/terraform/preg-k3s/.terraform.tfstate.lock.info
