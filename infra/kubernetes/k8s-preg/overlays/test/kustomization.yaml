@@ -2,6 +2,7 @@ resources:
   - ../../base
   - app-secret.yaml
   - app-cm.yaml
+  - ingress.yaml
   - ns-preg-test.yaml
   - postgres-db-deployment.yaml
   - postgres-db-pv.yaml
