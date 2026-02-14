@@ -39,15 +39,14 @@ List the ready features here:
 
 ### Home Page
 
-![Home Page Preview](static/previews/preview_pregnant_pills.jpg)
+![Home Page Preview](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills.jpg)
 
 ### Register user page
-
-![Register user page](static/previews/preview_pregnant_pills_add_user.jpg)
+![Register user page](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
 
 ### Admin page - all users
 
-![Admin page - all users](static/previews/preview_pregnant_pills_users_list..jpg)
+![Admin page - all users](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
 
 ## Setup
 
