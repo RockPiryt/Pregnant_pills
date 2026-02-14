@@ -8,6 +8,7 @@
 | **EC2 + k3s (Spot)** | EC2 Spot instance, no control plane fee | Usually the cheapest option, but subject to interruption |
 | **EC2 + k3s (On-Demand)** | EC2 On-Demand instance | t3.small ~ **$0.023/h → ~$16–17/month** |
 | **EKS + Managed Nodes** | EKS control plane + EC2 worker nodes | EKS control plane ~ **$0.10/h → ~$73/month** + EC2 |
+| **EKS + Fargate (stateless)** | EKS control plane + Fargate per vCPU/GB | 1 vCPU + 2GB: ~**$0.056/h → ~$41/month** + EKS ~$73/month ⇒ **~$114/month** |
 
 ---
 
