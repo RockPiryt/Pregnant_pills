@@ -55,7 +55,10 @@
     </div>
     <div class="row" id="add_button">
         <div class="col-md-12 title">
-            <a href="{{url_for('report_pdf.pdf_create', user_primary_key=html_current_user.id)}}" class="btn btn-success btn-md btn_list_pill" role="button">PDF report</a>
+            <a href="{{ url_for('report_pdf.pdf_download', user_primary_key=html_current_user.id) }}"
+                class="btn btn-success btn-md btn_list_pill">
+                PDF report
+            </a>
         </div>
     </div>
 </div>

@@ -52,3 +52,21 @@ def pdf_create(user_primary_key):
     pdf_report.generate_list(user)
     return (f'PDF report was created. PDF filename: pills_user_pk.pdf')
 
+@report_pdf_blueprint.route("/pdf_download/<int:user_primary_key>", methods=["GET"])
+def pdf_download(user_primary_key):
+    user = User.query.get_or_404(user_primary_key)
+
+    pdf_report = PDF_report()
+    pdf_bytes = pdf_report.generate_bytes(user)
+
+    buffer = BytesIO(pdf_bytes)
+    buffer.seek(0)
+
+    filename = f"pills_user_{user.id}.pdf"
+    return send_file(
+        buffer,
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name=filename
+    )
+
