@@ -28,7 +28,10 @@ spec:
           livenessProbe: null
           env:
           - name: DATABASE_URL
-            value: "sqlite:////app/data/app.db"
+            valueFrom:
+              secretKeyRef:
+                name: pregnant-pills-secrets
+                key: DATABASE_URL
           volumeMounts:
           - name: sqlite-db-persitent
             mountPath: /app/data
