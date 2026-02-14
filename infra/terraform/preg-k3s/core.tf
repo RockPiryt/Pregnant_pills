@@ -125,7 +125,6 @@ resource "aws_key_pair" "preg_key_pair2" {
 
 # tworzenie stałego publicznego IP(bo spot może mieć zmienne IP)
 resource "aws_eip" "preg_eip" {
-  vpc = true
   tags = { Name = "preg-eip" }
 }
 # powiązanie EIP z instacja spot
