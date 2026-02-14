@@ -1,39 +1,67 @@
-# Pregnant_Pills
-This app is for pregnant women to keep information about pills, which they took during pregnancy. On home page user can register a new account or continue as guest. When user is logged in, it is possible to create a list with pills. User can add a new pill or choose from database. Pregnancy week is also required. After that user gets a list with pills (with dates and type of pills), which is avaiable to  download this list as PDF file.
+# Pregnant Pills
+Pregnant Pills is a web application designed to help pregnant women track and manage medications taken during pregnancy.
+
+The system allows users to register, maintain a personalized list of pills, categorize them, specify pregnancy week, and generate a downloadable PDF report for medical consultations.
+
+This project demonstrates both application development (Flask) and cloud-native deployment strategies (Kubernetes on AWS).
 
 ## Table of Contents
 
-* [General Info](#general-information)
-* [Technologies Used](#technologies-used)
-* [Features](#features)
+* [Overview](#overview)
+* [Architecture Focus](#architecture-focus)
+* [Technology Stack](#technology-stack)
 * [Previews](#Previews)
+* [Deployment Strategies](#deployment-Sstrategies)
+* [Deployment Variants](#deployment_variants)
 * [Setup](#setup)
 * [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
+* [Future Improvements](#future-improvements)
 * [Contact](#contact)
 * [License](#license)
 
-## General Information
+## Overview
 
-On this website you can create your list of pills, which you are taking during your pregnancy. It is very useful for your gynecologist or in the event of a hospital stay. You can specify the type of pill (rutine / special). Rutine pills are vitamins and other complex nutrients, which you should take every day in pregnant. Special pills are pills, which you take during disease.You can download your pill's list as PDF Report to show this list your doctor.
-This application was created using Flask and SQLite database.
+Pregnant Pills enables users to:
+- Register and manage an account
+- Track medications taken during pregnancy
+- Categorize pills (routine / special)
+- Store dosage, dates, and pregnancy week
+- Generate a PDF report for medical visits
 
-## Technologies Used
+The application was originally built using Flask and SQLite, and later extended to support cloud-native deployment patterns.
 
-- Python - version 3.11
-- Bootstrap - version 5.2.3
-- Flask - version 2.2.2
-- SQLAlchemy - version 1.4.45
-- WTForms - version  3.0.1
-- SQLite database
+## Architecture Focus
 
-## Features
+This repository is not only about a Flask application — it demonstrates:
 
-List the ready features here:
+- Infrastructure as Code (Terraform)
+- Kubernetes deployment patterns
+- Environment separation (dev/test/prod)
+- DNS + Elastic IP management (Route 53)
+- Ingress configuration
+- Multiple cluster strategies (k3s, EKS, future Fargate)
 
-- Register new user,
-- Add pills to list,
-- Download list with pills as PDF file,
+The goal of the project is to evolve from a simple web application into a production-oriented, cloud-deployable system.
+
+## Technology Stack
+
+### Application Layer
+- Python 3.11
+- Flask 2.2.2
+- SQLAlchemy 1.4.45
+- WTForms 3.0.1
+- Bootstrap 5.2.3
+- SQLite (dev environment)
+- PostgreSQL (test/prod environments)
+
+### Infrastructure & Cloud
+- AWS (EC2, Route 53, Elastic IP)
+- Kubernetes (k3s / EKS)
+- Terraform
+- Kustomize
+- Helm (EKS branch)
+- Traefik Ingress (k3s)
+- AWS Load Balancer Controller (EKS)
 
 ## Previews
 
@@ -85,18 +113,23 @@ This project demonstrates multiple Kubernetes deployment approaches:
 
 Project is: _in progress_
 
-## Room for Improvement
+The project is being expanded toward production-grade Kubernetes deployments and infrastructure best practices.
 
-Room for improvement:
+## Future Improvements
 
-- Add PostgreSQL database,
-- Add feature -  register user,
-- Create more attractive PDF file,
+### Application
 
-To do:
-- add a new Database_URI for PostgreSQL database and check models,
-- create functionality that only registered user can download a PDF file with list,
-- Add more information to PDF about user and about pills,
+- Enforce authentication for PDF download
+- Improve PDF layout and formatting
+- Add role-based access (admin / user)
+- Improve validation and error handling
+
+### Infrastructure
+- Horizontal Pod Autoscaler (HPA)
+- Production-grade PostgreSQL (RDS)
+- TLS automation (cert-manager)
+- CI/CD pipeline (GitHub Actions)
+- Monitoring & logging (Prometheus + Grafana)
 
 ## Contact
 
