@@ -73,13 +73,6 @@ class PDF_report:
         return pdf_bytes
 
 #------------------------------Views
-@report_pdf_blueprint.route('/pdf_create/<int:user_primary_key>', methods=['GET', 'POST'])
-def pdf_create(user_primary_key):
-    pdf_report = PDF_report(filename='pills_user_pk.pdf')
-    user = User.query.get_or_404(user_primary_key)
-    pdf_report.generate_list(user)
-    return (f'PDF report was created. PDF filename: pills_user_pk.pdf')
-
 @report_pdf_blueprint.route("/pdf_download/<int:user_primary_key>", methods=["GET"])
 def pdf_download(user_primary_key):
     user = User.query.get_or_404(user_primary_key)
