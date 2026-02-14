@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paulinakimak-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: paulinakimak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: test-pregnant-pills-service
+                port:
+                  number: 80
+          - path: /resume
+            pathType: Prefix
+            backend:
+              service:
+                name: test-resume-service
+                port:
+                  number: 80
