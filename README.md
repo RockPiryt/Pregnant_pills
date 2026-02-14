@@ -92,9 +92,17 @@ The goal of the project is to evolve from a simple web application into a produc
 
 This project includes multiple infrastructure and deployment strategies:
 
-- **EC2 + k3s + Kustomize (Spot instance)** – main branch  
+### Traditional VM-based Kubernetes
+- **EC2 (spot) + k3s + Kustomize** – main branch  
+→[EC2 + k3s + Kustomize)](docs/deployment/1.ec2_kustomization/Deployment_Spot_EC2.md)
+
+### Managed Kubernetes
 - **EKS + Helm** – eks branch  
+→ [EKS Deployment Guide](docs/deployment/2.eks_helm/Deployment_EKS_Helm.md)
+
+### Serverless container workloads
 - **(Planned) EKS + Fargate** – future extension  
+→ [Serverless container workloads](docs/deployment/2.eks_helm/Deployment_Fargate.md)
 
 Detailed documentation can be found in the `/docs/deployment` directory.
 
