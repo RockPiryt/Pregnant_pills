@@ -27,17 +27,17 @@ spec:
             - name: APP_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: pregnant-pills-config-test
+                  name: pregnant-pills-config
                   key: APP_ENV
 
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets-test
+                  name: pregnant-pills-secrets
                   key: SECRET_KEY
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets-test
+                  name: pregnant-pills-secrets
                   key: DATABASE_URL

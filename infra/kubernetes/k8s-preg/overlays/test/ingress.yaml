@@ -12,7 +12,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: test-pregnant-pills-service
+                name: pregnant-pills-service
                 port:
                   number: 80
           - path: /resume
