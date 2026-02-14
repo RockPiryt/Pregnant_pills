@@ -1,0 +1,15 @@
+ConfigMap z SQL + Job, który czeka aż Postgres wstanie i odpala seeda. Jest też wersja “fresh seed” (reset danych) oraz “idempotent”.
+
+1) ConfigMap z seedem (wybierz tryb)
+A) “Fresh seed” – zawsze czyści i seeduje (typowe testy)
+B) Idempotent – “dołóż minimalne dane jeśli brakuje”
+2) Job seedujący (odpalisz kiedy chcesz)
+
+Zakłada, że masz Service o nazwie postgres w preg-test (czyli postgres.preg-test.svc).
+Nie uruchamiaj seeda “fresh reset” równolegle z aplikacją, jeśli aplikacja intensywnie pisze do DB — bo możesz jej wyciąć dane w trakcie. Najlepiej: najpierw seed job, potem deploy app (albo app z retry).
+
+Jeśli Twój postgres nie ma jeszcze Service, to Job nie znajdzie hosta. Jeśli chcesz, podeślę minimalny Service dopasowany do Twojego Deployment (app: postgres, port 5432).
+
+
+echo -n 'postgres' | base64
+echo -n 'mysecretpassword' | base64
