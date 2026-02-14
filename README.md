@@ -60,6 +60,27 @@ List the ready features here:
 - Install Requirements Package pip install -r requirements.txt
 - Finally Run The Project: python app.py
 
+## Deployment Strategies
+
+This project includes multiple infrastructure and deployment strategies:
+
+- **EC2 + k3s + Kustomize (Spot instance)** – main branch  
+- **EKS + Helm** – eks branch  
+- **(Planned) EKS + Fargate** – future extension  
+
+Detailed documentation can be found in the `/docs/deployment` directory.
+
+## Deployment Variants
+
+This project demonstrates multiple Kubernetes deployment approaches:
+
+| Variant | Infrastructure | Deployment Tool | Ingress | DNS | Scaling |
+|----------|---------------|----------------|---------|------|---------|
+| EC2 + k3s | Terraform | Kustomize | Traefik | Route53 | Manual / HPA |
+| EKS | Terraform | Helm | ALB | Route53 | Managed Node Groups |
+| Fargate (planned) | Terraform | Helm | ALB | Route53 | Serverless Pods |
+
+
 ## Project Status
 
 Project is: _in progress_
