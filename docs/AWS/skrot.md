@@ -40,31 +40,9 @@ kubectl apply -k infra/kubernetes/k8s-preg/overlays/dev
 kubectl delete -k infra/kubernetes/k8s-preg/overlays/dev
 
 ----------------------
-Co robi komenda kubectl kustomize ... | sed ...?
-
 To jest podgląd manifestów, które Kustomize generuje przed wysłaniem do klastra.
  kubectl kustomize infra/kubernetes/k8s-preg/overlays/dev | sed -n '/kind: Service/,/---/p'
 
- ----------------------
- 1) Ustaw requests/limits dla Postgresa i appki
-
-Na t3.micro typowo:
-
-Postgres: requests ~150–250Mi, limit ~300–400Mi
-
-App: requests ~50–100Mi, limit ~150–250Mi
-
-Bez tego scheduler może upchać za dużo / procesy zjedzą RAM.
-
-2) Wyłącz niepotrzebne addon-y w k3s (jeśli są)
-
-k3s domyślnie instaluje m.in. traefik (zależy od instalacji). Jeśli nie potrzebujesz ingress/traefika na razie, można go wyłączyć i odzyskać RAM.
-
-W praktyce (jeśli instalujesz k3s z parametrami):
-
---disable traefik
-
---disable metrics-server (jeśli był)
 
 
 
