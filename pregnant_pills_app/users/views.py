@@ -4,7 +4,6 @@ from pregnant_pills_app.users.forms import RegisterUserForm, LoginUserForm
 from flask import redirect, render_template, url_for, Blueprint, flash
 
 from pregnant_pills_app import login_manager
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, login_required, logout_user
 from functools import wraps
 
@@ -66,13 +65,14 @@ def register_pregnant_user():
             return redirect(url_for('users.login_pregnant_user'))
         
         # Hash and salt password
-        hash_salt_password = generate_password_hash(password=password_form, method="pbkdf2:sha256", salt_length=8)
-        new_user = User(name, 
-                    surname, 
-                    preg_week_form, 
-                    email_form, 
-                    hash_salt_password
-                    )
+        new_user = User(
+            name=name,
+            surname=surname,
+            preg_week=preg_week_form,
+            email=email_form,
+        )
+
+        new_user.set_password(password_form)
         # Add user info to db
         db.session.add(new_user)
         db.session.commit()
@@ -102,7 +102,7 @@ def login_pregnant_user():
             flash("Invalid credentials. Please try again.")
             return redirect(url_for('users.login_pregnant_user'))
         #Check passwords
-        if check_password_hash(user_db.password, password_login_form):
+        if user_db.check_password(password_login_form):
         #Login user if the user exist in db and user gives correct password
             login_user(user_db)
             return redirect(url_for('users.user_info'))
