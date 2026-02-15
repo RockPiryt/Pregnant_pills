@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: paulinakimak.com
+    - host: preg.paulinakimak.com
       http:
         paths:
           - path: /
@@ -15,10 +15,4 @@ spec:
                 name: pregnant-pills-service
                 port:
                   number: 80
-          - path: /resume
-            pathType: Prefix
-            backend:
-              service:
-                name: test-resume-service
-                port:
-                  number: 80
+
