@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-# Load .env only for local testing
-if os.getenv("APP_ENV") != "production":
+# Load .env only for development
+if os.getenv("APP_ENV") == "development":
     load_dotenv()
 
 class Config(object):
