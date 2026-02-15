@@ -41,9 +41,7 @@ spec:
 
           command: ["sh", "-c"]
           args:
-            - |
-              chmod +x /scripts/db-reset.sh
-              /scripts/db-reset.sh
+            - sh /scripts/db-reset.sh
 
       volumes:
         - name: reset-sql

@@ -1,5 +1,9 @@
 #!/bin/sh
-set -euo pipefail
+set -eu pipefail
+
+echo "APP_ENV=$APP_ENV"
+echo "FLASK_APP=$FLASK_APP"
+echo "DATABASE_URL=$DATABASE_URL"
 
 echo "==> Waiting for DB to be reachable..."
 python - <<'PY'
