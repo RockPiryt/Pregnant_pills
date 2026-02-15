@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: test-db-reset
+  namespace: preg-test
 spec:
   backoffLimit: 2
   template:
@@ -15,19 +16,19 @@ spec:
             - name: APP_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: pregnant-pills-config-test
+                  name: test-pregnant-pills-config
                   key: APP_ENV
 
             - name: FLASK_APP
               valueFrom:
                 configMapKeyRef:
-                  name: pregnant-pills-config-test
+                  name: test-pregnant-pills-config
                   key: FLASK_APP
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets-test
+                  name: test-pregnant-pills-secrets
                   key: DATABASE_URL
 
           volumeMounts:
@@ -47,7 +48,7 @@ spec:
       volumes:
         - name: reset-sql
           configMap:
-            name: postgres-test-reset-sql
+            name: test-postgres-reset-sql
         - name: reset-script
           configMap:
-            name: postgres-test-reset-script
+            name: test-postgres-reset-script
