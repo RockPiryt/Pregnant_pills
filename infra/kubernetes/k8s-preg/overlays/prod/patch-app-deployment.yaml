@@ -4,29 +4,43 @@ metadata:
   name: pregnant-pills-app
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: pregnant-pills
   template:
+    metadata:
+      labels:
+        app: pregnant-pills
     spec:
       containers:
         - name: pregnant-pills-container
-          env:
-            - name: DB_HOST
-              value: "my-rds-instance.cleardb.us-east-1.rds.amazonaws.com"  # endpoint RDS
-            - name: DB_NAME
-              value: "pill_db"
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: prod-db-secret   # Secret z loginem do RDS
-                  key: username
-            - name: DB_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: prod-db-secret
-                  key: password
+          image: rockpiryt/pregnant-pills:prod
+
           resources:
             requests:
-              cpu: "500m"
-              memory: "512Mi"
-            limits:
-              cpu: "1000m"
-              memory: "1Gi"
+              cpu: "100m"
+              memory: "128Mi"
+
+          ports:
+            - name: http
+              containerPort: 8080
+
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: pregnant-pills-config
+                  key: APP_ENV
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pregnant-pills-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pregnant-pills-secrets
+                  key: DATABASE_URL
+
