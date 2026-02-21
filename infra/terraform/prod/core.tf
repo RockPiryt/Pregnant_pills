@@ -65,6 +65,31 @@ resource "aws_security_group" "ssh_preg" {
 }
 
 
+# sg for postgres rds
+resource "aws_security_group" "prod_rds_postgres_sg" {
+  name        = "prod_rds_postgres_sg"
+  description = "Allow access for RDS Database on Port 5432"
+  vpc_id      = aws_vpc.preg_vpc.id
+
+  ingress {
+    description = "Allow access for RDS Database on Port 5432"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+ 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "prod_rds_postgres_sg" }
+}
+
+
 # ingress sg
 resource "aws_security_group" "ingress_preg" {
   name        = "preg-ingress"
