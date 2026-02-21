@@ -12,7 +12,7 @@ resource "aws_vpc" "preg-vpc" {
   enable_dns_support  = true
   enable_dns_hostnames = true
 }
-# PUBLIC subnet (dla NAT / bastion)
+# PUBLIC subnet (NAT / bastion)
 resource "aws_subnet" "preg-public-subnet-az1" {
   vpc_id                  = aws_vpc.preg-vpc.id
   cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 0)
@@ -22,7 +22,7 @@ resource "aws_subnet" "preg-public-subnet-az1" {
   tags = { Name = "preg-public-subnet-az1" }
 }
 
-# Internet Gateway - public
+# Internet Gateway public
 resource "aws_internet_gateway" "igw-preg" {
   vpc_id = aws_vpc.preg-vpc.id
   tags = { Name = "igw-preg" }
@@ -40,7 +40,7 @@ resource "aws_route_table" "preg-rt-public" {
   tags = { Name = "preg-rt-public" }
 }
 
-# Association Route Table 
+# Association Route Table with public rt
 resource "aws_route_table_association" "public_assoc" {
   subnet_id      = aws_subnet.preg-public-subnet-az1.id
   route_table_id = aws_route_table.preg-rt-public.id
