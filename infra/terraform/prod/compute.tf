@@ -1,13 +1,13 @@
-# COMPUTE (płatne zasoby)
+# COMPUTE (paid)
 
-# Wyszukanie najnowszego obrazu Debian 11
+# Find latest Debian 11
 data "aws_ami" "debian" {
   most_recent      = true
-  owners           = ["136693071363"] #id owner (amazon)z ami
+  owners           = ["136693071363"] 
 
   filter {
     name   = "name"
-    values = ["debian-11-amd64-*"] #skopiowana nazwa z ami
+    values = ["debian-11-amd64-*"] 
   }
 
   filter {
