@@ -16,24 +16,25 @@ data "aws_ami" "debian" {
   }
 }
 
-resource "aws_spot_instance_request" "preg_spot" {
-  ami           = data.aws_ami.debian.id
-  instance_type = "t3.small"
-  
-  key_name                    = resource.aws_key_pair.preg_key_pair2.key_name
-  wait_for_fulfillment        = true
-  associate_public_ip_address = true
 
-  vpc_security_group_ids = [
-    aws_security_group.ssh_preg.id,
-    aws_security_group.ingress_preg.id,
-  ]
-  
-  subnet_id = aws_subnet.main_preg.id
+# EC2 in private subnets
+resource "aws_instance" "private_ec2" {
+  count = 2
+  ami                    = data.aws_ami.debian.id
+  instance_type          = "t3.small"
 
+  key_name               = resource.aws_key_pair.preg_key_pair2.key_name
+  associate_public_ip_address = false
+  
+  vpc_security_group_ids = [aws_security_group.private_ec2_sg.id]
+
+  subnet_id              = element(values(aws_subnet.preg-private-subnet-2azs)[*].id, count.index)
   user_data = templatefile("${path.module}/scripts/install_k3s.sh", {})
 
+  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+
   tags = {
-    Name = "Preg-Spot"
+    Name = "preg-private-ec2-${count.index + 1}"
   }
 }
+
