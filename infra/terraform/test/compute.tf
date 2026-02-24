@@ -1,13 +1,13 @@
-# COMPUTE (płatne zasoby)
+# COMPUTE (paid)
 
-# Wyszukanie najnowszego obrazu Debian 11
+# Find latest Debian 11
 data "aws_ami" "debian" {
   most_recent      = true
-  owners           = ["136693071363"] #id owner (amazon)z ami
+  owners           = ["136693071363"]
 
   filter {
     name   = "name"
-    values = ["debian-11-amd64-*"] #skopiowana nazwa z ami
+    values = ["debian-11-amd64-*"]
   }
 
   filter {
@@ -16,6 +16,7 @@ data "aws_ami" "debian" {
   }
 }
 
+# EC2 in public subnet
 resource "aws_spot_instance_request" "preg_spot" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.small"
@@ -26,7 +27,7 @@ resource "aws_spot_instance_request" "preg_spot" {
 
   vpc_security_group_ids = [
     aws_security_group.ssh_preg.id,
-    aws_security_group.ingress_preg.id,
+    aws_security_group.ingress_preg.id
   ]
   
   subnet_id = aws_subnet.main_preg.id
