@@ -36,6 +36,10 @@ In this environment:
 
 This setup allows realistic end-to-end testing of networking, DNS resolution, and ingress routing while maintaining controlled resource usage.
 
+### Traditional VM-based Kubernetes diagram 
+- **EC2 (spot) + k3s + Kustomize** – main branch  
+![Test env](img/test_arch.jpg)
+
 ---
 
 ## 3. Development Environment – `dev`

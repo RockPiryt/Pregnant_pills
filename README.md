@@ -116,13 +116,6 @@ This project demonstrates multiple Kubernetes deployment approaches:
 | EKS | Terraform | Helm | ALB | Route53 | Managed Node Groups |
 | Fargate (planned) | Terraform | Helm | ALB | Route53 | Serverless Pods |
 
-
-## Deployment Architecture
-
-### Traditional VM-based Kubernetes diagram 
-- **EC2 (spot) + k3s + Kustomize** – main branch  
-![Test env](docs/img/test_arch.jpg)
-
 ## Project Status
 
 Project is: _in progress_
