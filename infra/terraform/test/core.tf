@@ -1,13 +1,13 @@
-# CORE INFRA (bezpłatne zasoby)
+# CORE INFRA (free)
 
-# private cloud
+# Virtual private cloud
 resource "aws_vpc" "preg_vpc" {
   cidr_block       = "10.0.0.0/16"
   enable_dns_support  = true
   enable_dns_hostnames = true
 }
 
-# podział na 8 podsieci
+# PUBLIC subnet
 resource "aws_subnet" "main_preg" {
   vpc_id                  = aws_vpc.preg_vpc.id
   cidr_block              = cidrsubnet(aws_vpc.preg_vpc.cidr_block, 3, 1)
@@ -15,12 +15,12 @@ resource "aws_subnet" "main_preg" {
   map_public_ip_on_launch = true
 }
 
-# utworzenie gateway (dostęp z zewnątrz)
+# # Internet Gateway public
 resource "aws_internet_gateway" "gw_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 }
 
-# dodanie tablicy routingu
+# Route Table public
 resource "aws_route_table" "route_tb_preg" {
   vpc_id = aws_vpc.preg_vpc.id
 
@@ -30,7 +30,7 @@ resource "aws_route_table" "route_tb_preg" {
   }
 }
 
-# powiązanie tabeli routingu z podsiecią
+# Association Route Table with public rt
 resource "aws_route_table_association" "as_preg" {
   subnet_id      = aws_subnet.main_preg.id
   route_table_id = aws_route_table.route_tb_preg.id
@@ -40,7 +40,7 @@ data "http" "myip" {
   url = "https://checkip.amazonaws.com"
 } 
 
-# sg dla ssh
+# SG (ssh)
 resource "aws_security_group" "ssh_preg" {
   name        = "preg-ssh"
   description = "SSH tylko z mojego IP"
@@ -64,7 +64,7 @@ resource "aws_security_group" "ssh_preg" {
   tags = { Name = "preg-ssh" }
 }
 
-# ingress sg
+# SG (ingress)
 resource "aws_security_group" "ingress_preg" {
   name        = "preg-ingress"
   description = "Public HTTP/HTTPS dla ingress"
@@ -96,8 +96,33 @@ resource "aws_security_group" "ingress_preg" {
   tags = { Name = "preg-ingress" }
 }
 
-# dodanie klucza do logowania, Klucz publiczny do SSH
+# Key pair to SSH
 resource "aws_key_pair" "preg_key_pair2" {
   key_name   = "preg-key-2-pkimak"
   public_key = file(var.ssh_pub_key)
+}
+
+# Route 53 domain
+data "aws_route53_zone" "pk_domain" {
+  name = "paulinakimak.com"
+  private_zone = false
+}
+
+# Elastic IP (fix IP for spot instance)
+resource "aws_eip" "preg_eip" {
+  domain = "vpc"
+  tags = { Name = "preg-eip" }
+}
+# Association EIP with spot instance
+resource "aws_eip_association" "preg_assoc" {
+  instance_id   = aws_spot_instance_request.preg_spot.spot_instance_id
+  allocation_id = aws_eip.preg_eip.id
+}
+# Route 53 record (subdomain preg.paulinakimak.com) for EIP
+resource "aws_route53_record" "preg_app" {
+  zone_id = data.aws_route53_zone.pk_domain.zone_id
+  name    = "preg"
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.preg_eip.public_ip]
 }
