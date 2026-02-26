@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-preg-pills
+  labels:
+    app: preg-pills
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: preg-pills-ingress-rules # Load Balancer Name
+    alb.ingress.kubernetes.io/scheme: internet-facing # or internal
+    # Health Check Settings
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /preg-pills/index.html    
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+spec:
+  ingressClassName: preg-pills-aws-ingress-class # Ingress Class
+  rules:
+  - http:
+      paths:
+      - path: /baby
+        pathType: Prefix
+        backend:
+          service:
+            name: baby-info-svc-nodeport
+            port:
+              number: 80  
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: pregnant-health-svc-nodeport
+            port:
+              number: 80
+      - path: /finance # live changes
+        pathType: Prefix
+        backend:
+          service:
+            name: finance-svc-nodeport
+            port:
+              number: 80
+      - path: /memory
+        pathType: Prefix
+        backend:
+          service:
+            name: memmory-svc-nodeport
+            port:
+              number: 80
+      - path: food
+        pathType: Prefix
+        backend:
+          service:
+            name: food-svc-nodeport
+            port:
+              number: 80
+      # main app
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pregnant-pills-nodeport-svc-prod
+            port:
+              number: 80 
