@@ -1,0 +1,9 @@
+# powiązanie konkretnego ingress controlera aws z moim path ingressem
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: preg-pills-aws-ingress-class
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: ingress.k8s.aws/alb
