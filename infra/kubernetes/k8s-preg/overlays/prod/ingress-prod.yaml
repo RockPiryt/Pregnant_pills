@@ -1,16 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-preg-pills
+  name: ingress-preg
   labels:
-    app: preg-pills
+    app: preg
   annotations:
-    alb.ingress.kubernetes.io/load-balancer-name: preg-pills-ingress-rules # Load Balancer Name
+    alb.ingress.kubernetes.io/load-balancer-name: ssl-preg-ingress-rules # Load Balancer Name
     alb.ingress.kubernetes.io/scheme: internet-facing # or internal
     # Health Check Settings
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
-    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    alb.ingress.kubernetes.io/healthcheck-path: /preg-pills/index.html    
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port  
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
     alb.ingress.kubernetes.io/success-codes: '200'
@@ -20,7 +19,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
     alb.ingress.kubernetes.io/certificate-arn: {{ add arn }}
 spec:
-  ingressClassName: preg-pills-aws-ingress-class # Ingress Class
+  ingressClassName: preg-aws-ingress-class # Ingress Class
   rules:
   - http:
       paths:
@@ -28,14 +27,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: baby-info-svc-nodeport
+            name: baby-svc-nodeport
             port:
               number: 80  
       - path: /health
         pathType: Prefix
         backend:
           service:
-            name: pregnant-health-svc-nodeport
+            name: health-svc-nodeport
             port:
               number: 80
       - path: /finance # live changes
@@ -64,6 +63,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: pregnant-pills-nodeport-svc-prod
+            name: pills-nodeport-svc-prod
             port:
               number: 80 
