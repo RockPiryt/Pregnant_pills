@@ -38,7 +38,7 @@ This setup allows realistic end-to-end testing of networking, DNS resolution, an
 
 ### Traditional VM-based Kubernetes diagram 
 - **EC2 (spot) + k3s + Kustomize** – main branch  
-![Test env](img/Test_Arch2.jpg)
+![Test env](../../img/Test_Arch2.jpg)
 
 ---
 
