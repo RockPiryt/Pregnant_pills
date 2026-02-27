@@ -16,25 +16,54 @@ data "aws_ami" "debian" {
   }
 }
 
-
-# EC2 in private subnets
-resource "aws_instance" "private_ec2" {
-  count = 2
-  ami                    = data.aws_ami.debian.id
-  instance_type          = "t3.small"
-
-  key_name               = resource.aws_key_pair.preg_key_pair2.key_name
+# K3s master (private subnet)
+resource "aws_instance" "k3s_master" {
+  ami                         = data.aws_ami.debian.id
+  instance_type               = "t3.small"
   associate_public_ip_address = false
-  
-  vpc_security_group_ids = [aws_security_group.private_ec2_sg.id]
+  subnet_id                   = aws_subnet.preg-private-subnet.id
 
-  subnet_id              = element(values(aws_subnet.preg-private-subnet-2azs)[*].id, count.index)
-  user_data = templatefile("${path.module}/scripts/install_k3s.sh", {})
-
+  vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
 
-  tags = {
-    Name = "preg-private-ec2-${count.index + 1}"
-  }
+  user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
+    K3S_TOKEN       = var.k3s_token
+    MASTER_TLS_SAN  = aws_instance.k3s_master.private_ip
+  })
+
+  tags = { Name = "preg-k3s-master" }
 }
 
+# K3s worker (private subnet)
+resource "aws_instance" "k3s_worker" {
+  ami                         = data.aws_ami.debian.id
+  instance_type               = "t3.small"
+  associate_public_ip_address = false
+  subnet_id                   = aws_subnet.preg-private-subnet.id
+
+  vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
+  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+
+  user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
+    K3S_TOKEN   = var.k3s_token
+    MASTER_IP   = aws_instance.k3s_master.private_ip
+  })
+
+  depends_on = [aws_instance.k3s_master] # first master, then worker
+
+  tags = { Name = "preg-k3s-worker" }
+}
+
+
+# Target group - master node
+resource "aws_lb_target_group_attachment" "master" {
+  target_group_arn = aws_lb_target_group.preg_tg.arn
+  target_id        = aws_instance.k3s_master.id
+  port             = 30080
+}
+# Target group - worker node
+resource "aws_lb_target_group_attachment" "worker" {
+  target_group_arn = aws_lb_target_group.preg_tg.arn
+  target_id        = aws_instance.k3s_worker.id
+  port             = 30080
+}
