@@ -84,3 +84,13 @@ resource "aws_eip" "preg-nat-eip" {
   domain = "vpc"
   tags = { Name = "preg-nat-eip" }
 }
+
+# --------------------------------RDS Postgres
+resource "aws_db_subnet_group" "preg_db_subnet_group" {
+  name       = "preg-db-subnet-group"
+  subnet_ids = [aws_subnet.preg-private-subnet.id]
+
+  tags = {
+    Name = "preg-db-subnet-group"
+  }
+}

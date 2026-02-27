@@ -1,4 +1,4 @@
-# ALB SG
+# -------------------------ALB SG
 resource "aws_security_group" "alb_preg" {
   name        = "preg-alb"
   description = "Allowing HTTP/HTTPS from the internet"
@@ -30,7 +30,7 @@ resource "aws_security_group" "alb_preg" {
   tags = { Name = "preg-ingress" }
 }
 
-# Security group for K3s master and worker nodes
+# -------------------------Security group for K3s master and worker nodes
 resource "aws_security_group" "k3s_nodes_sg" {
   name        = "preg-k3s-nodes"
   description = "Security group for K3s master/worker nodes"
@@ -73,4 +73,26 @@ resource "aws_security_group" "k3s_nodes_sg" {
   }
 
   tags = { Name = "preg-k3s-nodes" }
+}
+
+# -------------------------RDS SG
+resource "aws_security_group" "preg_rds_sg" {
+  name        = "preg-rds-sg"
+  description = "Allow Postgres access from K3s nodes only"
+  vpc_id      = aws_vpc.preg-vpc.id
+
+  ingress {
+    description     = "Postgres from k3s nodes"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.k3s_nodes_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

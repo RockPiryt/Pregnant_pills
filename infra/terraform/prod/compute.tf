@@ -66,3 +66,29 @@ resource "aws_lb_target_group_attachment" "worker" {
   target_id        = aws_instance.k3s_worker.id
   port             = 30080
 }
+
+# RDS PostgreSQL
+resource "aws_db_instance" "preg_postgres" {
+  identifier              = "preg-postgres"
+  engine                  = "postgres"
+  engine_version          = "15"
+  instance_class          = "db.t3.micro"
+  allocated_storage       = 20
+  storage_type            = "gp2"
+
+  db_name                 = "pregdb"
+  username                = var.db_username
+  password                = var.db_password
+
+  publicly_accessible     = false
+  skip_final_snapshot     = true
+
+  vpc_security_group_ids  = [aws_security_group.preg_rds_sg.id]
+  db_subnet_group_name    = aws_db_subnet_group.preg_db_subnet_group.name
+
+  backup_retention_period = 0  # dev only
+
+  tags = {
+    Name = "preg-postgres"
+  }
+}
