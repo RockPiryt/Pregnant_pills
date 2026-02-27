@@ -1,29 +1,21 @@
-# EIP (spot instance)
-resource "aws_eip" "preg_eip" {
-  tags = { Name = "preg-eip" }
-}
-
-# Associate EIP with intance
-resource "aws_eip_association" "preg_assoc" {
-  instance_id   = aws_spot_instance_request.preg_spot.spot_instance_id
-  allocation_id = aws_eip.preg_eip.id
-}
-
 # Route 53 domain
 data "aws_route53_zone" "pk_domain" {
   name = "paulinakimak.com"
   private_zone = false
 }
 
-# Route 53 record (subdomain preg.paulinakimak.com) for EIP
+# Route 53 record (subdomain preg.paulinakimak.com)
 resource "aws_route53_record" "preg_app" {
   zone_id = data.aws_route53_zone.pk_domain.zone_id
   name    = "preg"
   type    = "A"
-  ttl     = 300
-  records = [aws_eip.preg_eip.public_ip]
-}
 
+  alias {
+    name                   = aws_lb.preg_alb.dns_name
+    zone_id                = aws_lb.preg_alb.zone_id
+    evaluate_target_health = true
+  }
+}
 
 # AWS Certificate Manager Certificate for subdomain
 resource "aws_acm_certificate" "preg_aws_cert" {
@@ -59,13 +51,13 @@ resource "aws_route53_record" "preg_cert_validation" {
 
 # Certificate validation
 resource "aws_acm_certificate_validation" "preg_cert" {
-  certificate_arn         = aws_acm_certificate.preg_cert.arn
+  certificate_arn         = aws_acm_certificate.preg_aws_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.preg_cert_validation : record.fqdn]
 }
 
-# Output ARN certyfikatu
+# Output ARN certificate
 output "preg_certificate_arn" {
-  value = aws_acm_certificate_validation.preg_aws_cert.certificate_arn
+  value = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
 }
 
 
