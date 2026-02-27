@@ -14,3 +14,8 @@ variable "ssh_pub_key" {
   description = "ssh public key"
   type        = string
 }
+
+variable "k3s_token" {
+  type      = string
+  sensitive = true
+}
