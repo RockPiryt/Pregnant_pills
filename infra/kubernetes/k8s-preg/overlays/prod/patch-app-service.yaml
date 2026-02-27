@@ -4,8 +4,6 @@ metadata:
   name: pregnant-pills-nodeport-svc-prod
   labels:
     app: preg-pills
-  annotations:
-    alb.ingress.kubernetes.io/healthcheck-path: /preg-pills/index.html #Important Note:  Need to add health check path annotations in service level if we are planning to use multiple targets in a load balancer
 spec:
   type: NodePort
   selector:

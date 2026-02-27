@@ -54,14 +54,13 @@ resource "aws_instance" "k3s_worker" {
   tags = { Name = "preg-k3s-worker" }
 }
 
-
-# Target group - master node
+# Attach master node to target group
 resource "aws_lb_target_group_attachment" "master" {
   target_group_arn = aws_lb_target_group.preg_tg.arn
   target_id        = aws_instance.k3s_master.id
   port             = 30080
 }
-# Target group - worker node
+# Attach worker node to target group
 resource "aws_lb_target_group_attachment" "worker" {
   target_group_arn = aws_lb_target_group.preg_tg.arn
   target_id        = aws_instance.k3s_worker.id
