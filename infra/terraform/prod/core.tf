@@ -1,25 +1,19 @@
 # CORE INFRA (free)
 
-# Avability Zones
-variable "azs" {
-  type    = list(string)
-  default = ["eu-west-1a", "eu-west-1b"]
-}
-
 # Virtual private cloud
 resource "aws_vpc" "preg-vpc" {
   cidr_block       = "10.0.0.0/16"
   enable_dns_support  = true
   enable_dns_hostnames = true
 }
-# PUBLIC subnet (NAT / bastion)
-resource "aws_subnet" "preg-public-subnet-az1" {
+# PUBLIC subnet (NAT)
+resource "aws_subnet" "preg-public-subnet" {
   vpc_id                  = aws_vpc.preg-vpc.id
   cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 0)
-  availability_zone       = var.azs[0]
+  availability_zone       = "eu-west-1a"
   map_public_ip_on_launch = true
 
-  tags = { Name = "preg-public-subnet-az1" }
+  tags = { Name = "preg-public-subnet" }
 }
 
 # Internet Gateway public
@@ -42,7 +36,7 @@ resource "aws_route_table" "preg-rt-public" {
 
 # Association Route Table with public rt
 resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.preg-public-subnet-az1.id
+  subnet_id      = aws_subnet.preg-public-subnet.id
   route_table_id = aws_route_table.preg-rt-public.id
 }
 
@@ -55,23 +49,21 @@ resource "aws_eip" "preg-nat-eip" {
 # NAT Gateway
 resource "aws_nat_gateway" "preg-nat" {
   allocation_id = aws_eip.preg-nat-eip.id
-  subnet_id     = aws_subnet.preg-public-subnet-az1.id
+  subnet_id     = aws_subnet.preg-public-subnet.id
 
   depends_on = [aws_internet_gateway.igw-preg]
 
   tags = { Name = "preg-nat" }
 }
 
-# PRIVATE subnets (2 AZ)
-resource "aws_subnet" "preg-private-subnet-2azs" {
-  for_each = toset(var.azs)
-
+# PRIVATE subnet
+resource "aws_subnet" "preg-private-subnet" {
   vpc_id                  = aws_vpc.preg-vpc.id
-  availability_zone       = each.value
-  cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 10 + index(var.azs, each.value))
+  availability_zone       ="eu-west-1a"
+  cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 1)
   map_public_ip_on_launch = false
 
-  tags = { Name = "preg-private-subnet-${each.value}" }
+  tags = { Name = "preg-private-subnet" }
 }
 
 # Route Table private
@@ -88,9 +80,7 @@ resource "aws_route_table" "preg-rt-private" {
 
 # Association Route Table with private rt
 resource "aws_route_table_association" "private_assoc" {
-  for_each = aws_subnet.preg-private-subnet-2azs
-
-  subnet_id      = each.value.id
+  subnet_id      = aws_subnet.preg-private-subnet.id
   route_table_id = aws_route_table.preg-rt-private.id
 }
 
