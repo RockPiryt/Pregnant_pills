@@ -84,7 +84,7 @@ resource "aws_route_table_association" "private_assoc" {
   route_table_id = aws_route_table.preg-rt-private.id
 }
 
-# ingress sg
+# Ingress SG
 resource "aws_security_group" "ingress_preg" {
   name        = "preg-ingress"
   description = "Public HTTP/HTTPS dla ingress"
@@ -114,4 +114,39 @@ resource "aws_security_group" "ingress_preg" {
   }
 
   tags = { Name = "preg-ingress" }
+}
+
+# Application Load Balancer
+resource "aws_lb" "preg_alb" {
+  name               = "preg-alb"
+  load_balancer_type = "application"
+  internal           = false
+
+  subnets         = [aws_subnet.preg-public-subnet.id]
+  security_groups = [aws_security_group.ingress_preg.id]
+}
+
+# Target Group Nodeport
+resource "aws_lb_target_group" "preg_tg" {
+  name        = "preg-tg"
+  port        = 30080
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.preg-vpc.id
+  target_type = "instance"
+
+  health_check {
+    path = "/"
+    port = "traffic-port"
+  }
+}
+
+resource "aws_lb_listener" "preg_http" {
+  load_balancer_arn = aws_lb.preg_alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.preg_tg.arn
+  }
 }
