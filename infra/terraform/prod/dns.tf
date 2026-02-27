@@ -50,7 +50,7 @@ resource "aws_route53_record" "preg_cert_validation" {
 }
 
 # Certificate validation
-resource "aws_acm_certificate_validation" "preg_cert" {
+resource "aws_acm_certificate_validation" "preg_cert_validation" {
   certificate_arn         = aws_acm_certificate.preg_aws_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.preg_cert_validation : record.fqdn]
 }

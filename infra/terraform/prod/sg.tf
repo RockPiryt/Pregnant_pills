@@ -60,7 +60,7 @@ resource "aws_security_group" "k3s_nodes_sg" {
     from_port       = 30080
     to_port         = 30080
     protocol        = "tcp"
-    security_groups = [aws_security_group.alb-preg.id]
+    security_groups = [aws_security_group.alb_preg.id]
   }
 
   # Allow outbound internet access (via NAT Gateway). Required for Docker Hub pulls, OS updates, etc.
