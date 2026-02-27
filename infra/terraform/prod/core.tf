@@ -94,60 +94,6 @@ resource "aws_route_table_association" "private_assoc" {
   route_table_id = aws_route_table.preg-rt-private.id
 }
 
-data "http" "myip" {
-  url = "https://checkip.amazonaws.com"
-} 
-
-# sg dla ssh
-resource "aws_security_group" "ssh_preg" {
-  name        = "preg-ssh"
-  description = "SSH tylko z mojego IP"
-  vpc_id      = aws_vpc.preg-vpc.id
-
-  ingress {
-    description = "SSH from my IP"
-    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = { Name = "preg-ssh" }
-}
-
-
-# sg for postgres rds
-resource "aws_security_group" "prod_rds_postgres_sg" {
-  name        = "prod_rds_postgres_sg"
-  description = "Allow access for RDS Database on Port 5432"
-  vpc_id      = aws_vpc.preg-vpc.id
-
-  ingress {
-    description = "Allow access for RDS Database on Port 5432"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
- 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = { Name = "prod_rds_postgres_sg" }
-}
-
-
 # ingress sg
 resource "aws_security_group" "ingress_preg" {
   name        = "preg-ingress"
@@ -178,10 +124,4 @@ resource "aws_security_group" "ingress_preg" {
   }
 
   tags = { Name = "preg-ingress" }
-}
-
-# Key pair to SSH
-resource "aws_key_pair" "preg_key_pair2" {
-  key_name   = "preg-key-2-pkimak"
-  public_key = file(var.ssh_pub_key)
 }
