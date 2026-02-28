@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+<div class="container_form_pills">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="content-form_pills">
+                <form method="POST">
+                    {{ html_form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-12 title">
+                            <h1 class="text-center title">Add Pills for {{ current_user.name }} {{ current_user.surname }}</h1>
+                            <p class="text-center des">Fill out form below to add pill to our database.Your user ID: {{ current_user.id }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="info_user">Choose type of pill.</p>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{html_form.type_pill.label}}
+                                {{html_form.type_pill(class_="form-control")}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{ html_form.submit(class_="btn btn-primary mt-5") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
