@@ -1,13 +1,15 @@
-Nutrition Module - Pregnant Food App
-Monitor diet and ensure safe nutritional intake.
+## Baby Development Modules - Pregnant Baby App
 
-Features:
+### Fetal Movement Tracker  
+Track baby activity and movement patterns.
 
-Safe / unsafe foods database
-Calorie and nutrient calculator
-Vitamin reminders (folic acid, iron)
-→ See module documentation:
-/apps/preg-nutri-app/README.md
+**Features:**
+- Kick counter
+- Baby activity journal
+- Alerts for decreased movement
+- What's happening with mom and baby each week
+- Baby size comparisons (fruits / objects)
+- Developmental milestones
 
 ---
 
@@ -29,39 +31,7 @@ Vitamin reminders (folic acid, iron)
 
 ## Overview
 
-Pregnant Pills enables users to:
-- Register and manage an account
-- Track medications taken during pregnancy
-- Categorize pills (routine / special)
-- Store dosage, dates, and pregnancy week
-- Generate a PDF report for medical visits
-
-The application was originally built using Flask and SQLite, and later extended to support cloud-native deployment patterns.
-
----
-
 ## Features
-
-### User Management
-- User registration
-- Login / logout
-- User profile management
-
-### Medication Tracking
-- Add, edit, delete pills
-- Categorize medications
-- Track dosage and intake date
-- Store pregnancy week information
-
-### PDF Reporting
-- Generate downloadable PDF summary
-- Structured report suitable for medical consultation
-
-### Error Handling
-- Custom error pages (400, 401, 404, 415, 500)
-- Centralized error handling via Flask blueprints
-
----
 
 ## Technology Stack
 
@@ -79,17 +49,14 @@ The application was originally built using Flask and SQLite, and later extended 
 - SQLite (development)
 - PostgreSQL (optional / production-ready)
 
----
-
 ## Application Structure
 preg-pills-app/
 │
 ├── app_files/
 │ ├── models/
 │ ├── users/
-│ ├── pills/
+│ ├── baby/
 │ ├── errors/
-│ ├── report_pdf/
 │ ├── static/
 │ └── templates/
 │
@@ -111,19 +78,13 @@ The project uses:
 
 ### Home Page
 
-![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_pills.jpg)
+![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_baby.jpg)
 
-### Register user page
-![Register user page](app_files/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
-
-### Admin page - all users
-
-![Admin page - all users](app_files/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
 
 ## Local Setup
 
 - Clone This Project git clone
-- Enter Project Directory cd Pregnant_Pills
+- Enter Project Directory cd preg-baby-app
 - Create a Virtual Environment (for Windows) py -m venv (name your virtual enviroment :) venv
 
 'EXAMPLE: py -m venv venv'
@@ -165,14 +126,7 @@ Configuration is handled via `config.py`.
 ```bash
 pytest
 ```
-Test Coverage Includes
 
-- User authentication
-- Pill management (CRUD operations)
-- Error handling
-- PDF generation
-
----
 
 ## Project Status
 
@@ -182,19 +136,12 @@ Project is: _in progress_
 
 ## Future Improvements
 
-### Application
-
-- Enforce authentication for PDF download
-- Improve PDF layout and formatting
-- Add role-based access (admin / user)
-- Improve validation and error handling
-
 ---
 
 ## Contact
 
 - Created by [@RockPiryt Github](https://github.com/RockPiryt)
-- My Resume [@RockPiryt Resume](https://rockpiryt.github.io/Personal_Site/)
+- My Resume [@RockPiryt Resume](https://resume.paulinakimak.com)
 
 Feel free to contact me!
 

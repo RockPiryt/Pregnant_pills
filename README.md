@@ -27,11 +27,11 @@ The system is designed to evolve toward distributed deployment in Kubernetes env
 # Repository Structure
 ```
 apps/
-├── preg-health-service/
-├── preg-nutri-service/
 ├── preg-baby-service/
+├── preg-memo-service/
+├── preg-nutri-service/
 ├── preg-org-service/
-└── preg-memo-service/
+└── preg-pills-service/
 infra/
 docs/
 ```
@@ -119,7 +119,6 @@ Plan financial aspects of pregnancy and newborn care.
 - Baby cost calculator
 - Newborn shopping list
 - Pregnancy expense tracker
-
 
 → See module documentation:  
 `/apps/preg-org-app/README.md`
