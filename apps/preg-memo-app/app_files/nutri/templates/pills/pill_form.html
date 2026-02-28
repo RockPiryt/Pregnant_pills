@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+<div class="container_form_pills">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="content-form_pills">
+                <form method="POST">
+                    {{ html_form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-12 title">
+                            <h1 class="text-center title">Pill form</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{html_form.name.label}}
+                                {{html_form.name(class_="form-control", placeholder="Name of pill")}}
+                            </div>
+                            <div class="form-group">
+                                {{html_form.amount.label}}
+                                {{html_form.amount(class_="form-control", placeholder="Amount")}}
+                            </div>
+                            <div class="form-group">
+                                {{html_form.date_start.label}}
+                                {{html_form.date_start(class_="form-control", placeholder="Start date")}}
+                            </div>
+                            <div class="form-group">
+                                {{html_form.date_end.label}}
+                                {{html_form.date_end(class_="form-control", placeholder="End date")}}
+                            </div>
+                            <div class="form-group">
+                                {{html_form.reason.label}}
+                                {{html_form.reason(class_="form-control", placeholder="Reason")}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{ html_form.submit(class_="btn btn-primary mt-5") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

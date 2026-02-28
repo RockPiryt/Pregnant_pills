@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content" id="users_list">
+        <h1 class="title text-center">All Users List</h1>
+        {% for user in html_users %}
+            <div class="user" id="all_users">
+                <p>User ID: <b>#{{ user.id }}</b></p>
+                <b>
+                    <p>
+                        <a class="name_user" href="{{ url_for('users.user_info') }}">
+                        {{ user.name }} {{ user.surname }}
+                        </a>
+                    </p>
+                </b>
+                <p>Pregnant week: {{ user.preg_week }}</p>
+                <hr>
+                <a class="btn btn-light btn-sm btn_user_info" role="button" href="{{ url_for('users.user_info') }}">User info</a>
+                <br>
+                <a class="btn btn-primary btn-sm btn_add_pill" role="button" href="{{ url_for('pills.add_pill') }}">Add pill</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
