@@ -1,12 +1,51 @@
+# Pregnant App – Modular Pregnancy Platform
+
+Pregnant App is a modular, service-oriented pregnancy support platform.
+
+The repository is structured as a monorepo containing multiple domain-specific services,
+each developed as an independent Flask-based application with its own documentation,
+configuration, and deployment strategy.
+
+The system is designed to evolve toward distributed deployment in Kubernetes environments.
+
+---
+## Table of Contents
+
+* [Overview](#overview)
+* [Architecture Focus](#architecture-focus)
+* [Technology Stack](#technology-stack)
+* [Previews](#Previews)
+* [Deployment Strategies](#deployment-Sstrategies)
+* [Deployment Variants](#deployment_variants)
+* [Setup](#setup)
+* [Project Status](#project-status)
+* [Future Improvements](#future-improvements)
+* [Contact](#contact)
+* [License](#license)
+
 ---
 
-# Application Ecosystem
+# Repository Structure
 
-Pregnant App is designed as a modular ecosystem of applications supporting pregnancy tracking, health monitoring, education, and organization.
+apps/
+├── preg-health-service/
+├── preg-nutri-service/
+├── preg-baby-service/
+├── preg-org-service/
+└── preg-memo-service/
+infra/
+docs/
 
-Each module is developed as a separate application with its own README and documentation.
+Each service contains:
+- Application source code
+- Internal README
+- Configuration
+- Tests
+- Containerization files (if applicable)
 
 ---
+
+# Services Overview
 
 ## Health Modules - Pregnant Pills App
 
@@ -112,21 +151,6 @@ Capture pregnancy journey.
 
 This project demonstrates both application development (Flask) and cloud-native deployment strategies (Kubernetes on AWS).
 
-## Table of Contents
-
-* [Overview](#overview)
-* [Architecture Focus](#architecture-focus)
-* [Technology Stack](#technology-stack)
-* [Previews](#Previews)
-* [Deployment Strategies](#deployment-Sstrategies)
-* [Deployment Variants](#deployment_variants)
-* [Setup](#setup)
-* [Project Status](#project-status)
-* [Future Improvements](#future-improvements)
-* [Contact](#contact)
-* [License](#license)
-
-
 
 ## Architecture Focus
 
@@ -174,17 +198,6 @@ The goal of the project is to evolve from a simple web application into a produc
 
 ![Admin page - all users](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
 
-## Setup
-
-- Clone This Project git clone
-- Enter Project Directory cd Pregnant_Pills
-- Create a Virtual Environment (for Windows) py -m venv (name your virtual enviroment :) venv
-
-'EXAMPLE: py -m venv venv'
-
-- Activate Virtual Environment source: venv/Scripts/activate
-- Install Requirements Package pip install -r requirements.txt
-- Finally Run The Project: python app.py
 
 ## Deployment Strategies
 
@@ -218,16 +231,20 @@ This project demonstrates multiple Kubernetes deployment approaches:
 
 Project is: _in progress_
 
-The project is being expanded toward production-grade Kubernetes deployments and infrastructure best practices.
+The ecosystem is expanding toward:
+- Modular service separation
+- Improved security
+- Production-grade Kubernetes infrastructure
+- CI/CD automation
 
 ## Future Improvements
 
-### Application
 
-- Enforce authentication for PDF download
-- Improve PDF layout and formatting
-- Add role-based access (admin / user)
-- Improve validation and error handling
+## Application
+- Central authentication across modules
+- API gateway layer
+- Role-based access control
+- Cross-module integration
 
 ### Infrastructure
 - Horizontal Pod Autoscaler (HPA)
@@ -239,7 +256,7 @@ The project is being expanded toward production-grade Kubernetes deployments and
 ## Contact
 
 - Created by [@RockPiryt Github](https://github.com/RockPiryt)
-- My Resume [@RockPiryt Resume](https://rockpiryt.github.io/Personal_Site/)
+- My Resume [@RockPiryt Resume](https://resume.paulinakimak.com)
 
 Feel free to contact me!
 
