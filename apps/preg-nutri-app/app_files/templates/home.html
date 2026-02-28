@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-    <div class="htop">
-        <h1>Welcome to Pregnant pills Page</h1>
-        <hr>
-        <p class="mx-auto info" >On this website you can create your 
-            own list of pills, 
-            which you are taking during your pregnancy.
-            It is very useful for your gynecologist and in case of hospital stay. 
-            You can specify if the pill is rutine or special.
-            Rutine pills are vitamins and other complex nutrients,
-            which you should take every day in pregnant.
-            Special pills you use if you have illness 
-            for example flu, heartburn or gestational diabetes.
-            You can download your pill's list as PDF Report.  </p>
+<div class="htop">
+    <h1>Welcome to Pregnant Food App</h1>
+    <hr>
 
-        <h3>Register or Login to save your list with pills!</h3>
-        <a href="{{url_for('users.register_pregnant_user')}}">
-            <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
-        </a>
-        <a href="{{url_for('users.login_pregnant_user')}}">
-            <input type="submit" value="Login" class="btn btn-lg btn_start" id="btn_start">
-        </a>
-    </div>
+    <p class="mx-auto info">
+        Pregnant Food App helps you manage your diet during pregnancy
+        and make informed nutritional decisions. The application provides
+        guidance on safe and unsafe foods, nutrient intake monitoring,
+        and vitamin reminders.
+    </p>
+
+    <p class="mx-auto info">
+        You can explore a structured food database, calculate calories
+        and key nutrients, and receive reminders for essential supplements
+        such as folic acid and iron. The system supports healthy dietary
+        planning throughout pregnancy.
+    </p>
+
+    <h3>Register or Login to start tracking your nutrition</h3>
+
+    <a href="{{ url_for('users.register_user') }}">
+        <input type="submit"
+               value="Register"
+               class="btn btn-lg btn_start"
+               id="btn_start">
+    </a>
+
+    <a href="{{ url_for('users.login_user') }}">
+        <input type="submit"
+               value="Login"
+               class="btn btn-lg btn_start"
+               id="btn_start">
+    </a>
+</div>
 {% endblock %}
