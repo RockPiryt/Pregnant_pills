@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pregnant-pills-app
+  name: preg-pills-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: pregnant-pills
+      app: preg-pills
   template:
     metadata:
       labels:
-        app: pregnant-pills
+        app: preg-pills
     spec:
       containers:
-        - name: pregnant-pills-container
-          image: rockpiryt/pregnant-pills:prod
+        - name: preg-pills-container
+          image: rockpiryt/preg-pills-app:prod
 
           resources:
             requests:
@@ -29,18 +29,18 @@ spec:
             - name: APP_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: pregnant-pills-config
+                  name: preg-app-config
                   key: APP_ENV
 
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets
+                  name: preg-app-secrets
                   key: SECRET_KEY
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: pregnant-pills-secrets
+                  name: preg-app-secrets
                   key: DATABASE_URL
 

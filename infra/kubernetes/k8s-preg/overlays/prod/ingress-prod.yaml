@@ -19,7 +19,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
     alb.ingress.kubernetes.io/certificate-arn: {{ add arn }}
 spec:
-  ingressClassName: preg-aws-ingress-class # Ingress Class
+  ingressClassName: preg-app-aws-ingress-class # Ingress Class
   rules:
   - http:
       paths:

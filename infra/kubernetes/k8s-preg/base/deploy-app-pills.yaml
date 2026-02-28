@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: preg-pills-container
-          image: rockpiryt/preg-pills:latest
+          image: rockpiryt/preg-pills-app:latest
           
           resources:
             requests:

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pregnant-pills-config
+  name: preg-app-config
 data:
   APP_ENV: "production"
   FLASK_APP: "wsgi.py"
