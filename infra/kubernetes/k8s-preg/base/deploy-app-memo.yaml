@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preg-memo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preg-memo
+  template:
+    metadata:
+      labels:
+        app: preg-memo
+    spec:
+      containers:
+        - name: preg-memo-container
+          image: rockpiryt/preg-memo-app:latest
+          
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          
+          ports:
+            - containerPort: 8080
+          
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-memo-config
+                  key: APP_ENV
+
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-memo-config
+                  key: FLASK_APP
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: preg-memo-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: preg-memo-secrets
+                  key: DATABASE_URL
+
+

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preg-nutri-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preg-nutri
+  template:
+    metadata:
+      labels:
+        app: preg-nutri
+    spec:
+      containers:
+        - name: preg-nutri-container
+          image: rockpiryt/preg-nutri-app:latest
+          
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          
+          ports:
+            - containerPort: 8080
+          
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-nutri-config
+                  key: APP_ENV
+
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-nutri-config
+                  key: FLASK_APP
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: preg-nutri-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: preg-nutri-secrets
+                  key: DATABASE_URL
+
+
