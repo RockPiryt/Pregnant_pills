@@ -5,19 +5,23 @@ The system allows users to register, maintain a personalized list of pills, cate
 
 This project demonstrates both application development (Flask) and cloud-native deployment strategies (Kubernetes on AWS).
 
+---
+
 ## Table of Contents
 
-* [Overview](#overview)
-* [Architecture Focus](#architecture-focus)
-* [Technology Stack](#technology-stack)
-* [Previews](#Previews)
-* [Deployment Strategies](#deployment-Sstrategies)
-* [Deployment Variants](#deployment_variants)
-* [Setup](#setup)
-* [Project Status](#project-status)
-* [Future Improvements](#future-improvements)
-* [Contact](#contact)
-* [License](#license)
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Application Structure](#application-structure)
+- [Previews](#previews)
+- [Local Setup](#local-setup)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Project Status](#project-status)
+- [Future Improvements](#future-improvements)
+- [License](#license)
+
+---
 
 ## Overview
 
@@ -30,53 +34,89 @@ Pregnant Pills enables users to:
 
 The application was originally built using Flask and SQLite, and later extended to support cloud-native deployment patterns.
 
-## Architecture Focus
+---
 
-This repository is not only about a Flask application — it demonstrates:
+## Features
 
-- Infrastructure as Code (Terraform)
-- Kubernetes deployment patterns
-- Environment separation (dev/test/prod)
-- DNS + Elastic IP management (Route 53)
-- Ingress configuration
-- Multiple cluster strategies (k3s, EKS, future Fargate)
+### User Management
+- User registration
+- Login / logout
+- User profile management
 
-The goal of the project is to evolve from a simple web application into a production-oriented, cloud-deployable system.
+### Medication Tracking
+- Add, edit, delete pills
+- Categorize medications
+- Track dosage and intake date
+- Store pregnancy week information
+
+### PDF Reporting
+- Generate downloadable PDF summary
+- Structured report suitable for medical consultation
+
+### Error Handling
+- Custom error pages (400, 401, 404, 415, 500)
+- Centralized error handling via Flask blueprints
+
+---
 
 ## Technology Stack
 
-### Application Layer
+### Backend
 - Python 3.11
 - Flask 2.2.2
 - SQLAlchemy 1.4.45
 - WTForms 3.0.1
-- Bootstrap 5.2.3
-- SQLite (dev environment)
-- PostgreSQL (test/prod environments)
 
-### Infrastructure & Cloud
-- AWS (EC2, Route 53, Elastic IP)
-- Kubernetes (k3s / EKS)
-- Terraform
-- Kustomize
-- Helm (EKS branch)
-- Traefik Ingress (k3s)
-- AWS Load Balancer Controller (EKS)
+### Frontend
+- Bootstrap 5.2.3
+- Jinja2 Templates
+
+### Database
+- SQLite (development)
+- PostgreSQL (optional / production-ready)
+
+---
+
+## Application Structure
+preg-pills-app/
+│
+├── app_files/
+│ ├── models/
+│ ├── users/
+│ ├── pills/
+│ ├── errors/
+│ ├── report_pdf/
+│ ├── static/
+│ └── templates/
+│
+├── migrations/
+├── tests/
+├── config.py
+├── requirements.txt
+└── wsgi.py
+
+The project uses:
+- Flask Blueprints for modular separation
+- SQLAlchemy models for database abstraction
+- Alembic for database migrations
+- Pytest for testing
+
+---
 
 ## Previews
 
 ### Home Page
 
-![Home Page Preview](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills.jpg)
+![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_pills.jpg)
 
 ### Register user page
-![Register user page](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
+![Register user page](app_files/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
 
 ### Admin page - all users
 
-![Admin page - all users](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
+![Admin page - all users](app_files/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
 
-## Setup
+## Local Setup
 
 - Clone This Project git clone
 - Enter Project Directory cd Pregnant_Pills
@@ -88,39 +128,53 @@ The goal of the project is to evolve from a simple web application into a produc
 - Install Requirements Package pip install -r requirements.txt
 - Finally Run The Project: python app.py
 
-## Deployment Strategies
+---
 
-This project includes multiple infrastructure and deployment strategies:
+## Configuration
 
-### Traditional VM-based Kubernetes
-- **EC2 (spot) + k3s + Kustomize** – main branch  
-→[EC2 + k3s + Kustomize)](docs/deployment/1.ec2_kustomization/Deployment_Spot_EC2.md)
+Configuration is handled via `config.py`.
 
-### Managed Kubernetes
-- **EKS + Helm** – eks branch  
-→ [EKS Deployment Guide](docs/deployment/2.eks_helm/Deployment_EKS_Helm.md)
+### Key Configuration Areas
 
-### Serverless container workloads
-- **(Planned) EKS + Fargate** – future extension  
-→ [Serverless container workloads](docs/deployment/2.eks_helm/Deployment_Fargate.md)
+- **Database URI**  
+  Defines the connection string used by SQLAlchemy  
+  (e.g., SQLite for development, PostgreSQL for production).
 
-Detailed documentation can be found in the `/docs/deployment` directory.
+- **Secret Key**  
+  Used for session management and CSRF protection.
 
-## Deployment Variants
+- **Debug Mode**  
+  Enables development debugging features.
 
-This project demonstrates multiple Kubernetes deployment approaches:
+- **Environment Separation**  
+  Supports configuration profiles for:
+  - Development
+  - Testing
+  - Production
 
-| Variant | Infrastructure | Deployment Tool | Ingress | DNS | Scaling |
-|----------|---------------|----------------|---------|------|---------|
-| EC2 + k3s | Terraform | Kustomize | Traefik | Route53 | Manual / HPA |
-| EKS | Terraform | Helm | ALB | Route53 | Managed Node Groups |
-| Fargate (planned) | Terraform | Helm | ALB | Route53 | Serverless Pods |
+---
+
+## Testing
+
+### Run Tests
+
+```bash
+pytest
+```
+Test Coverage Includes
+
+- User authentication
+- Pill management (CRUD operations)
+- Error handling
+- PDF generation
+
+---
 
 ## Project Status
 
 Project is: _in progress_
 
-The project is being expanded toward production-grade Kubernetes deployments and infrastructure best practices.
+---
 
 ## Future Improvements
 
@@ -131,12 +185,7 @@ The project is being expanded toward production-grade Kubernetes deployments and
 - Add role-based access (admin / user)
 - Improve validation and error handling
 
-### Infrastructure
-- Horizontal Pod Autoscaler (HPA)
-- Production-grade PostgreSQL (RDS)
-- TLS automation (cert-manager)
-- CI/CD pipeline (GitHub Actions)
-- Monitoring & logging (Prometheus + Grafana)
+---
 
 ## Contact
 
@@ -144,6 +193,8 @@ The project is being expanded toward production-grade Kubernetes deployments and
 - My Resume [@RockPiryt Resume](https://rockpiryt.github.io/Personal_Site/)
 
 Feel free to contact me!
+
+---
 
 ## License
 
