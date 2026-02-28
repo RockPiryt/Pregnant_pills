@@ -1,7 +1,114 @@
-# Pregnant Pills
-Pregnant Pills is a web application designed to help pregnant women track and manage medications taken during pregnancy.
+---
 
-The system allows users to register, maintain a personalized list of pills, categorize them, specify pregnancy week, and generate a downloadable PDF report for medical consultations.
+# Application Ecosystem
+
+Pregnant App is designed as a modular ecosystem of applications supporting pregnancy tracking, health monitoring, education, and organization.
+
+Each module is developed as a separate application with its own README and documentation.
+
+---
+
+## Health Modules - Pregnant Pills App
+
+### Pills list
+
+Pregnant Pills is a web application designed to help pregnant women track 
+and manage medications taken during pregnancy.
+
+The system allows users to register, maintain a personalized list of pills, 
+categorize them, specify pregnancy week, and generate a downloadable 
+PDF report for medical consultations.
+
+**Pregnant Pills Features:**
+- Register and manage an account
+- Track medications taken during pregnancy
+- Categorize pills (routine / special)
+- Store dosage, dates, and pregnancy week
+- Generate a PDF report for medical visits
+
+### Weight & Measurements  
+Monitor pregnancy body changes.
+
+**Size monitor Features:**
+- Weight gain tracking
+- Belly measurements
+- Charts and trends
+
+→ See module documentation:  
+`/apps/preg-health-app/README.md`
+
+---
+
+### Nutrition Module - Pregnant Food App 
+Monitor diet and ensure safe nutritional intake.
+
+**Features:**
+- Safe / unsafe foods database
+- Calorie and nutrient calculator
+- Vitamin reminders (folic acid, iron)
+
+→ See module documentation:  
+`/apps/preg-nutri-app/README.md`
+
+---
+
+## Baby Development Modules - Pregnant Baby App
+
+### Fetal Movement Tracker  
+Track baby activity and movement patterns.
+
+**Features:**
+- Kick counter
+- Baby activity journal
+- Alerts for decreased movement
+- What's happening with mom and baby each week
+- Baby size comparisons (fruits / objects)
+- Developmental milestones
+
+→ See module documentation:  
+`/apps/preg-baby-app/README.md`
+
+---
+
+## Organizational Modules - Pregnant Org App
+
+### Birth Preparation  
+Plan for delivery and hospital stay.
+
+**Features:**
+- Hospital bag checklist
+- Birth plan creator
+- Important contacts (doctor, hospital, midwife)
+- Baby room 
+
+
+### Financial Planner  
+Plan financial aspects of pregnancy and newborn care.
+
+**Features:**
+- Baby cost calculator
+- Newborn shopping list
+- Pregnancy expense tracker
+
+
+→ See module documentation:  
+`/apps/preg-org-app/README.md`
+
+---
+
+## Memory Keeper  - Pregnant Memo App
+Capture pregnancy journey.
+
+**Features:**
+- Belly photo timeline (timelapse)
+- Pregnancy journal
+- Ultrasound photo storage
+
+→ See module documentation:  
+`/apps/preg-memo-app/README.md`
+
+---
+
 
 This project demonstrates both application development (Flask) and cloud-native deployment strategies (Kubernetes on AWS).
 
@@ -19,16 +126,7 @@ This project demonstrates both application development (Flask) and cloud-native 
 * [Contact](#contact)
 * [License](#license)
 
-## Overview
 
-Pregnant Pills enables users to:
-- Register and manage an account
-- Track medications taken during pregnancy
-- Categorize pills (routine / special)
-- Store dosage, dates, and pregnancy week
-- Generate a PDF report for medical visits
-
-The application was originally built using Flask and SQLite, and later extended to support cloud-native deployment patterns.
 
 ## Architecture Focus
 
