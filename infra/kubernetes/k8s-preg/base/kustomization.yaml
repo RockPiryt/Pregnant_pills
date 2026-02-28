@@ -1,3 +1,11 @@
 resources:
-  - app-deployment.yaml
-  - app-service.yaml
+  - deploy-app-baby.yaml  
+  - deploy-app-nutri.yaml  
+  - deploy-app-pills.yaml
+  - deploy-app-memo.yaml  
+  - deploy-app-org.yaml    
+  - svc-app-memo.yaml  
+  - svc-app-org.yaml
+  - svc-app-baby.yaml  
+  - svc-app-nutri.yaml  
+  - svc-app-pills.yaml

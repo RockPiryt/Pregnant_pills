@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: pregnant-pills-service
+  name: preg-org-svc
 spec:
   selector:
-    app: pregnant-pills
+    app: preg-org
   ports:
     - name: http
       protocol: TCP

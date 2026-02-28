@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: preg-pills-svc
+spec:
+  selector:
+    app: preg-pills
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
