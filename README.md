@@ -8,7 +8,6 @@ configuration, and deployment strategy.
 
 The system is designed to evolve toward distributed deployment in Kubernetes environments.
 
----
 ## Table of Contents
 
 * [Overview](#overview)
@@ -26,7 +25,7 @@ The system is designed to evolve toward distributed deployment in Kubernetes env
 ---
 
 # Repository Structure
-
+```
 apps/
 ├── preg-health-service/
 ├── preg-nutri-service/
@@ -35,7 +34,7 @@ apps/
 └── preg-memo-service/
 infra/
 docs/
-
+```
 Each service contains:
 - Application source code
 - Internal README
@@ -48,8 +47,6 @@ Each service contains:
 # Services Overview
 
 ## Health Modules - Pregnant Pills App
-
-### Pills list
 
 Pregnant Pills is a web application designed to help pregnant women track 
 and manage medications taken during pregnancy.
@@ -76,8 +73,6 @@ Monitor pregnancy body changes.
 → See module documentation:  
 `/apps/preg-health-app/README.md`
 
----
-
 ### Nutrition Module - Pregnant Food App 
 Monitor diet and ensure safe nutritional intake.
 
@@ -88,8 +83,6 @@ Monitor diet and ensure safe nutritional intake.
 
 → See module documentation:  
 `/apps/preg-nutri-app/README.md`
-
----
 
 ## Baby Development Modules - Pregnant Baby App
 
@@ -106,8 +99,6 @@ Track baby activity and movement patterns.
 
 → See module documentation:  
 `/apps/preg-baby-app/README.md`
-
----
 
 ## Organizational Modules - Pregnant Org App
 
@@ -133,8 +124,6 @@ Plan financial aspects of pregnancy and newborn care.
 → See module documentation:  
 `/apps/preg-org-app/README.md`
 
----
-
 ## Memory Keeper  - Pregnant Memo App
 Capture pregnancy journey.
 
@@ -145,12 +134,6 @@ Capture pregnancy journey.
 
 → See module documentation:  
 `/apps/preg-memo-app/README.md`
-
----
-
-
-This project demonstrates both application development (Flask) and cloud-native deployment strategies (Kubernetes on AWS).
-
 
 ## Architecture Focus
 
