@@ -5,7 +5,7 @@ resource "aws_vpc" "preg-vpc" {
   enable_dns_hostnames = true
 }
 
-# PUBLIC subnet (NAT)
+# PUBLIC subnet A (NAT)
 resource "aws_subnet" "preg-public-subnet" {
   vpc_id                  = aws_vpc.preg-vpc.id
   cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 0)
@@ -15,16 +15,35 @@ resource "aws_subnet" "preg-public-subnet" {
   tags = { Name = "preg-public-subnet" }
 }
 
-# PRIVATE subnet
-resource "aws_subnet" "preg-private-subnet" {
+# PRIVATE subnet A
+resource "aws_subnet" "preg-private-subnet-a" {
   vpc_id                  = aws_vpc.preg-vpc.id
   availability_zone       ="eu-west-1a"
   cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 1)
   map_public_ip_on_launch = false
 
-  tags = { Name = "preg-private-subnet" }
+  tags = { Name = "preg-private-subnet-a" }
 }
 
+# PUBLIC subnet B (ALB, second AZ)
+resource "aws_subnet" "preg-public-subnet-b" {
+  vpc_id                  = aws_vpc.preg-vpc.id
+  cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 2)
+  availability_zone       = "eu-west-1b"
+  map_public_ip_on_launch = true
+
+  tags = { Name = "preg-public-subnet-b" }
+}
+
+# PRIVATE subnet B (worker/RDS, second AZ)
+resource "aws_subnet" "preg-private-subnet-b" {
+  vpc_id                  = aws_vpc.preg-vpc.id
+  cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 3)
+  availability_zone       = "eu-west-1b"
+  map_public_ip_on_launch = false
+
+  tags = { Name = "preg-private-subnet-b" }
+}
 # Internet Gateway public
 resource "aws_internet_gateway" "igw-preg" {
   vpc_id = aws_vpc.preg-vpc.id
@@ -44,12 +63,6 @@ resource "aws_route_table" "preg-rt-public" {
   tags = { Name = "preg-rt-public" }
 }
 
-# Association Route Table with public rt
-resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.preg-public-subnet.id
-  route_table_id = aws_route_table.preg-rt-public.id
-}
-
 # Route Table private
 resource "aws_route_table" "preg-rt-private" {
   vpc_id = aws_vpc.preg-vpc.id
@@ -62,9 +75,29 @@ resource "aws_route_table" "preg-rt-private" {
   tags = { Name = "preg-rt-private" }
 }
 
-# Association Route Table with private rt
+# Association Route Table with public rt (AZ-a)
+resource "aws_route_table_association" "public_assoc" {
+  subnet_id      = aws_subnet.preg-public-subnet.id
+  route_table_id = aws_route_table.preg-rt-public.id
+}
+
+
+# Association Route Table with private rt (AZ-a)
 resource "aws_route_table_association" "private_assoc" {
-  subnet_id      = aws_subnet.preg-private-subnet.id
+  subnet_id      = aws_subnet.preg-private-subnet-a.id
+  route_table_id = aws_route_table.preg-rt-private.id
+}
+
+
+# Association Route Table with public rt (AZ-b)
+resource "aws_route_table_association" "public_assoc_b" {
+  subnet_id      = aws_subnet.preg-public-subnet-b.id
+  route_table_id = aws_route_table.preg-rt-public.id
+}
+
+# Association Route Table with private rt (AZ-b)
+resource "aws_route_table_association" "private_assoc_b" {
+  subnet_id      = aws_subnet.preg-private-subnet-b.id
   route_table_id = aws_route_table.preg-rt-private.id
 }
 
@@ -88,7 +121,10 @@ resource "aws_eip" "preg-nat-eip" {
 # --------------------------------RDS Postgres
 resource "aws_db_subnet_group" "preg_db_subnet_group" {
   name       = "preg-db-subnet-group"
-  subnet_ids = [aws_subnet.preg-private-subnet.id]
+  subnet_ids = [
+  aws_subnet.preg-private-subnet-a.id,
+  aws_subnet.preg-private-subnet-b.id
+]
 
   tags = {
     Name = "preg-db-subnet-group"

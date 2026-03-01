@@ -47,7 +47,7 @@ resource "aws_security_group" "k3s_nodes_sg" {
 
   # Explicit Kubernetes API access
   ingress {
-    description = "Kubernetes API (worker -> master)"
+    description = "Kubernetes API (worker to master)"
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"

@@ -5,7 +5,10 @@ resource "aws_lb" "preg_alb" {
   load_balancer_type = "application"
   internal           = false
 
-  subnets         = [aws_subnet.preg-public-subnet.id] # public subnet
+  subnets = [
+  aws_subnet.preg-public-subnet-a.id,
+  aws_subnet.preg-public-subnet-b.id
+  ]
   security_groups = [aws_security_group.alb_preg.id]
 
 }
