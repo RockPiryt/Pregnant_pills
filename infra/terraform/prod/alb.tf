@@ -6,8 +6,8 @@ resource "aws_lb" "preg_alb" {
   internal           = false
 
   subnets = [
-  aws_subnet.preg-public-subnet-a.id,
-  aws_subnet.preg-public-subnet-b.id
+    aws_subnet.preg-public-subnet-a.id,
+    aws_subnet.preg-public-subnet-b.id
   ]
   security_groups = [aws_security_group.alb_preg.id]
 
@@ -16,7 +16,7 @@ resource "aws_lb" "preg_alb" {
 # Target Group pointing to EC2 instances (NodePort 30080)
 resource "aws_lb_target_group" "preg_tg" {
   name        = "preg-tg"
-  port        = 30080 
+  port        = 30080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.preg-vpc.id
   target_type = "instance" # Targets are EC2 instances

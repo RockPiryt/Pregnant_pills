@@ -1,6 +1,6 @@
 # Route 53 domain
 data "aws_route53_zone" "pk_domain" {
-  name = "paulinakimak.com"
+  name         = "paulinakimak.com"
   private_zone = false
 }
 
