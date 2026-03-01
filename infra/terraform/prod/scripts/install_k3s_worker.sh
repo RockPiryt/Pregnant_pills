@@ -4,6 +4,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -y
 apt-get install -y curl unzip
+apt-get install -y amazon-ssm-agent
+systemctl enable amazon-ssm-agent
+systemctl start amazon-ssm-agent
 
 # Install K3s worker
 curl -sfL https://get.k3s.io | \
