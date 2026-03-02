@@ -1,13 +1,13 @@
 # COMPUTE (paid)
 
-# Find latest Debian 11
-data "aws_ami" "debian" {
+
+data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["136693071363"]
+  owners      = ["099720109477"] # Canonical
 
   filter {
     name   = "name"
-    values = ["debian-11-amd64-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
@@ -18,7 +18,7 @@ data "aws_ami" "debian" {
 
 # K3s master (private subnet)
 resource "aws_instance" "k3s_master" {
-  ami                         = data.aws_ami.debian.id
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.small"
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
@@ -36,7 +36,7 @@ resource "aws_instance" "k3s_master" {
 
 # K3s worker A (private subnet A)
 resource "aws_instance" "k3s_worker_a" {
-  ami                         = data.aws_ami.debian.id
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.small"
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
@@ -56,7 +56,7 @@ resource "aws_instance" "k3s_worker_a" {
 
 # K3s worker B (private subnet B)
 resource "aws_instance" "k3s_worker_b" {
-  ami                         = data.aws_ami.debian.id
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.small"
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.preg-private-subnet-b.id
