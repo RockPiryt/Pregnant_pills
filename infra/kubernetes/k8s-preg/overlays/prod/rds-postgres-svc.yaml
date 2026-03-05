@@ -4,4 +4,4 @@ metadata:
   name: postgres-rds
 spec:
   type: ExternalName
-  externalName: ${rds_endpoint}
+  externalName: ${RDS_ENDPOINT}

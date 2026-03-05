@@ -58,7 +58,7 @@ resource "aws_lb_listener" "preg_https" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
-  certificate_arn = aws_acm_certificate.preg_aws_cert.arn
+  certificate_arn = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
 
   default_action {
     type             = "forward"
