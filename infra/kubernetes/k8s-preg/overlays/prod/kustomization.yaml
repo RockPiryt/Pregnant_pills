@@ -8,16 +8,57 @@ namePrefix: prod-
 namespace: preg-prod
 
 patches:
-  - path: patch-app-deployment.yaml
+  - path: patch-deploy-app-baby.yaml
     target:
       kind: Deployment
-      name: pregnant-pills-app
+      name: preg-baby-app
+
+  - path: patch-deploy-app-memo.yaml
+    target:
+      kind: Deployment
+      name: preg-memo-app
   
-  - path: patch-app-service.yaml
+  - path: patch-deploy-app-nutri.yaml
+    target:
+      kind: Deployment
+      name: preg-nutri-app
+  
+  - path: patch-deploy-app-org.yaml
+    target:
+      kind: Deployment
+      name: preg-org-app
+
+  - path: patch-deploy-app-pills.yaml
+    target:
+      kind: Deployment
+      name: preg-pills-app
+  
+  # Patch svc
+  - path: patch-svc-baby.yaml
     target:
       kind: Service
-      name: pregnant-pills-service
+      name: preg-baby-nd-svc-prod
 
+  
+  - path: patch-svc-memo.yaml
+    target:
+      kind: Service
+      name: preg-memo-nd-svc-prod
+  
+  - path: patch-svc-nutri.yaml
+    target:
+      kind: Service
+      name: preg-nutri-nd-svc-prod
+  
+  - path: patch-svc-org.yaml
+    target:
+      kind: Service
+      name: preg-org-nd-svc-prod
+
+  - path: patch-svc-pills.yaml
+    target:
+      kind: Service
+      name: preg-pills-nd-svc-prod
 
 generatorOptions:
   disableNameSuffixHash: true
