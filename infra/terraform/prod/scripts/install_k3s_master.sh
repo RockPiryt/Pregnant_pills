@@ -2,8 +2,9 @@
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive # no questions
-ACM_CERT_ARN="${ACM_CERT_ARN}"
-export ACM_CERT_ARN
+TF_DIR=infra
+export ACM_CERT_ARN=$(terraform -chdir=$TF_DIR output -raw preg_cert_arn)
+export RDS_ENDPOINT=$(terraform -chdir=$TF_DIR output -raw rds_endpoint)
 
 apt-get update -y
 apt-get install -y curl unzip
