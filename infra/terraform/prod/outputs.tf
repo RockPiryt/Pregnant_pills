@@ -9,3 +9,7 @@ output "alb_dns_name" {
 output "rds_endpoint" {
   value = aws_db_instance.preg_postgres.endpoint
 }
+
+output "preg_cert_arn" {
+  value = aws_acm_certificate.preg_aws_cert.arn
+}
