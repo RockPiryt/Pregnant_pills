@@ -17,7 +17,7 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
      ## SSL Settings
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
-    alb.ingress.kubernetes.io/certificate-arn: {{ add arn }}
+    alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
 spec:
   ingressClassName: preg-app-aws-ingress-class # Ingress Class
   rules:

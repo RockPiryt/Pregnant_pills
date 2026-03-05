@@ -2,6 +2,7 @@ resources:
   - ../../base
   - app-cm.yaml
   - ns-preg-prod.yaml
+  - ingress.yaml
 
 namePrefix: prod-
 namespace: preg-prod
@@ -16,6 +17,7 @@ patches:
     target:
       kind: Service
       name: pregnant-pills-service
+
 
 generatorOptions:
   disableNameSuffixHash: true
