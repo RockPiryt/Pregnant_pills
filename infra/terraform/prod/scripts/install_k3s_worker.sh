@@ -1,10 +1,14 @@
 #!/bin/bash
 set -euo pipefail
-export DEBIAN_FRONTEND=noninteractive
+
+export DEBIAN_FRONTEND=noninteractive # no questions
+ACM_CERT_ARN="${ACM_CERT_ARN}"
+export ACM_CERT_ARN
 
 apt-get update -y
 apt-get install -y curl unzip
 apt-get install -y amazon-ssm-agent
+
 systemctl enable amazon-ssm-agent
 systemctl start amazon-ssm-agent
 
