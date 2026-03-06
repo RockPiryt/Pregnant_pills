@@ -13,7 +13,7 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
   DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE }}
-  ECR_NAMESPACE: ${{ vars.ECR_NAMESPACE }}
+  ECR_NAMESPACE: ${{ vars.ECR_REPO}}
 
 jobs:
   build-and-push:
@@ -89,5 +89,5 @@ jobs:
           tags: |
             ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.APP_NAME }}:latest
             ${{ env.DOCKERHUB_NAMESPACE }}/${{ env.APP_NAME }}:${{ github.sha }}
-            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_NAMESPACE }}/${{ env.APP_NAME }}:latest
-            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_NAMESPACE }}/${{ env.APP_NAME }}:${{ github.sha }}
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO}}/${{ env.APP_NAME }}:latest
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO}}/${{ env.APP_NAME }}:${{ github.sha }}
