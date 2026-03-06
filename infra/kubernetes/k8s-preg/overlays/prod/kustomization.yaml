@@ -67,3 +67,9 @@ secretGenerator:
   - name: pregnant-pills-secrets
     envs:
       - .env
+
+configMapGenerator:
+- name: preg-config
+  literals:
+    - ACM_CERT_ARN=${ACM_CERT_ARN}
+    - RDS_ENDPOINT=${RDS_ENDPOINT}
