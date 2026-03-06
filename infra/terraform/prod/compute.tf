@@ -29,7 +29,8 @@ resource "aws_instance" "k3s_master" {
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
     K3S_TOKEN      = var.k3s_token
     MASTER_TLS_SAN = "127.0.0.1"
-    ACM_CERT_ARN = aws_acm_certificate.preg_aws_cert.arn
+    ACM_CERT_ARN   = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
+    RDS_ENDPOINT   = aws_db_instance.preg_postgres.endpoint
   })
 
   tags = { Name = "preg-k3s-master" }
@@ -48,7 +49,6 @@ resource "aws_instance" "k3s_worker_a" {
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
     K3S_TOKEN = var.k3s_token
     MASTER_IP = aws_instance.k3s_master.private_ip
-    ACM_CERT_ARN = aws_acm_certificate.preg_aws_cert.arn
   })
 
   depends_on = [aws_instance.k3s_master]
@@ -69,7 +69,6 @@ resource "aws_instance" "k3s_worker_b" {
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
     K3S_TOKEN = var.k3s_token
     MASTER_IP = aws_instance.k3s_master.private_ip
-    ACM_CERT_ARN = aws_acm_certificate.preg_aws_cert.arn
   })
 
   depends_on = [aws_instance.k3s_master]
