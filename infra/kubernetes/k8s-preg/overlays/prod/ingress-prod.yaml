@@ -51,7 +51,7 @@ spec:
             name: memmory-svc-nodeport
             port:
               number: 80
-      - path: food
+      - path: /food
         pathType: Prefix
         backend:
           service:

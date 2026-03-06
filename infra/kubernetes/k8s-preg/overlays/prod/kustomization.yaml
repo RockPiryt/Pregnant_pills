@@ -2,7 +2,7 @@ resources:
   - ../../base
   - app-cm.yaml
   - ns-preg-prod.yaml
-  - ingress.yaml
+  - ingress-prod.yaml
 
 namePrefix: prod-
 namespace: preg-prod
