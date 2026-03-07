@@ -3,14 +3,12 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-ACM_CERT_ARN="${ACM_CERT_ARN}"
-RDS_ENDPOINT="${RDS_ENDPOINT}"
-
 apt-get update -y
-apt-get install -y curl unzip git amazon-ssm-agent
+apt-get install -y curl unzip git
 
-systemctl enable amazon-ssm-agent
-systemctl start amazon-ssm-agent
+snap list amazon-ssm-agent
+sudo snap start amazon-ssm-agent || true
+sudo snap services amazon-ssm-agent || true
 
 # Install K3s master
 curl -sfL https://get.k3s.io | \
@@ -29,13 +27,19 @@ echo "K3s master is ready."
 # Install kubectl alias
 ln -s /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
-# Clone repo
 cd /opt
-git clone https://github.com/RockPiryt/Pregnant_pills.git
+if [ ! -d /opt/Pregnant_pills ]; then
+  git clone https://github.com/RockPiryt/Pregnant_pills.git
+fi
 
+cat > /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/.env <<EOF
+SECRET_KEY=${SECRET_KEY}
+DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${RDS_ENDPOINT}:${DB_PORT}/${DB_NAME}?sslmode=require
+EOF
+
+chmod 600 /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/.env
 # Deploy manifests
-cd Pregnant_pills/Pregnant_app/infra/kubernetes/k8s-preg/overlays/prod
-
-kubectl apply -k .
+cd /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod
+sudo k3s kubectl apply -k .
 
 echo "Application deployed."
