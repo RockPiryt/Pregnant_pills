@@ -1,12 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+exec > >(tee /var/log/install_k3s_master.log | logger -t user-data -s 2>/dev/console) 2>&1
+
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -y
-apt-get install -y curl unzip git
+apt-get install -y curl unzip git ca-certificates netcat-openbsd
 
-snap list amazon-ssm-agent
+
+snap list amazon-ssm-agent || true
 sudo snap start amazon-ssm-agent || true
 sudo snap services amazon-ssm-agent || true
 
@@ -16,8 +19,7 @@ curl -sfL https://get.k3s.io | \
   K3S_TOKEN="${K3S_TOKEN}" \
   sh -
 
-# Wait for cluster
-until k3s kubectl get node &>/dev/null; do
+until k3s kubectl get node >/dev/null 2>&1; do
   echo "Waiting for K3s master..."
   sleep 5
 done
@@ -25,21 +27,42 @@ done
 echo "K3s master is ready."
 
 # Install kubectl alias
-ln -s /usr/local/bin/k3s /usr/local/bin/kubectl || true
+ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
+echo "=== Preparing repo ==="
+mkdir -p /opt
 cd /opt
+
 if [ ! -d /opt/Pregnant_pills ]; then
   git clone https://github.com/RockPiryt/Pregnant_pills.git
 fi
 
-cat > /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/.env <<EOF
+APP_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod"
+
+if [ ! -d "${APP_DIR}" ]; then
+  echo "ERROR: Directory ${APP_DIR} does not exist"
+  exit 1
+fi
+
+echo "=== Waiting for RDS ==="
+until nc -z "${RDS_ENDPOINT}" "${DB_PORT}"; do
+  echo "Waiting for RDS at ${RDS_ENDPOINT}:${DB_PORT} ..."
+  sleep 5
+done
+
+echo "RDS is reachable."
+
+echo "=== Creating .env ==="
+cat > "${APP_DIR}/.env" <<EOF
 SECRET_KEY=${SECRET_KEY}
 DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${RDS_ENDPOINT}:${DB_PORT}/${DB_NAME}?sslmode=require
 EOF
 
-chmod 600 /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/.env
-# Deploy manifests
-cd /opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod
-sudo k3s kubectl apply -k .
+chmod 600 "${APP_DIR}/.env"
+ls -la "${APP_DIR}"
+
+echo "=== Deploying manifests ==="
+cd "${APP_DIR}"
+k3s kubectl apply -k .
 
 echo "Application deployed."
