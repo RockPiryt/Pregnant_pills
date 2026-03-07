@@ -30,14 +30,14 @@ resource "aws_instance" "k3s_master" {
     K3S_TOKEN      = var.k3s_token
     MASTER_TLS_SAN = "127.0.0.1"
     ACM_CERT_ARN   = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
-    
-    RDS_ENDPOINT   = aws_db_instance.preg_postgres.address
-    DB_NAME         = var.db_name
-    DB_USER         = var.db_user
-    DB_PASSWORD     = var.db_password
-    DB_PORT         = 5432
 
-    SECRET_KEY      = var.secret_key
+    RDS_ENDPOINT = aws_db_instance.preg_postgres.address
+    DB_NAME      = var.db_name
+    DB_USER      = var.db_user
+    DB_PASSWORD  = var.db_password
+    DB_PORT      = 5432
+
+    SECRET_KEY = var.secret_key
   })
 
   tags = { Name = "preg-k3s-master" }

@@ -39,8 +39,8 @@ fi
 
 APP_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod"
 
-if [ ! -d "${APP_DIR}" ]; then
-  echo "ERROR: Directory ${APP_DIR} does not exist"
+if [ ! -d "$APP_DIR" ]; then
+  echo "ERROR: Directory $APP_DIR does not exist"
   exit 1
 fi
 
@@ -53,16 +53,16 @@ done
 echo "RDS is reachable."
 
 echo "=== Creating .env ==="
-cat > "${APP_DIR}/.env" <<EOF
+cat > "$APP_DIR/.env" <<EOF
 SECRET_KEY=${SECRET_KEY}
 DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${RDS_ENDPOINT}:${DB_PORT}/${DB_NAME}?sslmode=require
 EOF
 
-chmod 600 "${APP_DIR}/.env"
-ls -la "${APP_DIR}"
+chmod 600 "$APP_DIR/.env"
+ls -la "$APP_DIR"
 
 echo "=== Deploying manifests ==="
-cd "${APP_DIR}"
+cd "$APP_DIR"
 k3s kubectl apply -k .
 
 echo "Application deployed."
