@@ -64,12 +64,14 @@ generatorOptions:
   disableNameSuffixHash: true
 
 secretGenerator:
-  - name: pregnant-pills-secrets
+  - name: preg-secrets
     envs:
       - .env
 
 configMapGenerator:
 - name: preg-config
   literals:
+    - APP_ENV=production
+    - FLASK_APP=wsgi.py
     - ACM_CERT_ARN=${ACM_CERT_ARN}
     - RDS_ENDPOINT=${RDS_ENDPOINT}

@@ -41,25 +41,25 @@ spec:
             - name: APP_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: preg-memo-config
+                  name: preg-config
                   key: APP_ENV
 
             - name: FLASK_APP
               valueFrom:
                 configMapKeyRef:
-                  name: preg-memo-config
+                  name: preg-config
                   key: FLASK_APP
 
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: preg-memo-secrets
+                  name: preg-secrets
                   key: SECRET_KEY
 
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: preg-memo-secrets
+                  name: preg-secrets
                   key: DATABASE_URL
 
 
