@@ -53,6 +53,15 @@ resource "aws_instance" "k3s_worker_a" {
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
 
+  instance_market_options {
+    market_type = "spot"
+    spot_options {
+      max_price                      = "0.1"  # Max price per hour
+      spot_instance_type             = "one-time"
+      instance_interruption_behavior = "terminate"
+    }
+  }
+
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
     K3S_TOKEN = var.k3s_token
     MASTER_IP = aws_instance.k3s_master.private_ip
@@ -72,6 +81,15 @@ resource "aws_instance" "k3s_worker_b" {
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+
+  instance_market_options {
+    market_type = "spot"
+    spot_options {
+      max_price                      = "0.1"  # Max price per hour
+      spot_instance_type             = "one-time"
+      instance_interruption_behavior = "terminate"
+    }
+  }
 
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
     K3S_TOKEN = var.k3s_token

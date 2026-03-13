@@ -18,6 +18,8 @@ metadata:
      ## SSL Settings
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
     alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
+    # External DNS - For creating a Record Set in Route53
+    external-dns.alpha.kubernetes.io/hostname: preg.paulinakimak.com
 spec:
   ingressClassName: preg-app-aws-ingress-class # Ingress Class
   rules:

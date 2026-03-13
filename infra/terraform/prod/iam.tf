@@ -23,6 +23,29 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+# Add policy (EC2 has necessary Route53 permissions)
+resource "aws_iam_role_policy" "ec2_route53_policy" {
+  name = "EC2Route53Policy"
+  role = aws_iam_role.ec2_ssm_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "route53:ChangeResourceRecordSets",
+          "route53:ListHostedZones",
+          "route53:ListResourceRecordSets",
+          "route53:ListTagsForResource"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
 # Add role to Instance Profile
 resource "aws_iam_instance_profile" "ec2_ssm_profile" {
   name = "preg-ec2-ssm-profile"
