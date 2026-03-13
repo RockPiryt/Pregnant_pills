@@ -1,9 +1,9 @@
-from pregnant_pills_app import db
-from pregnant_pills_app.models import User
-from pregnant_pills_app.users.forms import RegisterUserForm, LoginUserForm
+from app_files import db
+from app_files.models import User
+from app_files.users.forms import RegisterUserForm, LoginUserForm
 from flask import redirect, render_template, url_for, Blueprint, flash
 
-from pregnant_pills_app import login_manager
+from app_files import login_manager
 from flask_login import login_user, current_user, login_required, logout_user
 from functools import wraps
 
@@ -35,8 +35,8 @@ def load_user(user_id):
     return User.query.get(int(user_id)) #add current_user.id to cookie
 
 ################## USER VIEWS####################
-@users_blueprint.route('/register-pregnant-user', methods=['GET', 'POST'])
-def register_pregnant_user():
+@users_blueprint.route('/register-user', methods=['GET', 'POST'])
+def register_user():
     '''Add new user to database'''
 
     # Create list with pregnant weeks
@@ -62,7 +62,7 @@ def register_pregnant_user():
         existing_user = User.query.filter_by(email=email_form).first()
         if existing_user:
             flash("You have already signed up with that email, log in please! ")
-            return redirect(url_for('users.login_pregnant_user'))
+            return redirect(url_for('users.login_user'))
         
         # Hash and salt password
         new_user = User(
@@ -83,8 +83,8 @@ def register_pregnant_user():
     return render_template('register_user.html', html_form=register_form)
 
 
-@users_blueprint.route('/login-pregnant-user', methods=['GET', 'POST'])
-def login_pregnant_user():
+@users_blueprint.route('/login-user', methods=['GET', 'POST'])
+def login_user():
     '''Login existing user'''
 
     #Create form to login user
@@ -100,7 +100,7 @@ def login_pregnant_user():
         #If user with that email doesn't exist in database
         if not user_db:
             flash("Invalid credentials. Please try again.")
-            return redirect(url_for('users.login_pregnant_user'))
+            return redirect(url_for('users.login_user'))
         #Check passwords
         if user_db.check_password(password_login_form):
         #Login user if the user exist in db and user gives correct password
@@ -108,7 +108,7 @@ def login_pregnant_user():
             return redirect(url_for('users.user_info'))
         else:
             flash("Invalid credentials. Please try again.")
-            return redirect(url_for('users.login_pregnant_user'))
+            return redirect(url_for('users.login_user'))
         
     return render_template('login_user.html', html_form=login_form)
 
@@ -122,7 +122,7 @@ def user_info():
 
 @users_blueprint.route('/logout')
 @login_required
-def logout_pregnant_user():
+def logout_user():
     '''Logout user'''
     logout_user()
     return redirect(url_for('index'))
