@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preg-nutri-nd-svc-prod
+  name: preg-nutri-svc
   labels:
     app: preg-nutri
 spec:

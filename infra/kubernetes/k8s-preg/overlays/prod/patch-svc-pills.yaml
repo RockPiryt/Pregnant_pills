@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preg-pills-nd-svc-prod
+  name: preg-pills-svc
   labels:
     app: preg-pills
 spec:

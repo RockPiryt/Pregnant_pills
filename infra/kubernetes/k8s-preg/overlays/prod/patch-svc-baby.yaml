@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preg-baby-nd-svc-prod
+  name: preg-baby-svc
   labels:
     app: preg-baby
 spec:

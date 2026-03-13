@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preg-org-nd-svc-prod
+  name: preg-org-svc
   labels:
     app: preg-org
 spec:

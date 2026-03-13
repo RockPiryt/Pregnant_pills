@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: preg-memo-nd-svc-prod
+  name: preg-memo-svc
   labels:
     app: preg-memo
 spec:
