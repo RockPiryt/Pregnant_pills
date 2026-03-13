@@ -2,35 +2,36 @@
 
 {% block content %}
 <div class="htop">
-    <h1>Welcome to Pregnant Baby App</h1>
+    <h1>Welcome to Pregnant Memo App</h1>
     <hr>
 
     <p class="mx-auto info">
-        Pregnant Baby App helps you monitor your baby's development
-        throughout pregnancy. Track fetal movements, follow weekly
-        development updates, and keep a structured activity journal.
-        The application provides insights into what is happening with
-        both mother and baby at each stage of pregnancy.
+        Pregnant Memo App allows you to document and preserve your pregnancy journey.
+        Create a structured journal, store ultrasound images, and build a visual
+        timeline of your pregnancy.
     </p>
 
     <p class="mx-auto info">
-        You can use the kick counter to monitor daily activity,
-        log baby movements in a journal, and receive alerts if
-        decreased movement is detected. The weekly development
-        guide explains key milestones and compares your baby's
-        size to common fruits or objects for easier visualization.
+        You can upload and organize belly photos to generate a chronological
+        progression timeline, write personal journal entries, and securely
+        store important medical images such as ultrasound scans.
+        All records are organized and accessible in one place.
     </p>
 
-    <h3>Register or Login to start tracking baby development</h3>
+    <h3>Register or Login to start saving your pregnancy memories</h3>
 
     <a href="{{ url_for('users.register_user') }}">
-        <input type="submit" value="Register"
-               class="btn btn-lg btn_start" id="btn_start">
+        <input type="submit"
+               value="Register"
+               class="btn btn-lg btn_start"
+               id="btn_start">
     </a>
 
     <a href="{{ url_for('users.login_user') }}">
-        <input type="submit" value="Login"
-               class="btn btn-lg btn_start" id="btn_start">
+        <input type="submit"
+               value="Login"
+               class="btn btn-lg btn_start"
+               id="btn_start">
     </a>
 </div>
 {% endblock %}
