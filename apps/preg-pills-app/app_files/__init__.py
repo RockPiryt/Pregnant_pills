@@ -23,10 +23,10 @@ def create_app():
     }
 
     # Register Blueprints
-    from pregnant_pills_app.users.views import users_blueprint
-    from pregnant_pills_app.pills.views import pills_blueprint
-    from pregnant_pills_app.errors.views import error_blueprint
-    from pregnant_pills_app.report_pdf.views import report_pdf_blueprint
+    from app_files.users.views import users_blueprint
+    from app_files.pills.views import pills_blueprint
+    from app_files.errors.views import error_blueprint
+    from app_files.report_pdf.views import report_pdf_blueprint
 
     app.register_blueprint(users_blueprint, url_prefix="/pregnant-user")
     app.register_blueprint(pills_blueprint, url_prefix="/pregnant-pill")
