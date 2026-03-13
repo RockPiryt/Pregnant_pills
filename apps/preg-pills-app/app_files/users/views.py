@@ -1,9 +1,9 @@
-from pregnant_pills_app import db
-from pregnant_pills_app.models import User
-from pregnant_pills_app.users.forms import RegisterUserForm, LoginUserForm
+from app_files import db
+from app_files.models import User
+from app_files.users.forms import RegisterUserForm, LoginUserForm
 from flask import redirect, render_template, url_for, Blueprint, flash
 
-from pregnant_pills_app import login_manager
+from app_files import login_manager
 from flask_login import login_user, current_user, login_required, logout_user
 from functools import wraps
 

@@ -2,8 +2,8 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import pytest
-from pregnant_pills_app import app, db
-from pregnant_pills_app.models import User
+from app_files import app, db
+from app_files.models import User
 from config import config_dict
 
 

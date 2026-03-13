@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from pregnant_pills_app import db
+from app_files import db
 
 
 class User(UserMixin, db.Model):

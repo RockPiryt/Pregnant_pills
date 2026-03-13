@@ -1,5 +1,5 @@
 from flask_login import login_user
-from pregnant_pills_app.models import Pill, User
+from app_files.models import Pill, User
 
 def test_category_pill_get(client, new_user):
     with client.session_transaction() as sess:

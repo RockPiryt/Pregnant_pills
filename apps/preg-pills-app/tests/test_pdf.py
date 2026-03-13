@@ -1,4 +1,4 @@
-from pregnant_pills_app.report_pdf.views import PDF_report
+from app_files.report_pdf.views import PDF_report
 
 def test_pdf_generation(tmp_path, new_user):
     file_path = tmp_path / "test.pdf"

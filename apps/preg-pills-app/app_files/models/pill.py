@@ -1,4 +1,4 @@
-from pregnant_pills_app import db
+from app_files import db
 from .enums import PillType
 
 

@@ -2,7 +2,7 @@
 from flask import Blueprint, send_file
 from io import BytesIO
 from fpdf import FPDF
-from pregnant_pills_app.models import User, Pill
+from app_files.models import User, Pill
 
 #------------------------------Register Blueprint
 report_pdf_blueprint = Blueprint("report_pdf", __name__, template_folder="templates/report_pdf")

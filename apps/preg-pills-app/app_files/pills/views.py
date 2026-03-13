@@ -1,7 +1,7 @@
-from pregnant_pills_app import db
-from pregnant_pills_app.models import Pill
+from app_files import db
+from app_files.models import Pill
 from flask import flash, redirect, render_template, url_for, Blueprint, request
-from pregnant_pills_app.pills.forms import  CategoryPillForm, PillForm
+from app_files.pills.forms import  CategoryPillForm, PillForm
 from flask_login import login_required, current_user
 
 
