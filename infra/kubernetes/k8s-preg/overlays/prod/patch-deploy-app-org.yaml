@@ -6,6 +6,8 @@ spec:
   replicas: 2
   template:
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
       containers:
         - name: preg-org-container
           resources:
