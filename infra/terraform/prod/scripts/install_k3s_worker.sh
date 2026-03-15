@@ -16,4 +16,10 @@ curl -sfL https://get.k3s.io | \
   K3S_TOKEN="${K3S_TOKEN}" \
   sh -
 
-echo "K3s worker joined the cluster."
+# Adding worker label
+NODE_NAME=$(hostname)
+until kubectl get node "${NODE_NAME}" >/dev/null 2>&1; do
+  sleep 5
+done
+
+kubectl label node "${NODE_NAME}" node-role.kubernetes.io/worker=true --overwrite
