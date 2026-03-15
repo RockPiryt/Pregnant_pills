@@ -1,6 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: preg-pills-app
+  name: preg-baby-app
 spec:
-  replicas: 3
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: preg-baby-container
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "300Mi"

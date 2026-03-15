@@ -3,4 +3,15 @@ kind: Deployment
 metadata:
   name: preg-pills-app
 spec:
-  replicas: 3
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: preg-pills-container
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "300Mi"
