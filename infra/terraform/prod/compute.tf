@@ -46,7 +46,7 @@ resource "aws_instance" "k3s_master" {
 # K3s worker A (private subnet A)
 resource "aws_instance" "k3s_worker_a" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t3.small"
+  instance_type               = "t3a.medium"
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
 
@@ -56,7 +56,6 @@ resource "aws_instance" "k3s_worker_a" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price                      = "0.1"  # Max price per hour
       spot_instance_type             = "one-time"
       instance_interruption_behavior = "terminate"
     }
@@ -75,7 +74,7 @@ resource "aws_instance" "k3s_worker_a" {
 # K3s worker B (private subnet B)
 resource "aws_instance" "k3s_worker_b" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t3.small"
+  instance_type               = "t3a.medium"
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.preg-private-subnet-b.id
 
@@ -85,7 +84,6 @@ resource "aws_instance" "k3s_worker_b" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price                      = "0.1"  # Max price per hour
       spot_instance_type             = "one-time"
       instance_interruption_behavior = "terminate"
     }
