@@ -18,8 +18,8 @@ curl -sfL https://get.k3s.io | \
 
 # Adding worker label
 NODE_NAME=$(hostname)
-until kubectl get node "${NODE_NAME}" >/dev/null 2>&1; do
+until kubectl get node "$${NODE_NAME}" >/dev/null 2>&1; do
   sleep 5
 done
 
-kubectl label node "${NODE_NAME}" node-role.kubernetes.io/worker=true --overwrite
+kubectl label node "$${NODE_NAME}" node-role.kubernetes.io/worker=true --overwrite
