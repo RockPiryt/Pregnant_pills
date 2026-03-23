@@ -56,3 +56,56 @@ docker system prune -a
 kind create cluster --name preg-local
 kubectl config get-contexts
 kubectl config use-context kind-preg-local
+----------------------
+
+terraform state list - lista utworzonych rzeczy przez terraform
+terraform destroy -target=aws_instance.app
+
+terraform plan -destroy \
+  -target=aws_nat_gateway.preg_nat_a \
+  -target=aws_nat_gateway.preg_nat_b \
+  -target=aws_eip.preg_nat_eip_a \
+  -target=aws_eip.preg_nat_eip_b \
+  -target=aws_lb.preg_alb \
+  -target=aws_db_instance.preg_postgres \
+  -target=aws_instance.k3s_master \
+  -target=aws_instance.k3s_worker_a \
+  -target=aws_instance.k3s_worker_b
+
+
+terraform destroy \
+  -target=aws_nat_gateway.preg_nat_a \
+  -target=aws_nat_gateway.preg_nat_b \
+  -target=aws_eip.preg_nat_eip_a \
+  -target=aws_eip.preg_nat_eip_b \
+  -target=aws_lb.preg_alb \
+  -target=aws_db_instance.preg_postgres \
+  -target=aws_instance.k3s_master \
+  -target=aws_instance.k3s_worker_a \
+  -target=aws_instance.k3s_worker_b
+------------------------------------------------------------------
+  Problem z scheduler jak pending
+  Wredy brak logow
+
+Znalezienie przyczyny:
+ 
+ Events:
+  Type     Reason            Age    From               Message
+  ----     ------            ----   ----               -------
+  Warning  FailedScheduling  3m45s  default-scheduler  0/1 nodes are available: 1 node(s) didn't match Pod's node affinity/selector. no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+
+
+  Sprawdzić nodeSelector i node labels
+  node-role.kubernetes.io/worker: "true"
+  kubectl get nodes --show-labels
+
+
+  Przydzielenie podów do nodów
+  kubectl -n preg-prod get pods -o wide
+
+  Spr nazw nodów
+kubectl get nodes
+kubectl label node preg-local-control-plane node-role.kubernetes.io/worker=true
+
+Dokładny opis nodów
+ kubectl describe nodeskubectl -n preg-prod describe pod prod-preg-baby-app-75b8f4499f-v6t88
