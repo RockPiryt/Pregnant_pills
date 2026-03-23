@@ -1,13 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+exec > >(tee /var/log/install_k3s_worker.log | logger -t user-data -s 2>/dev/console) 2>&1
+
 export DEBIAN_FRONTEND=noninteractive# no questions
 
 apt-get update -y
-apt-get install -y curl unzip amazon-ssm-agent
+apt-get install -y curl unzip ca-certificates
 
-systemctl enable amazon-ssm-agent
-systemctl start amazon-ssm-agent
+# SSM (optional)
+snap start amazon-ssm-agent || true
 
 # Install K3s worker with worker label already set
 curl -sfL https://get.k3s.io | \
