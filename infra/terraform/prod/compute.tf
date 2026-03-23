@@ -52,6 +52,9 @@ resource "aws_instance" "k3s_worker_a" {
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  
+  user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
+
 
   instance_market_options {
     market_type = "spot"
@@ -80,6 +83,8 @@ resource "aws_instance" "k3s_worker_b" {
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+
+  user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
 
   instance_market_options {
     market_type = "spot"
