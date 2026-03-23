@@ -73,4 +73,3 @@ configMapGenerator:
     - APP_ENV=production
     - FLASK_APP=wsgi.py
     - ACM_CERT_ARN=${ACM_CERT_ARN}
-    - RDS_ENDPOINT=${RDS_ENDPOINT}
