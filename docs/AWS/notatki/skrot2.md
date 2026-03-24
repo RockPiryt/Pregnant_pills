@@ -109,3 +109,7 @@ kubectl label node preg-local-control-plane node-role.kubernetes.io/worker=true
 
 Dokładny opis nodów
  kubectl describe nodeskubectl -n preg-prod describe pod prod-preg-baby-app-75b8f4499f-v6t88
+
+ -----------------
+ gdy chce spr czy sie popranie wygeneruja pliki
+ kustomize build . 
