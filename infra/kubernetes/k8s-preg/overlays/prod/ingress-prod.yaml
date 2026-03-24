@@ -7,6 +7,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: ssl-preg-ingress-rules # Load Balancer Name
     alb.ingress.kubernetes.io/scheme: internet-facing # or internal
+    alb.ingress.kubernetes.io/target-type: instance
     # Health Check Settings
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port  
@@ -17,7 +18,9 @@ metadata:
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
      ## SSL Settings
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
-    alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # Automatically disover SSL Certificate from AWS Certificate Manager Service using spec.rules.host
+    # alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
     # External DNS - For creating a Record Set in Route53
     external-dns.alpha.kubernetes.io/hostname: preg.paulinakimak.com
 spec:
