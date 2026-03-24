@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+        node-role: worker
       containers:
         - name: preg-pills-container
           resources:
