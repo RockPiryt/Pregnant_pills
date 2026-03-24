@@ -29,35 +29,35 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: baby-svc-nodeport
+            name: prod-preg-baby-svc
             port:
               number: 80  
-      - path: /health
+      - path: /pills
         pathType: Prefix
         backend:
           service:
-            name: health-svc-nodeport
+            name: prod-preg-pills-svc
             port:
               number: 80
-      - path: /finance # live changes
+      - path: /org
         pathType: Prefix
         backend:
           service:
-            name: finance-svc-nodeport
+            name: prod-preg-org-svc
             port:
               number: 80
-      - path: /memory
+      - path: /memo
         pathType: Prefix
         backend:
           service:
-            name: memmory-svc-nodeport
+            name: prod-preg-memo-svc
             port:
               number: 80
-      - path: /food
+      - path: /nutri
         pathType: Prefix
         backend:
           service:
-            name: food-svc-nodeport
+            name: prod-preg-nutri-svc
             port:
               number: 80
       # main app
@@ -65,6 +65,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: pills-nodeport-svc-prod
+            name: prod-preg-pills-svc
             port:
               number: 80 
