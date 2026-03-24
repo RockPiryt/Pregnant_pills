@@ -23,7 +23,8 @@ metadata:
 spec:
   ingressClassName: preg-app-aws-ingress-class # Ingress Class
   rules:
-  - http:
+  - host: preg.paulinakimak.com
+    http:
       paths:
       - path: /baby
         pathType: Prefix
