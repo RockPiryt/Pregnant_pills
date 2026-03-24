@@ -9,4 +9,5 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: standard  
+  storageClassName: ""
+  volumeName: sqlite-pv  # wiążemy do konkretnego PV

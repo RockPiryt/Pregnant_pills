@@ -1,15 +1,32 @@
 resources:
   - ../../base
-  - postgres-db-secret.yaml
-  - postgres-db-deployment.yaml
-  - postgres-db-service.yaml
+  - app-secret.yaml
+  - app-cm.yaml
+  - ingress.yaml
   - ns-preg-test.yaml
+  - postgres-db-deployment.yaml
+  - postgres-db-pv.yaml
+  - postgres-db-pvc.yaml
+  - postgres-db-secret.yaml
+  - postgres-db-service.yaml
 
 namePrefix: test-
 namespace: preg-test
 
 patches:
-  - path: patch-app-deployment.yaml
+  - path: patch-app-deployment-postgres.yaml
     target:
       kind: Deployment
       name: pregnant-pills-app
+
+configMapGenerator:
+  - name: postgres-reset-sql
+    files:
+      - db/clean.sql
+      - db/seed.sql
+  - name: postgres-reset-script
+    files:
+      - db/db-reset.sh
+
+generatorOptions:
+  disableNameSuffixHash: true

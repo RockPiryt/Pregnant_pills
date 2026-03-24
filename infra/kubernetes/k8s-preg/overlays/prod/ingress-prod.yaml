@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-preg
+  labels:
+    app: preg
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: ssl-preg-ingress-rules # Load Balancer Name
+    alb.ingress.kubernetes.io/scheme: internet-facing # or internal
+    # Health Check Settings
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port  
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+     ## SSL Settings
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
+    # External DNS - For creating a Record Set in Route53
+    external-dns.alpha.kubernetes.io/hostname: preg.paulinakimak.com
+spec:
+  ingressClassName: preg-app-aws-ingress-class # Ingress Class
+  rules:
+  - http:
+      paths:
+      - path: /baby
+        pathType: Prefix
+        backend:
+          service:
+            name: baby-svc-nodeport
+            port:
+              number: 80  
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: health-svc-nodeport
+            port:
+              number: 80
+      - path: /finance # live changes
+        pathType: Prefix
+        backend:
+          service:
+            name: finance-svc-nodeport
+            port:
+              number: 80
+      - path: /memory
+        pathType: Prefix
+        backend:
+          service:
+            name: memmory-svc-nodeport
+            port:
+              number: 80
+      - path: /food
+        pathType: Prefix
+        backend:
+          service:
+            name: food-svc-nodeport
+            port:
+              number: 80
+      # main app
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pills-nodeport-svc-prod
+            port:
+              number: 80 

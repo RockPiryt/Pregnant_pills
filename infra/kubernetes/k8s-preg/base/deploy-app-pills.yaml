@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preg-pills-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preg-pills
+  template:
+    metadata:
+      labels:
+        app: preg-pills
+    spec:
+      containers:
+        - name: preg-pills-container
+          image: rockpiryt/preg-pills-app:latest
+          
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          
+          ports:
+            - containerPort: 8080
+          
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 12
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+            
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-config
+                  key: APP_ENV
+
+            - name: FLASK_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: preg-config
+                  key: FLASK_APP
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: preg-secrets
+                  key: SECRET_KEY
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: preg-secrets
+                  key: DATABASE_URL
+
+

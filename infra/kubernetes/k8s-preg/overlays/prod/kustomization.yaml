@@ -1,18 +1,75 @@
 resources:
   - ../../base
-  - rds-db-secret.yaml
   - ns-preg-prod.yaml
+  - ingress-prod.yaml
 
 namePrefix: prod-
 namespace: preg-prod
 
 patches:
-  - path: patch-app-deployment.yaml
+  - path: patch-deploy-app-baby.yaml
     target:
       kind: Deployment
-      name: pregnant-pills-app
+      name: preg-baby-app
+
+  - path: patch-deploy-app-memo.yaml
+    target:
+      kind: Deployment
+      name: preg-memo-app
   
-  - path: patch-app-service.yaml
+  - path: patch-deploy-app-nutri.yaml
+    target:
+      kind: Deployment
+      name: preg-nutri-app
+  
+  - path: patch-deploy-app-org.yaml
+    target:
+      kind: Deployment
+      name: preg-org-app
+
+  - path: patch-deploy-app-pills.yaml
+    target:
+      kind: Deployment
+      name: preg-pills-app
+  
+  # Patch svc
+  - path: patch-svc-baby.yaml
     target:
       kind: Service
-      name: pregnant-pills-service
+      name: preg-baby-svc
+
+  
+  - path: patch-svc-memo.yaml
+    target:
+      kind: Service
+      name: preg-memo-svc
+  
+  - path: patch-svc-nutri.yaml
+    target:
+      kind: Service
+      name: preg-nutri-svc
+  
+  - path: patch-svc-org.yaml
+    target:
+      kind: Service
+      name: preg-org-svc
+
+  - path: patch-svc-pills.yaml
+    target:
+      kind: Service
+      name: preg-pills-svc
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: preg-secrets
+    envs:
+      - .env
+
+configMapGenerator:
+- name: preg-config
+  literals:
+    - APP_ENV=production
+    - FLASK_APP=wsgi.py
+    - ACM_CERT_ARN=${ACM_CERT_ARN}
