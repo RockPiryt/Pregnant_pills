@@ -113,3 +113,85 @@ Dokładny opis nodów
  -----------------
  gdy chce spr czy sie popranie wygeneruja pliki
  kustomize build . 
+ ---------
+ 1. Czy AWS Load Balancer Controller w ogóle działa
+kubectl get pods -n kube-system
+kubectl get deployment -n kube-system
+i potem:
+kubectl logs -n kube-system deployment/aws-load-balancer-controller
+
+2. Czy Ingress w ogóle został przyjęty przez kontroler (ALB DNS zobacze przez Kubernetes:)
+kubectl get ingress -n preg-prod
+kubectl describe ingress -n preg-prod ingress-preg
+
+
+-----------------
+dostep do poda bezposrednio
+kubectl -n preg-prod port-forward svc/prod-preg-baby-svc 8080:80
+
+bo bez svc/ albo pod/ kubectl próbował potraktować to jak pod, stąd:
+
+curl -i http://localhost:8080/
+curl -i http://localhost:8080/health
+na ec2 i zadziała
+
+
+-------------
+reczne dodanie noda do clustra
+curl -sfL https://get.k3s.io | \
+  K3S_URL="https://10.0.27.3:6443" \
+  K3S_TOKEN="pregnant-pills-token" \
+  sh -
+
+-----------------------------------------------------
+env zawiera sciezke do lokalnej db a nie aws#
+
+w compute
+user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
+  K3S_TOKEN      = var.k3s_token
+  MASTER_TLS_SAN = "127.0.0.1"
+  ACM_CERT_ARN   = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
+  SECRET_KEY     = var.secret_key
+  DATABASE_URL   = "postgresql://${var.db_user}:${var.db_password}@${aws_db_instance.preg_postgres.address}:5432/${var.db_name}?sslmode=require"
+})
+
+---------------
+terraform state list - lista utworzonych rzeczy przez terraform
+terraform destroy -target=aws_instance.app
+
+terraform plan -destroy \
+  -target=aws_nat_gateway.preg_nat_a \
+  -target=aws_nat_gateway.preg_nat_b \
+  -target=aws_eip.preg_nat_eip_a \
+  -target=aws_eip.preg_nat_eip_b \
+  -target=aws_lb.preg_alb \
+  -target=aws_db_instance.preg_postgres \
+  -target=aws_instance.k3s_master \
+  -target=aws_instance.k3s_worker_a \
+  -target=aws_instance.k3s_worker_b
+
+
+terraform destroy \
+  -target=aws_nat_gateway.preg_nat_a \
+  -target=aws_nat_gateway.preg_nat_b \
+  -target=aws_eip.preg_nat_eip_a \
+  -target=aws_eip.preg_nat_eip_b \
+  -target=aws_lb.preg_alb \
+  -target=aws_db_instance.preg_postgres \
+  -target=aws_instance.k3s_master \
+  -target=aws_instance.k3s_worker_a \
+  -target=aws_instance.k3s_worker_b
+
+
+  Główne kosztowe zasoby
+    • aws_db_instance.preg_postgres 
+    • aws_instance.k3s_master 
+    • aws_instance.k3s_worker_a 
+    • aws_instance.k3s_worker_b 
+    • aws_lb.preg_alb 
+    • aws_nat_gateway.preg_nat_a 
+    • aws_nat_gateway.preg_nat_b 
+    • aws_eip.preg_nat_eip_a 
+    • aws_eip.preg_nat_eip_b 
+
+    
