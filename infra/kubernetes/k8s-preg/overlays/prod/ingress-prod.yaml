@@ -30,35 +30,35 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-baby-svc
+            name: preg-baby-svc
             port:
               number: 80  
       - path: /pills
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-pills-svc
+            name: preg-pills-svc
             port:
               number: 80
       - path: /org
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-org-svc
+            name: preg-org-svc
             port:
               number: 80
       - path: /memo
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-memo-svc
+            name: preg-memo-svc
             port:
               number: 80
       - path: /nutri
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-nutri-svc
+            name: preg-nutri-svc
             port:
               number: 80
       # main app
@@ -66,6 +66,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: prod-preg-pills-svc
+            name: preg-pills-svc
             port:
               number: 80 
