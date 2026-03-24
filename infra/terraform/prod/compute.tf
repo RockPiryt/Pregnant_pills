@@ -104,21 +104,6 @@ resource "aws_instance" "k3s_worker_b" {
   tags = { Name = "preg-k3s-worker-b" }
 }
 
-
-# Attach worker A  node to target group
-resource "aws_lb_target_group_attachment" "worker_a" {
-  target_group_arn = aws_lb_target_group.preg_tg.arn
-  target_id        = aws_instance.k3s_worker_a.id
-  port             = 30080
-}
-
-# Attach worker B node to target group
-resource "aws_lb_target_group_attachment" "worker_b" {
-  target_group_arn = aws_lb_target_group.preg_tg.arn
-  target_id        = aws_instance.k3s_worker_b.id
-  port             = 30080
-}
-
 # RDS PostgreSQL
 resource "aws_db_instance" "preg_postgres" {
   identifier        = "preg-postgres"
