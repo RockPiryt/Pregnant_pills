@@ -16,6 +16,7 @@ sudo snap services amazon-ssm-agent || true
 # Install K3s master with taint so regular workloads are not scheduled here
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_EXEC="server \
+    --disable traefik \
     --write-kubeconfig-mode 644 \
     --tls-san ${MASTER_TLS_SAN} \
     --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule" \
