@@ -12,7 +12,11 @@ resource "aws_subnet" "preg-public-subnet-a" {
   availability_zone       = "eu-west-1a"
   map_public_ip_on_launch = true
 
-  tags = { Name = "preg-public-subnet-a" }
+  tags = {
+    Name                                   = "preg-public-subnet-a"
+    "kubernetes.io/role/elb"               = "1"
+    "kubernetes.io/cluster/preg-k3s-prod"  = "shared"
+  }
 }
 
 # PRIVATE subnet A
@@ -22,7 +26,11 @@ resource "aws_subnet" "preg-private-subnet-a" {
   cidr_block              = cidrsubnet(aws_vpc.preg-vpc.cidr_block, 4, 1)
   map_public_ip_on_launch = false
 
-  tags = { Name = "preg-private-subnet-a" }
+  tags = {
+    Name                                   = "preg-private-subnet-a"
+    "kubernetes.io/role/internal-elb"      = "1"
+    "kubernetes.io/cluster/preg-k3s-prod"  = "shared"
+  }
 }
 
 # PUBLIC subnet B (ALB, second AZ)
@@ -32,7 +40,11 @@ resource "aws_subnet" "preg-public-subnet-b" {
   availability_zone       = "eu-west-1b"
   map_public_ip_on_launch = true
 
-  tags = { Name = "preg-public-subnet-b" }
+  tags = {
+    Name                                   = "preg-public-subnet-b"
+    "kubernetes.io/role/elb"               = "1"
+    "kubernetes.io/cluster/preg-k3s-prod"  = "shared"
+  }
 }
 
 # PRIVATE subnet B (worker/RDS, second AZ)
@@ -42,7 +54,11 @@ resource "aws_subnet" "preg-private-subnet-b" {
   availability_zone       = "eu-west-1b"
   map_public_ip_on_launch = false
 
-  tags = { Name = "preg-private-subnet-b" }
+  tags = {
+    Name                                   = "preg-private-subnet-b"
+    "kubernetes.io/role/internal-elb"      = "1"
+    "kubernetes.io/cluster/preg-k3s-prod"  = "shared"
+  }
 }
 # Internet Gateway public
 resource "aws_internet_gateway" "igw-preg" {
