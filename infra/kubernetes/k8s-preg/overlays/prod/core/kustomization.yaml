@@ -1,5 +1,5 @@
 resources:
-  - ../../base
+  - ../../../base
   - ns-preg-prod.yaml
   - external-dns.yaml
 
