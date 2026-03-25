@@ -24,7 +24,7 @@ resource "aws_instance" "k3s_master" {
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
 
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
     K3S_TOKEN      = var.k3s_token
@@ -52,7 +52,7 @@ resource "aws_instance" "k3s_worker_a" {
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
   
   user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
 
@@ -83,7 +83,7 @@ resource "aws_instance" "k3s_worker_b" {
   subnet_id                   = aws_subnet.preg-private-subnet-b.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
 
   user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
 
