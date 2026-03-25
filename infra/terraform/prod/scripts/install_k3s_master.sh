@@ -29,6 +29,25 @@ done
 
 echo "K3s master is ready."
 
+echo "=== Installing Helm ==="
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update
+
+echo "=== Installing AWS Load Balancer Controller ==="
+kubectl create namespace kube-system --dry-run=client -o yaml | kubectl apply -f -
+
+helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=preg-k3s-prod \
+  --set serviceAccount.create=true \
+  --set region="${AWS_REGION}" \
+  --set vpcId="${VPC_ID}"
+
+echo "=== Waiting for AWS Load Balancer Controller ==="
+kubectl rollout status deployment/aws-load-balancer-controller -n kube-system --timeout=180s
+
 # Install kubectl alias
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
