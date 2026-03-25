@@ -22,13 +22,12 @@ resource "aws_security_group" "k3s_nodes_sg" {
     self        = true
   }
 
-  # Allow ALB to access NodePort exposed by Kubernetes service
   ingress {
-    description     = "Allow ALB to access NodePort 30080"
-    from_port       = 30080
-    to_port         = 30080
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_preg.id]
+    description = "Allow NodePort traffic from within VPC"
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.preg-vpc.cidr_block]
   }
 
   # Allow outbound internet access (via NAT Gateway). Required for Docker Hub pulls, OS updates, etc.
