@@ -24,7 +24,7 @@ metadata:
     # External DNS - For creating a Record Set in Route53
     external-dns.alpha.kubernetes.io/hostname: preg.paulinakimak.com
 spec:
-  ingressClassName: preg-app-aws-ingress-class # Ingress Class
+  ingressClassName: prod-preg-app-aws-ingress-class # Ingress Class
   rules:
   - host: preg.paulinakimak.com
     http:
