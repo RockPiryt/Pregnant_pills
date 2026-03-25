@@ -29,8 +29,9 @@ resource "aws_instance" "k3s_master" {
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
     K3S_TOKEN      = var.k3s_token
     MASTER_TLS_SAN = "127.0.0.1"
-    ACM_CERT_ARN   = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
-
+    AWS_REGION = var.region
+    VPC_ID     = aws_vpc.preg-vpc.id
+    
     RDS_ENDPOINT = aws_db_instance.preg_postgres.address
     DB_NAME      = var.db_name
     DB_USER      = var.db_user
