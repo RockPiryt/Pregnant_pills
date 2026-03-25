@@ -1,8 +1,6 @@
 resources:
   - ../../base
   - ns-preg-prod.yaml
-  - ingress-class.yaml
-  - ingress-prod.yaml
   - external-dns.yaml
 
 namePrefix: prod-
