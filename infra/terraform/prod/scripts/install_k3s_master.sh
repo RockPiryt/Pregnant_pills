@@ -29,6 +29,9 @@ done
 
 echo "K3s master is ready."
 
+# Install kubectl alias
+ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
+
 echo "=== Installing Helm ==="
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
@@ -48,8 +51,6 @@ helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-contro
 echo "=== Waiting for AWS Load Balancer Controller ==="
 kubectl rollout status deployment/aws-load-balancer-controller -n kube-system --timeout=180s
 
-# Install kubectl alias
-ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
 echo "=== Preparing repo ==="
 mkdir -p /opt
