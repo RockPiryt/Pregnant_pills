@@ -23,15 +23,20 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+# Existing IAM policy for AWS Load Balancer Controller
+data "aws_iam_policy" "aws_load_balancer_controller" {
+  name = "AWSLoadBalancerControllerIAMPolicy"
+}
+
 # Allow cluster nodes to manage AWS load balancers via AWS Load Balancer Controller
 resource "aws_iam_role_policy_attachment" "ec2_alb_controller" {
   role       = aws_iam_role.ec2_node_role.name
-  policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
+  policy_arn = data.aws_iam_policy.aws_load_balancer_controller.arn
 }
 
 # Allow ExternalDNS to manage Route53 DNS records
 resource "aws_iam_role_policy" "ec2_route53_policy" {
-  name = "EC2Route53Policy"
+  name = "ExternalDNSRoute53Policy"
   role = aws_iam_role.ec2_node_role.id
 
   policy = jsonencode({
