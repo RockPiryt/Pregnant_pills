@@ -29,7 +29,12 @@ done
 
 echo "K3s master is ready."
 
-# Install kubectl alias
+# Make kubeconfig available to kubectl/helm
+mkdir -p /root/.kube
+cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+chmod 600 /root/.kube/config
+export KUBECONFIG=/root/.kube/config
+
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
 echo "=== Installing Helm ==="
