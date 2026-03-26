@@ -13,7 +13,6 @@ The system is designed to evolve toward distributed deployment in Kubernetes env
 * [Overview](#overview)
 * [Architecture Focus](#architecture-focus)
 * [Technology Stack](#technology-stack)
-* [Previews](#Previews)
 * [Deployment Strategies](#deployment-Sstrategies)
 * [Deployment Variants](#deployment_variants)
 * [Setup](#setup)
@@ -71,7 +70,7 @@ Monitor pregnancy body changes.
 - Charts and trends
 
 → See module documentation:  
-[Preg Health App Docs](apps/preg-health-app/README.md)
+[Preg Health App Docs](apps/preg-pills-app/pills_readme.md)
 
 ### Nutrition Module - Pregnant Food App 
 Monitor diet and ensure safe nutritional intake.
@@ -82,7 +81,7 @@ Monitor diet and ensure safe nutritional intake.
 - Vitamin reminders (folic acid, iron)
 
 → See module documentation:  
-[Preg Nutri App Docs](apps/preg-nutri-app/README.md)
+[Preg Nutri App Docs](apps/preg-nutri-app/nutri_readme.md)
 
 ## Baby Development Modules - Pregnant Baby App
 
@@ -98,7 +97,7 @@ Track baby activity and movement patterns.
 - Developmental milestones
 
 → See module documentation:  
-[Preg Baby App Docs](apps/preg-baby-app/README.md)
+[Preg Baby App Docs](apps/preg-baby-app/baby_readme.md)
 
 ## Organizational Modules - Pregnant Org App
 
@@ -121,7 +120,7 @@ Plan financial aspects of pregnancy and newborn care.
 - Pregnancy expense tracker
 
 → See module documentation:  
-[Preg Org App Docs](apps/preg-org-app/README.md)
+[Preg Org App Docs](apps/preg-org-app/org_readme.md)
 
 ## Memory Keeper  - Pregnant Memo App
 Capture pregnancy journey.
@@ -132,7 +131,7 @@ Capture pregnancy journey.
 - Ultrasound photo storage
 
 → See module documentation:  
-[Preg Memo App Docs](apps/preg-memo-app/README.md)
+[Preg Memo App Docs](apps/preg-memo-app/memo_readme.md)
 
 ## Architecture Focus
 
@@ -166,20 +165,6 @@ The goal of the project is to evolve from a simple web application into a produc
 - Helm (EKS branch)
 - Traefik Ingress (k3s)
 - AWS Load Balancer Controller (EKS)
-
-## Previews
-
-### Home Page
-
-![Home Page Preview](apps/preg-pills-app/app_files/static/files/img/previews/preview_pregnant_pills.jpg)
-
-### Register user page
-![Register user page](apps/preg-pills-app/app_files/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
-
-### Admin page - all users
-
-![Admin page - all users](apps/preg-pills-app/app_files/static/files/img/previews/preview_pregnant_pills_users_list.jpg)
-
 
 ## Deployment Strategies
 
