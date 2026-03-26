@@ -52,6 +52,11 @@ spec:
       containers:
         - name: external-dns-con
           image: registry.k8s.io/external-dns/external-dns:v0.16.1
+          env:
+          - name: AWS_REGION
+            value: eu-west-1
+          - name: AWS_DEFAULT_REGION
+            value: eu-west-1
           args:
             - --source=service
             - --source=ingress
