@@ -31,33 +31,7 @@ patches:
     target:
       kind: Deployment
       name: preg-pills-app
-  
-  # Patch svc
-  - path: patch-svc-baby.yaml
-    target:
-      kind: Service
-      name: preg-baby-svc
 
-  
-  - path: patch-svc-memo.yaml
-    target:
-      kind: Service
-      name: preg-memo-svc
-  
-  - path: patch-svc-nutri.yaml
-    target:
-      kind: Service
-      name: preg-nutri-svc
-  
-  - path: patch-svc-org.yaml
-    target:
-      kind: Service
-      name: preg-org-svc
-
-  - path: patch-svc-pills.yaml
-    target:
-      kind: Service
-      name: preg-pills-svc
 
 generatorOptions:
   disableNameSuffixHash: true
