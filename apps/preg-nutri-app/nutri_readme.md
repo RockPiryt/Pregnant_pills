@@ -22,6 +22,12 @@ Monitor diet and ensure safe nutritional intake.
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
+## Previews
+
+### Home Page
+
+![Home Page Preview](app_files/static/files/img/previews/nutri-pre.png)
+
 ---
 
 ## Overview
