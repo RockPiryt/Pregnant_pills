@@ -22,14 +22,6 @@ resource "aws_security_group" "k3s_nodes_sg" {
     self        = true
   }
 
-  ingress {
-    description = "Allow NodePort traffic from within VPC"
-    from_port   = 30000
-    to_port     = 32767
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.preg-vpc.cidr_block]
-  }
-
   # Allow outbound internet access (via NAT Gateway). Required for Docker Hub pulls, OS updates, etc.
   egress {
     description = "Allow outbound traffic to the internet"
