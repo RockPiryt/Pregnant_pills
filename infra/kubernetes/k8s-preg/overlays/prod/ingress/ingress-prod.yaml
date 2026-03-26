@@ -22,7 +22,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     # Automatically disover SSL Certificate from AWS Certificate Manager Service using spec.rules.host
-    # alb.ingress.kubernetes.io/certificate-arn: "${ACM_CERT_ARN}"
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:340507401402:certificate/32d70fb5-0fcc-49e3-86eb-57423a550def
     # External DNS - For creating a Record Set in Route53
     external-dns.alpha.kubernetes.io/hostname: preg.paulinakimak.com
 spec:
