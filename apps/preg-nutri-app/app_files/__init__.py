@@ -18,21 +18,21 @@ def create_app():
     # Create login_manager class
     login_manager.init_app(app)
     login_manager.blueprint_login_views = {
-        'users': '/pregnant-user/user',
+        'users': '/nutri/pregnant-user/user',
     }
 
     # Register Blueprints
     from app_files.users.views import users_blueprint
     from app_files.errors.views import error_blueprint
 
-    app.register_blueprint(users_blueprint, url_prefix="/pregnant-user")
-    app.register_blueprint(error_blueprint, url_prefix="/pregnant-errors")
+    app.register_blueprint(users_blueprint, url_prefix="/nutri")
+    app.register_blueprint(error_blueprint, url_prefix="/nutri/pregnant-errors")
 
-    @app.route("/")
+    @app.route("/nutri")
     def index():
         return render_template("home.html")
 
-    @app.get("/health")
+    @app.get("/nutri/health")
     def health():
         return {"status": "ok"}, 200
 
