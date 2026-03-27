@@ -16,7 +16,6 @@ sudo snap services amazon-ssm-agent || true
 # Install K3s master with taint so regular workloads are not scheduled here
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_EXEC="server \
-    --disable traefik \
     --write-kubeconfig-mode 644 \
     --tls-san ${MASTER_TLS_SAN} \
     --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule" \
@@ -38,26 +37,6 @@ export KUBECONFIG=/root/.kube/config
 
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
-echo "=== Installing Helm ==="
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-helm repo add eks https://aws.github.io/eks-charts
-helm repo update
-
-echo "=== Installing AWS Load Balancer Controller ==="
-kubectl create namespace kube-system --dry-run=client -o yaml | kubectl apply -f -
-
-helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
-  -n kube-system \
-  --set clusterName=preg-k3s-prod \
-  --set serviceAccount.create=true \
-  --set region="${AWS_REGION}" \
-  --set vpcId="${VPC_ID}"
-
-echo "=== Waiting for AWS Load Balancer Controller ==="
-kubectl rollout status deployment/aws-load-balancer-controller -n kube-system --timeout=180s
-
-
 echo "=== Preparing repo ==="
 mkdir -p /opt
 cd /opt
@@ -67,11 +46,9 @@ if [ ! -d /opt/Pregnant_pills ]; then
 fi
 
 CORE_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/core"
-INGRESS_CLASS_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/ingress-class"
 INGRESS_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/ingress"
 
 [ -d "$CORE_DIR" ] || { echo "Missing directory: $CORE_DIR"; exit 1; }
-[ -d "$INGRESS_CLASS_DIR" ] || { echo "Missing directory: $INGRESS_CLASS_DIR"; exit 1; }
 [ -d "$INGRESS_DIR" ] || { echo "Missing directory: $INGRESS_DIR"; exit 1; }
 
 echo "=== Waiting for RDS ==="
@@ -93,7 +70,6 @@ ls -la "$CORE_DIR"
 
 echo "=== Deploying manifests ==="
 k3s kubectl apply -k "$CORE_DIR"
-k3s kubectl apply -k "$INGRESS_CLASS_DIR"
 sleep 10
 k3s kubectl apply -k "$INGRESS_DIR"
 
