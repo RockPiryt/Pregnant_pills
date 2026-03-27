@@ -13,9 +13,7 @@ snap start amazon-ssm-agent || true
 
 # Install K3s worker with worker label already set
 curl -sfL https://get.k3s.io | \
-  INSTALL_K3S_EXEC="agent \
-    --node-label=node-role=worker \
-    --kubelet-arg=cloud-provider=external" \
+  INSTALL_K3S_EXEC="agent --node-label node-role=worker" \
   K3S_URL="https://${MASTER_IP}:6443" \
   K3S_TOKEN="${K3S_TOKEN}" \
   sh -
