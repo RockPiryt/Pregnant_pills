@@ -23,27 +23,6 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-# Allow ExternalDNS to manage Route53 DNS records
-resource "aws_iam_role_policy" "ec2_route53_policy" {
-  name = "ExternalDNSRoute53Policy"
-  role = aws_iam_role.ec2_node_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "route53:ChangeResourceRecordSets",
-          "route53:ListHostedZones",
-          "route53:ListResourceRecordSets",
-          "route53:ListTagsForResource"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}
 
 # Instance profile used by all EC2 nodes in the K3s cluster
 resource "aws_iam_instance_profile" "ec2_node_profile" {
