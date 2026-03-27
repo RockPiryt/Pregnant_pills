@@ -29,8 +29,6 @@ resource "aws_instance" "k3s_master" {
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
     K3S_TOKEN      = var.k3s_token
     MASTER_TLS_SAN = "127.0.0.1"
-    AWS_REGION = var.region
-    VPC_ID     = aws_vpc.preg-vpc.id
     
     RDS_ENDPOINT = aws_db_instance.preg_postgres.address
     DB_NAME      = var.db_name
@@ -44,18 +42,16 @@ resource "aws_instance" "k3s_master" {
   tags = { Name = "preg-k3s-master" }
 }
 
-# K3s worker A (private subnet A)
+# K3s worker A (public subnet A)
 resource "aws_instance" "k3s_worker_a" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3a.medium"
   associate_public_ip_address = false
-  subnet_id                   = aws_subnet.preg-private-subnet-a.id
+  subnet_id                   = aws_subnet.preg-public-subnet-a.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
-  
   user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
-
 
   instance_market_options {
     market_type = "spot"
@@ -129,4 +125,17 @@ resource "aws_db_instance" "preg_postgres" {
   tags = {
     Name = "preg-postgres"
   }
+}
+
+resource "aws_eip" "preg_worker_a_eip" {
+  domain = "vpc"
+
+  tags = {
+    Name = "preg-k3s-worker-a-eip"
+  }
+}
+
+resource "aws_eip_association" "preg_worker_a_eip_assoc" {
+  instance_id   = aws_instance.k3s_worker_a.id
+  allocation_id = aws_eip.preg_worker_a_eip.id
 }
