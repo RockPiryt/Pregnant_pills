@@ -18,13 +18,6 @@ spec:
                 name: prod-preg-baby-svc
                 port:
                   number: 80
-          - path: /pills
-            pathType: Prefix
-            backend:
-              service:
-                name: prod-preg-pills-svc
-                port:
-                  number: 80
           - path: /org
             pathType: Prefix
             backend:
