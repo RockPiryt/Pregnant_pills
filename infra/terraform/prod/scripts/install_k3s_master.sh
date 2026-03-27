@@ -13,18 +13,13 @@ snap list amazon-ssm-agent || true
 sudo snap start amazon-ssm-agent || true
 sudo snap services amazon-ssm-agent || true
 
-# Installing K3s server with external cloud provider mode
+# Install K3s master with taint so regular workloads are not scheduled here
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_EXEC="server \
     --disable traefik \
-    --disable servicelb \ 
-    --disable-cloud-controller \ 
     --write-kubeconfig-mode 644 \
     --tls-san ${MASTER_TLS_SAN} \
-    --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule \
-    --kubelet-arg=cloud-provider=external \
-    --kube-apiserver-arg=cloud-provider=external \
-    --kube-controller-manager-arg=cloud-provider=external" \
+    --node-taint node-role.kubernetes.io/control-plane=true:NoSchedule" \
   K3S_TOKEN="${K3S_TOKEN}" \
   sh -
 
@@ -48,13 +43,6 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update
-
-echo "=== Deploying AWS Cloud Controller Manager ==="
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/cloud-provider-aws/release-1.34/manifests/rbac.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/cloud-provider-aws/release-1.34/manifests/aws-cloud-controller-manager-daemonset.yaml
-
-echo "=== Waiting for AWS CCM ==="
-kubectl -n kube-system rollout status ds/aws-cloud-controller-manager --timeout=180s || true
 
 echo "=== Installing AWS Load Balancer Controller ==="
 kubectl create namespace kube-system --dry-run=client -o yaml | kubectl apply -f -
