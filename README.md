@@ -1,6 +1,6 @@
-# Pregnant App – Modular Pregnancy Platform
+# PregCare – Modular Pregnancy Support Platform
 
-Pregnant App is a modular, service-oriented pregnancy support platform.
+PregCare is a modular, service-oriented pregnancy support platform.
 
 The repository is structured as a monorepo containing multiple domain-specific services,
 each developed as an independent Flask-based application with its own documentation,
@@ -10,19 +10,34 @@ The system is designed to evolve toward distributed deployment in Kubernetes env
 
 ## Table of Contents
 
-* [Overview](#overview)
-* [Architecture Focus](#architecture-focus)
-* [Technology Stack](#technology-stack)
-* [Deployment Strategies](#deployment-Sstrategies)
-* [Deployment Variants](#deployment_variants)
-* [Setup](#setup)
-* [Project Status](#project-status)
-* [Future Improvements](#future-improvements)
-* [Contact](#contact)
-* [License](#license)
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Services Overview](#services-overview)
+- [Architecture Focus](#architecture-focus)
+- [Technology Stack](#technology-stack)
+- [Deployment Strategies](#deployment-strategies)
+- [Deployment Variants](#deployment-variants)
+- [Setup](#setup)
+- [Project Status](#project-status)
+- [Future Improvements](#future-improvements)
+- [Contact](#contact)
+- [License](#license)
+
+## Overview
+
+PregCare is a modular pregnancy platform designed to support different aspects of the pregnancy journey through dedicated applications.
+
+The platform currently consists of five independent modules:
+
+- **Preg Pills** – medication tracking and health monitoring
+- **Preg Baby** – baby development and fetal movement tracking
+- **Preg Memo** – pregnancy memories and personal journal
+- **Preg Nutri** – nutrition and food safety support
+- **Preg Org** – planning, organization, and preparation tools
+
+Each module can be developed, deployed, and scaled independently, making the project suitable for both monolithic development workflows and distributed Kubernetes-based deployments.
 
 ---
-
 # Repository Structure
 ```
 apps/
@@ -40,8 +55,8 @@ Each service contains:
 - Configuration
 - Tests
 - Containerization files (if applicable)
-
 ---
+
 
 # Services Overview
 
