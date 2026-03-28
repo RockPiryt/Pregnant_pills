@@ -26,7 +26,7 @@ Monitor diet and ensure safe nutritional intake.
 
 ### Home Page
 
-![Home Page Preview](app_files/static/files/img/previews/nutri-pre.png)
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Nutrition.png)
 
 ---
 
