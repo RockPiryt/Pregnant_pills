@@ -31,7 +31,7 @@ Track baby activity and movement patterns.
 
 ### Home Page
 
-![Home Page Preview](app_files/static/files/img/previews/nutri-pre.png)
+![Home Page Preview](app_files/static/files/img/previews/baby-pre.png)
 ---
 
 ## Overview
@@ -55,7 +55,7 @@ Track baby activity and movement patterns.
 - PostgreSQL (optional / production-ready)
 
 ## Application Structure
-preg-pills-app/
+preg-baby-app/
 │
 ├── app_files/
 │ ├── models/
@@ -78,13 +78,6 @@ The project uses:
 - Pytest for testing
 
 ---
-
-## Previews
-
-### Home Page
-
-![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_baby.jpg)
-
 
 ## Local Setup
 
