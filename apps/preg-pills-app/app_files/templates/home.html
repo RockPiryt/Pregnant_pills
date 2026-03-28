@@ -1,27 +1,50 @@
 {% extends 'base.html' %}
-
+{% block title %}Pills Tracker{% endblock %}
 
 {% block content %}
-    <div class="htop">
-        <h1>Welcome to Pregnant pills Page</h1>
-        <hr>
-        <p class="mx-auto info" >On this website you can create your 
-            own list of pills, 
-            which you are taking during your pregnancy.
-            It is very useful for your gynecologist and in case of hospital stay. 
-            You can specify if the pill is rutine or special.
-            Rutine pills are vitamins and other complex nutrients,
-            which you should take every day in pregnant.
-            Special pills you use if you have illness 
-            for example flu, heartburn or gestational diabetes.
-            You can download your pill's list as PDF Report.  </p>
 
-        <h3>Register or Login to save your list with pills!</h3>
-        <a href="{{url_for('users.register_pregnant_user')}}">
-            <input type="submit" value="Register" class="btn btn-lg btn_start" id="btn_start">
+<!-- HERO -->
+<section class="hero-pills">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1>Track Your Pregnancy Medications</h1>
+        <p class="hero-sub">
+            Manage your pills, monitor treatments, and stay prepared for every medical visit
+        </p>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section text-center">
+    <h3>Start managing your medications today</h3>
+
+    <div class="cta-buttons">
+        <a href="{{ url_for('users.register_pregnant_user') }}" class="btn btn_main">
+            Register
         </a>
-        <a href="{{url_for('users.login_pregnant_user')}}">
-            <input type="submit" value="Login" class="btn btn-lg btn_start" id="btn_start">
+
+        <a href="{{ url_for('users.login_pregnant_user') }}" class="btn btn_outline">
+            Login
         </a>
     </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="container text-center">
+
+        <h2>What You Can Do</h2>
+
+        <ul class="features-list">
+            <li>Track medications taken during pregnancy</li>
+            <li>Categorize pills (routine / special)</li>
+            <li>Store dosage, dates, and pregnancy week</li>
+            <li>Prepare a clear list for your gynecologist</li>
+            <li>Download your pill list as a PDF report</li>
+        </ul>
+
+    </div>
+</section>
+
 {% endblock %}
