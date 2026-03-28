@@ -1,37 +1,51 @@
 {% extends 'base.html' %}
+{% block title %}Nutrition{% endblock %}
 
 {% block content %}
-<div class="htop">
-    <h1>Welcome to Pregnant Memo App</h1>
-    <hr>
 
-    <p class="mx-auto info">
-        Pregnant Memo App allows you to document and preserve your pregnancy journey.
-        Create a structured journal, store ultrasound images, and build a visual
-        timeline of your pregnancy.
-    </p>
+<!-- HERO -->
+<section class="hero-nutri">
+    <div class="hero-overlay"></div>
 
-    <p class="mx-auto info">
-        You can upload and organize belly photos to generate a chronological
-        progression timeline, write personal journal entries, and securely
-        store important medical images such as ultrasound scans.
-        All records are organized and accessible in one place.
-    </p>
+    <div class="hero-content">
+        <h1>Stay Healthy During Pregnancy</h1>
+        <p class="hero-sub">
+            Track nutrition, discover safe foods, and support your baby’s development
+        </p>
+    </div>
+</section>
 
-    <h3>Register or Login to start saving your pregnancy memories</h3>
+<!-- CTA -->
+<section class="cta-section text-center">
+    <h3>Start improving your nutrition today</h3>
 
-    <a href="{{ url_for('users.register_user') }}">
-        <input type="submit"
-               value="Register"
-               class="btn btn-lg btn_start"
-               id="btn_start">
-    </a>
+    <div class="cta-buttons">
+        <a href="{{ url_for('users.register_user') }}" class="btn btn_main">
+            Register
+        </a>
 
-    <a href="{{ url_for('users.login_user') }}">
-        <input type="submit"
-               value="Login"
-               class="btn btn-lg btn_start"
-               id="btn_start">
-    </a>
-</div>
+        <a href="{{ url_for('users.login_user') }}" class="btn btn_outline">
+            Login
+        </a>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="container text-center">
+
+        <h2>What You Can Do</h2>
+
+        <ul class="features-list">
+            <li>Check safe and unsafe foods during pregnancy</li>
+            <li>Track daily nutrition and calories</li>
+            <li>Monitor important vitamins (folic acid, iron)</li>
+            <li>Plan healthy meals for each trimester</li>
+            <li>Improve your diet with pregnancy-safe guidance</li>
+        </ul>
+
+    </div>
+</section>
+
+
 {% endblock %}
