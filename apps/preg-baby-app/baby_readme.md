@@ -31,7 +31,7 @@ Track baby activity and movement patterns.
 
 ### Home Page
 
-![Home Page Preview](app_files/static/files/img/previews/baby-pre.png)
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Baby.png)
 ---
 
 ## Overview
