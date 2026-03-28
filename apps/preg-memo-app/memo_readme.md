@@ -27,7 +27,7 @@ Capture pregnancy journey.
 
 ### Home Page
 
-![Home Page Preview](app_files/static/files/img/previews/memo-pre.png)
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Memory.png)
 ---
 
 ## Overview
