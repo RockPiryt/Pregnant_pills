@@ -71,6 +71,7 @@ variable "disk_size" {
   default = 20
 }
 
+# ===================Other==================
 variable "key_pair_name" {
   type    = string
   default = "kube-pregcare"
@@ -83,4 +84,9 @@ variable "ssh_pub_key" {
 variable "kubernetes_version" {
   type    = string
   default = "1.29"
+}
+
+variable "my_ip_cidr" {
+  description = "My public IP in CIDR format"
+  type        = string
 }
