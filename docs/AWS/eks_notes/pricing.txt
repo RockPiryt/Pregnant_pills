@@ -1,0 +1,10 @@
+Pricing
+each EKS cluster
+- per Hour $0.10
+- per Day: $2.4
+- per Month: $72
+ 
+EC2 instances (T3 Medium)/ EBS volumes in Ireland
+- per Hour $0.0416 
+- Per Day: $1
+- Per Month: $30
