@@ -28,11 +28,12 @@ migrations/__pycache__/
 Thumbs.db
 
 # Terraform state
-terraform/*/.terraform/
+terraform-eks/*/.terraform/
 terraform.tfstate
 terraform.tfstate.backup
-
-infra/terraform/prod/.terraform.lock.hcl
+/infra/terraform-eks/.terraform/providers/registry.terraform.io/hashicorp
+/infra/terraform-eks/.terraform.lock.hcl
+infra/terraform-eks/prod/.terraform.lock.hcl
 infra/terraform/prod/.terraform.tfstate.lock.info
 infra/terraform/prod/.terraform
 # Secrets
