@@ -1,6 +1,7 @@
 resources:
   - ../../../base
   - ns-preg-prod.yaml
+  - external-dns.yaml
 
 namePrefix: prod-
 namespace: preg-prod
