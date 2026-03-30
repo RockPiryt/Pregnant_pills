@@ -76,6 +76,10 @@ variable "key_pair_name" {
   default = "kube-pregcare"
 }
 
+variable "ssh_pub_key" {
+  type = string
+}
+
 variable "kubernetes_version" {
   type    = string
   default = "1.29"
