@@ -44,7 +44,10 @@ resource "aws_eks_node_group" "public_ng" {
   instance_types = [var.instance_type]
   capacity_type  = "ON_DEMAND"
 
-  # Autoscaling node group
+  # instance_types = ["t3.medium", "t3a.medium"]
+  # capacity_type  = "SPOT"
+
+  # Autoscaling node group (currently 2/2/2)
   scaling_config {
     desired_size = var.desired_size
     min_size     = var.min_size
