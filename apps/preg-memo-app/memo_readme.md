@@ -23,6 +23,11 @@ Capture pregnancy journey.
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
+## Previews
+
+### Home Page
+
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Memory.png)
 ---
 
 ## Overview

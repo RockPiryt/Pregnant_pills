@@ -29,7 +29,12 @@ done
 
 echo "K3s master is ready."
 
-# Install kubectl alias
+# Make kubeconfig available to kubectl/helm
+mkdir -p /root/.kube
+cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+chmod 600 /root/.kube/config
+export KUBECONFIG=/root/.kube/config
+
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
 echo "=== Preparing repo ==="
@@ -40,12 +45,11 @@ if [ ! -d /opt/Pregnant_pills ]; then
   git clone https://github.com/RockPiryt/Pregnant_pills.git
 fi
 
-APP_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod"
+CORE_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/core"
+INGRESS_DIR="/opt/Pregnant_pills/infra/kubernetes/k8s-preg/overlays/prod/ingress"
 
-if [ ! -d "$APP_DIR" ]; then
-  echo "ERROR: Directory $APP_DIR does not exist"
-  exit 1
-fi
+[ -d "$CORE_DIR" ] || { echo "Missing directory: $CORE_DIR"; exit 1; }
+[ -d "$INGRESS_DIR" ] || { echo "Missing directory: $INGRESS_DIR"; exit 1; }
 
 echo "=== Waiting for RDS ==="
 until nc -z "${RDS_ENDPOINT}" "${DB_PORT}"; do
@@ -56,16 +60,18 @@ done
 echo "RDS is reachable."
 
 echo "=== Creating .env ==="
-cat > "$APP_DIR/.env" <<EOF
+cat > "$CORE_DIR/.env" <<EOF
 SECRET_KEY=${SECRET_KEY}
 DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${RDS_ENDPOINT}:${DB_PORT}/${DB_NAME}?sslmode=require
 EOF
 
-chmod 600 "$APP_DIR/.env"
-ls -la "$APP_DIR"
+chmod 600 "$CORE_DIR/.env"
+ls -la "$CORE_DIR"
 
 echo "=== Deploying manifests ==="
-cd "$APP_DIR"
-k3s kubectl apply -k .
+k3s kubectl apply -k "$CORE_DIR"
+sleep 10
+k3s kubectl apply -k "$INGRESS_DIR"
+
 
 echo "Application deployed."

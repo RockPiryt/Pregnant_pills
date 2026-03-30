@@ -1,37 +1,51 @@
 {% extends 'base.html' %}
+{% block title %}Baby{% endblock %}
 
 {% block content %}
-<div class="htop">
-    <h1>Welcome to Pregnant Memo App</h1>
-    <hr>
 
-    <p class="mx-auto info">
-        Pregnant Memo App allows you to document and preserve your pregnancy journey.
-        Create a structured journal, store ultrasound images, and build a visual
-        timeline of your pregnancy.
-    </p>
+<!-- HERO -->
+<section class="hero-baby">
+    <div class="hero-overlay"></div>
 
-    <p class="mx-auto info">
-        You can upload and organize belly photos to generate a chronological
-        progression timeline, write personal journal entries, and securely
-        store important medical images such as ultrasound scans.
-        All records are organized and accessible in one place.
-    </p>
+    <div class="hero-content">
+        <h1>Track Your Baby’s Development</h1>
+        <p class="hero-sub">
+            Monitor growth, movement, and milestones week by week
+        </p>
+    </div>
+</section>
 
-    <h3>Register or Login to start saving your pregnancy memories</h3>
+<!-- CTA -->
+<section class="cta-section text-center">
+    <h3>Start tracking your baby’s development today</h3>
 
-    <a href="{{ url_for('users.register_user') }}">
-        <input type="submit"
-               value="Register"
-               class="btn btn-lg btn_start"
-               id="btn_start">
-    </a>
+    <div class="cta-buttons">
+        <a href="{{ url_for('users.register_user') }}" class="btn btn_main">
+            Register
+        </a>
 
-    <a href="{{ url_for('users.login_user') }}">
-        <input type="submit"
-               value="Login"
-               class="btn btn-lg btn_start"
-               id="btn_start">
-    </a>
-</div>
+        <a href="{{ url_for('users.login_user') }}" class="btn btn_outline">
+            Login
+        </a>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="container text-center">
+
+        <h2>What You Can Do</h2>
+
+        <ul class="features-list">
+            <li>Track fetal movement (kick counter)</li>
+            <li>Monitor baby development week by week</li>
+            <li>View baby size comparisons</li>
+            <li>Record activity and milestones</li>
+            <li>Get alerts for decreased movement</li>
+        </ul>
+
+    </div>
+</section>
+
+
 {% endblock %}

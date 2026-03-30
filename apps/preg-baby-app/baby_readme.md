@@ -27,6 +27,11 @@ Track baby activity and movement patterns.
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
+## Previews
+
+### Home Page
+
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Baby.png)
 ---
 
 ## Overview
@@ -50,7 +55,7 @@ Track baby activity and movement patterns.
 - PostgreSQL (optional / production-ready)
 
 ## Application Structure
-preg-pills-app/
+preg-baby-app/
 │
 ├── app_files/
 │ ├── models/
@@ -73,13 +78,6 @@ The project uses:
 - Pytest for testing
 
 ---
-
-## Previews
-
-### Home Page
-
-![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_baby.jpg)
-
 
 ## Local Setup
 

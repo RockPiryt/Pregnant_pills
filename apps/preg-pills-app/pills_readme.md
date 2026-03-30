@@ -23,6 +23,19 @@ This project demonstrates both application development (Flask) and cloud-native 
 
 ---
 
+## Previews
+
+### Home Page
+
+![Home Page Preview](app_files/static/files/img/previews/preview_pregnant_pills.jpg)
+
+### Register user page
+![Register user page](app_files/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
+
+### Admin page - all users
+
+![Admin page - all users](app_files/static/files/img/previews/preview_pregnant_pills_users_list.jpg)
+
 ## Overview
 
 Pregnant Pills enables users to:

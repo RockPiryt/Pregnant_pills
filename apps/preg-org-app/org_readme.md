@@ -34,6 +34,12 @@ Plan financial aspects of pregnancy and newborn care.
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
+## Previews
+
+### Home Page
+
+![Home Page Preview](app_files/static/files/img/previews/PregCare-Organizer.png)
+
 ---
 
 ## Overview

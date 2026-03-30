@@ -24,13 +24,12 @@ resource "aws_instance" "k3s_master" {
   subnet_id                   = aws_subnet.preg-private-subnet-a.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
 
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
     K3S_TOKEN      = var.k3s_token
     MASTER_TLS_SAN = "127.0.0.1"
-    ACM_CERT_ARN   = aws_acm_certificate_validation.preg_cert_validation.certificate_arn
-
+    
     RDS_ENDPOINT = aws_db_instance.preg_postgres.address
     DB_NAME      = var.db_name
     DB_USER      = var.db_user
@@ -43,18 +42,16 @@ resource "aws_instance" "k3s_master" {
   tags = { Name = "preg-k3s-master" }
 }
 
-# K3s worker A (private subnet A)
+# K3s worker A (public subnet A)
 resource "aws_instance" "k3s_worker_a" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3a.medium"
   associate_public_ip_address = false
-  subnet_id                   = aws_subnet.preg-private-subnet-a.id
+  subnet_id                   = aws_subnet.preg-public-subnet-a.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
-  
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
   user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
-
 
   instance_market_options {
     market_type = "spot"
@@ -82,7 +79,7 @@ resource "aws_instance" "k3s_worker_b" {
   subnet_id                   = aws_subnet.preg-private-subnet-b.id
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
 
   user_data_replace_on_change = true # To wymusi odtworzenie instancji przy zmianie user_data.
 
@@ -102,21 +99,6 @@ resource "aws_instance" "k3s_worker_b" {
   depends_on = [aws_instance.k3s_master]
 
   tags = { Name = "preg-k3s-worker-b" }
-}
-
-
-# Attach worker A  node to target group
-resource "aws_lb_target_group_attachment" "worker_a" {
-  target_group_arn = aws_lb_target_group.preg_tg.arn
-  target_id        = aws_instance.k3s_worker_a.id
-  port             = 30080
-}
-
-# Attach worker B node to target group
-resource "aws_lb_target_group_attachment" "worker_b" {
-  target_group_arn = aws_lb_target_group.preg_tg.arn
-  target_id        = aws_instance.k3s_worker_b.id
-  port             = 30080
 }
 
 # RDS PostgreSQL
@@ -143,4 +125,17 @@ resource "aws_db_instance" "preg_postgres" {
   tags = {
     Name = "preg-postgres"
   }
+}
+
+resource "aws_eip" "preg_worker_a_eip" {
+  domain = "vpc"
+
+  tags = {
+    Name = "preg-k3s-worker-a-eip"
+  }
+}
+
+resource "aws_eip_association" "preg_worker_a_eip_assoc" {
+  instance_id   = aws_instance.k3s_worker_a.id
+  allocation_id = aws_eip.preg_worker_a_eip.id
 }

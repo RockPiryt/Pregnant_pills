@@ -25,7 +25,7 @@ jobs:
 
     env:
       AWS_REGION: ${{ vars.AWS_REGION }}
-      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE }}
       ECR_REPO: ${{ vars.ECR_REPO}}
       APP_DIR: apps/preg-${{ matrix.service }}-app
@@ -71,7 +71,7 @@ jobs:
         if: steps.changed.outputs.changed == 'true'
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/gha-deploy-role
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gha-deploy-role
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR

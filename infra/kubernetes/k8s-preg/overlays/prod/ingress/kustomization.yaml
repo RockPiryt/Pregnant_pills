@@ -1,0 +1,4 @@
+resources:
+  - ingress-prod.yaml
+
+namePrefix: prod-

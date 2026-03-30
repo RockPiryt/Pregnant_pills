@@ -1,6 +1,6 @@
-# Pregnant App – Modular Pregnancy Platform
+# PregCare – Modular Pregnancy Support Platform
 
-Pregnant App is a modular, service-oriented pregnancy support platform.
+PregCare is a modular, service-oriented pregnancy support platform.
 
 The repository is structured as a monorepo containing multiple domain-specific services,
 each developed as an independent Flask-based application with its own documentation,
@@ -10,20 +10,34 @@ The system is designed to evolve toward distributed deployment in Kubernetes env
 
 ## Table of Contents
 
-* [Overview](#overview)
-* [Architecture Focus](#architecture-focus)
-* [Technology Stack](#technology-stack)
-* [Previews](#Previews)
-* [Deployment Strategies](#deployment-Sstrategies)
-* [Deployment Variants](#deployment_variants)
-* [Setup](#setup)
-* [Project Status](#project-status)
-* [Future Improvements](#future-improvements)
-* [Contact](#contact)
-* [License](#license)
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Services Overview](#services-overview)
+- [Architecture Focus](#architecture-focus)
+- [Technology Stack](#technology-stack)
+- [Deployment Strategies](#deployment-strategies)
+- [Deployment Variants](#deployment-variants)
+- [Setup](#setup)
+- [Project Status](#project-status)
+- [Future Improvements](#future-improvements)
+- [Contact](#contact)
+- [License](#license)
+
+## Overview
+
+PregCare is a modular pregnancy platform designed to support different aspects of the pregnancy journey through dedicated applications.
+
+The platform currently consists of five independent modules:
+
+- **Preg Pills** – medication tracking and health monitoring
+- **Preg Baby** – baby development and fetal movement tracking
+- **Preg Memo** – pregnancy memories and personal journal
+- **Preg Nutri** – nutrition and food safety support
+- **Preg Org** – planning, organization, and preparation tools
+
+Each module can be developed, deployed, and scaled independently, making the project suitable for both monolithic development workflows and distributed Kubernetes-based deployments.
 
 ---
-
 # Repository Structure
 ```
 apps/
@@ -41,8 +55,8 @@ Each service contains:
 - Configuration
 - Tests
 - Containerization files (if applicable)
-
 ---
+
 
 # Services Overview
 
@@ -71,7 +85,7 @@ Monitor pregnancy body changes.
 - Charts and trends
 
 → See module documentation:  
-`/apps/preg-health-app/README.md`
+[Preg Health App Docs](apps/preg-pills-app/pills_readme.md)
 
 ### Nutrition Module - Pregnant Food App 
 Monitor diet and ensure safe nutritional intake.
@@ -82,7 +96,7 @@ Monitor diet and ensure safe nutritional intake.
 - Vitamin reminders (folic acid, iron)
 
 → See module documentation:  
-`/apps/preg-nutri-app/README.md`
+[Preg Nutri App Docs](apps/preg-nutri-app/nutri_readme.md)
 
 ## Baby Development Modules - Pregnant Baby App
 
@@ -98,7 +112,7 @@ Track baby activity and movement patterns.
 - Developmental milestones
 
 → See module documentation:  
-`/apps/preg-baby-app/README.md`
+[Preg Baby App Docs](apps/preg-baby-app/baby_readme.md)
 
 ## Organizational Modules - Pregnant Org App
 
@@ -121,7 +135,7 @@ Plan financial aspects of pregnancy and newborn care.
 - Pregnancy expense tracker
 
 → See module documentation:  
-`/apps/preg-org-app/README.md`
+[Preg Org App Docs](apps/preg-org-app/org_readme.md)
 
 ## Memory Keeper  - Pregnant Memo App
 Capture pregnancy journey.
@@ -132,7 +146,7 @@ Capture pregnancy journey.
 - Ultrasound photo storage
 
 → See module documentation:  
-`/apps/preg-memo-app/README.md`
+[Preg Memo App Docs](apps/preg-memo-app/memo_readme.md)
 
 ## Architecture Focus
 
@@ -166,20 +180,6 @@ The goal of the project is to evolve from a simple web application into a produc
 - Helm (EKS branch)
 - Traefik Ingress (k3s)
 - AWS Load Balancer Controller (EKS)
-
-## Previews
-
-### Home Page
-
-![Home Page Preview](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills.jpg)
-
-### Register user page
-![Register user page](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_add_user.jpg)
-
-### Admin page - all users
-
-![Admin page - all users](pregnant_pills_app/static/files/img/previews/preview_pregnant_pills_users_list..jpg)
-
 
 ## Deployment Strategies
 
