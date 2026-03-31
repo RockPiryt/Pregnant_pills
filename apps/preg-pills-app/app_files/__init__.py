@@ -6,7 +6,11 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_folder="static",
+        static_url_path="/pills/static"
+    )
 
     env_name = os.getenv("APP_ENV", "development").lower()
     cfg = config_dict.get(env_name, config_dict["development"])
@@ -18,8 +22,8 @@ def create_app():
     # Create login_manager class
     login_manager.init_app(app)
     login_manager.blueprint_login_views = {
-        'pills': '/pregnant-pill/add_pill',
-        'users': '/pregnant-user/user',
+        'pills': '/pills/pregnant-pill/add_pill',
+        'users': '/pills/pregnant-user/user',
     }
 
     # Register Blueprints
@@ -28,16 +32,16 @@ def create_app():
     from app_files.errors.views import error_blueprint
     from app_files.report_pdf.views import report_pdf_blueprint
 
-    app.register_blueprint(users_blueprint, url_prefix="/pregnant-user")
-    app.register_blueprint(pills_blueprint, url_prefix="/pregnant-pill")
-    app.register_blueprint(error_blueprint, url_prefix="/pregnant-errors")
-    app.register_blueprint(report_pdf_blueprint, url_prefix="/pregnant-report-pdf")
+    app.register_blueprint(users_blueprint, url_prefix="/pills/pregnant-user")
+    app.register_blueprint(pills_blueprint, url_prefix="/pills/pregnant-pill")
+    app.register_blueprint(error_blueprint, url_prefix="/pills/pregnant-errors")
+    app.register_blueprint(report_pdf_blueprint, url_prefix="/pills/pregnant-report-pdf")
 
-    @app.route("/")
+    @app.route("/pills")
     def index():
         return render_template("home.html")
 
-    @app.get("/health")
+    @app.get("/pills/health")
     def health():
         return {"status": "ok"}, 200
 
