@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [baby, memo, nutri, org, pills]
+        service: [baby, memo, nutri, org, pills, care]
 
     env:
       AWS_REGION: ${{ vars.AWS_REGION }}
