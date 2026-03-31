@@ -34,11 +34,11 @@ resource "aws_launch_template" "eks_nodes_lt" {
 }
 
 # Create node group for worker nodes
-resource "aws_eks_node_group" "public_ng" {
+resource "aws_eks_node_group" "private_ng" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids      = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  subnet_ids = [aws_subnet.private_a.id, aws_subnet.private_b.id]
 
   # Define instance
   instance_types = [var.instance_type]
