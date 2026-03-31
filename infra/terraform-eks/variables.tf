@@ -81,5 +81,5 @@ variable "disk_size" {
 # ===================Other==================
 variable "kubernetes_version" {
   type    = string
-  default = "1.29"
+  default = "1.31"
 }
