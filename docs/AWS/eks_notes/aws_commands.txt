@@ -1,0 +1,20 @@
+aws eks list-clusters --region eu-west-1
+aws eks describe-cluster --name ekspreg --region eu-west-1
+
+aws eks list-nodegroups --cluster-name ekspreg --region eu-west-1
+aws eks describe-nodegroup \
+  --cluster-name ekspreg \
+  --nodegroup-name ekspreg-ng-public1 \
+  --region eu-west-1
+
+tym aktualizuje obecny kontekst clustra
+aws eks update-kubeconfig --region eu-west-1 --name ekspreg
+kubectl get nodes -o wide
+
+rzeczy utworzone prez terraform
+terraform state list
+
+
+---------------
+musze mieć uprawnienia dla usera odpowiednie do cloudformation read/list
+ eksctl get cluster 
