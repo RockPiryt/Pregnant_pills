@@ -62,3 +62,5 @@ infra_copy/
 /AWS/skrot.md
 /AWS/notatki.txt
 /infra/terraform/preg-k3s/.terraform.tfstate.lock.info
+/infra/terraform-eks/.terraform
+/infra/terraform-eks/.terraform.lock.hcl
