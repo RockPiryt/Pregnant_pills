@@ -79,21 +79,7 @@ variable "disk_size" {
 }
 
 # ===================Other==================
-variable "key_pair_name" {
-  type    = string
-  default = "kube-pregcare"
-}
-
-variable "ssh_pub_key" {
-  type = string
-}
-
 variable "kubernetes_version" {
   type    = string
   default = "1.29"
-}
-
-variable "my_ip_cidr" {
-  description = "My public IP in CIDR format"
-  type        = string
 }

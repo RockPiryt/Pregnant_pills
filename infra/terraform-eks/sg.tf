@@ -65,26 +65,3 @@ resource "aws_security_group_rule" "nodes_internal" {
   security_group_id        = aws_security_group.eks_nodes_sg.id
   source_security_group_id = aws_security_group.eks_nodes_sg.id
 }
-
-# Allows all inbound traffic to worker nodes from the internet (temporary for test).
-resource "aws_security_group_rule" "allow_all_inbound_to_nodes" {
-  type              = "ingress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  security_group_id = aws_security_group.eks_nodes_sg.id
-  cidr_blocks       = ["0.0.0.0/0"]
-  description       = "Allow all inbound traffic to worker nodes"
-}
-
-
-# # Allows SSH access to worker nodes only from your public IP.
-# resource "aws_security_group_rule" "allow_ssh_from_my_ip" {
-#   type              = "ingress"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   security_group_id = aws_security_group.eks_nodes_sg.id
-#   cidr_blocks       = [var.my_ip_cidr]
-#   description       = "Allow SSH access from my public IP"
-# }

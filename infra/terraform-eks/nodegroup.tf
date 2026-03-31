@@ -1,12 +1,6 @@
-resource "aws_key_pair" "pregcare-key" {
-  key_name   = var.key_pair_name
-  public_key = var.ssh_pub_key
-}
-
 # Create template for EC2 worker nodes
 resource "aws_launch_template" "eks_nodes_lt" {
   name_prefix            = "${var.cluster_name}-lt-"
-  key_name               = aws_key_pair.pregcare-key.key_name
   update_default_version = true
 
   # Add sg for nodes
