@@ -6,8 +6,13 @@ resource "aws_eks_cluster" "eks" {
 
   # Define vpc and sg
   vpc_config {
-    subnet_ids              = [aws_subnet.public_a.id, aws_subnet.public_b.id]
-    endpoint_private_access = false
+    subnet_ids = [
+      aws_subnet.public_a.id,
+      aws_subnet.public_b.id,
+      aws_subnet.private_a.id,
+      aws_subnet.private_b.id
+    ]
+    endpoint_private_access = true # aby nodes w private subnet mogly gadać z API serverem (bez przechodzenia przez NAT)
     endpoint_public_access  = true
     security_group_ids      = [aws_security_group.eks_cluster_sg.id]
   }
