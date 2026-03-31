@@ -11,18 +11,18 @@ spec:
     - host: preg.paulinakimak.com
       http:
         paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prod-pregcare-svc
+                port:
+                  number: 80
           - path: /baby
             pathType: Prefix
             backend:
               service:
                 name: prod-preg-baby-svc
-                port:
-                  number: 80
-          - path: /org
-            pathType: Prefix
-            backend:
-              service:
-                name: prod-preg-org-svc
                 port:
                   number: 80
           - path: /memo
@@ -39,8 +39,14 @@ spec:
                 name: prod-preg-nutri-svc
                 port:
                   number: 80
-          # main app
-          - path: /
+          - path: /org
+            pathType: Prefix
+            backend:
+              service:
+                name: prod-preg-org-svc
+                port:
+                  number: 80
+          - path: /pills
             pathType: Prefix
             backend:
               service:
