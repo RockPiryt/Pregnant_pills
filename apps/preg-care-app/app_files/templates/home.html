@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Modular Pregnancy Support Platform{% endblock %}
+
+{% block content %}
+<section class="hero-section py-5">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="badge rounded-pill bg-light text-dark mb-3">Modular platform</span>
+        <h1 class="display-5 fw-bold mb-3">
+          PregCare – Modular Pregnancy Support Platform
+        </h1>
+        <p class="lead text-muted mb-4">
+          PregCare is a modular, service-oriented pregnancy support ecosystem composed of
+          independent applications for baby development, memories, nutrition, organization,
+          and medication tracking.
+        </p>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a href="/baby" class="btn btn-primary btn-lg">Open Baby Module</a>
+          <a href="#modules" class="btn btn-outline-dark btn-lg">Explore Modules</a>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="hero-card shadow-sm rounded-4 p-4">
+          <h3 class="h5 mb-3">Platform highlights</h3>
+          <ul class="mb-0">
+            <li>Independent Flask services</li>
+            <li>Kubernetes-ready deployment model</li>
+            <li>ALB path-based routing</li>
+            <li>Shared domain and navigation</li>
+            <li>Terraform-driven infrastructure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="modules" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Modules</h2>
+      <p class="text-muted mb-0">
+        Explore the applications that make up the PregCare platform.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      {% for module in modules %}
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <div class="card-body p-4">
+            <h3 class="h5 card-title">{{ module.name }}</h3>
+            <p class="card-text text-muted">{{ module.description }}</p>
+            <a href="{{ module.path }}" class="btn btn-outline-primary">Open module</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <h2 class="fw-bold">Architecture direction</h2>
+        <p class="text-muted">
+          PregCare evolves from modular Flask applications toward distributed deployment
+          in Kubernetes. Each service is developed independently and exposed under one shared domain.
+        </p>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="rounded-4 shadow-sm bg-white p-4">
+          <h3 class="h5">Public entrypoints</h3>
+          <ul class="mb-0">
+            <li><code>/</code> → PregCare landing page</li>
+            <li><code>/baby</code> → Preg Baby service</li>
+            <li><code>/memo</code> → Preg Memo service</li>
+            <li><code>/nutri</code> → Preg Nutri service</li>
+            <li><code>/org</code> → Preg Org service</li>
+            <li><code>/pills</code> → Preg Pills service</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
