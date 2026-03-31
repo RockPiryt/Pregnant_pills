@@ -17,9 +17,7 @@ variable "az_b" {
   default = "eu-west-1b"
 }
 
-
-
-# ===================VPC==================
+# ===================VPC+SUBNETS==================
 variable "vpc_cidr" {
   type    = string
   default = "10.0.0.0/16"
@@ -27,12 +25,21 @@ variable "vpc_cidr" {
 
 variable "public_subnet_cidr_a" {
   type    = string
-  default = "10.0.1.0/24"
+  default = "10.0.0.0/20"
 }
 
 variable "public_subnet_cidr_b" {
   type    = string
-  default = "10.0.2.0/24"
+  default = "10.0.16.0/20"
+}
+
+variable "private_subnet_cidr_a" {
+  type    = string
+  default = "10.0.32.0/20"
+}
+variable "private_subnet_cidr_b" {
+  type    = string
+  default = "10.0.48.0/20"
 }
 
 # ===================EKS Cluster==================
@@ -63,7 +70,7 @@ variable "min_size" {
 
 variable "max_size" {
   type    = number
-  default = 4
+  default = 2
 }
 
 variable "disk_size" {
