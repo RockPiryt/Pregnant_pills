@@ -6,7 +6,11 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_folder="static",
+        static_url_path="/org/static"
+    )
 
     env_name = os.getenv("APP_ENV", "development").lower()
     cfg = config_dict.get(env_name, config_dict["development"])
