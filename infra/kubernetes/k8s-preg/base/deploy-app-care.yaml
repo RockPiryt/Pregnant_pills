@@ -26,7 +26,7 @@ spec:
           
           startupProbe:
             httpGet:
-              path: /care/health
+              path: /health
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
@@ -35,7 +35,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /care/health
+              path: /health
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -44,7 +44,7 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /care/health
+              path: /health
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 20
@@ -75,5 +75,3 @@ spec:
                 secretKeyRef:
                   name: preg-secrets
                   key: DATABASE_URL
-
-
