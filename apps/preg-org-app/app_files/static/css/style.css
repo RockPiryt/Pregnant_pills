@@ -10,6 +10,8 @@
     --overlay: rgba(20, 45, 55, 0.48);
     --card-overlay: rgba(106, 103, 103, 0.55);
     --shadow: 0 10px 25px rgba(0,0,0,0.25);
+    --brand-gradient: linear-gradient(90deg, #d46a92, #8a4fff);
+    --footer-bg: #3d2c41;
 }
 
 body{
@@ -22,7 +24,7 @@ body{
 
 /* NAVBAR */
 #mainNav{
-    background-color: var(--accent);
+    background-color: var(--brand-gradient);
     box-shadow: 0 2px 12px rgba(0,0,0,0.12);
 }
 
@@ -139,7 +141,7 @@ body{
 
 /* FOOTER */
 #footer{
-    background-color: var(--primary);
+    background-color: var(--footer-bg);
     padding: 1.25rem 0;
 }
 
