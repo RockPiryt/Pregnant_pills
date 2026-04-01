@@ -30,6 +30,11 @@ patches:
     target:
       kind: Deployment
       name: preg-pills-app
+  
+  - path: patch-deploy-app-care.yaml
+    target:
+      kind: Deployment
+      name: preg-care-app
 
 
 generatorOptions:
