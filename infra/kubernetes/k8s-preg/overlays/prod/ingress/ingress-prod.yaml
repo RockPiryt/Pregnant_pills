@@ -15,7 +15,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: prod-pregcare-svc
+                name: prod-preg-care-svc
                 port:
                   number: 80
           - path: /baby
