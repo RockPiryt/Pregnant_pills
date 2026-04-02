@@ -10,6 +10,7 @@ spec:
         node-role: worker
       containers:
         - name: preg-memo-container
+          image: 340507401402.dkr.ecr.eu-west-1.amazonaws.com/deploy-preg-app:preg-memo-app-latest
           resources:
             requests:
               cpu: "100m"
