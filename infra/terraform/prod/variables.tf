@@ -42,3 +42,9 @@ variable "secret_key" {
   type        = string
   sensitive   = true
 }
+
+variable "ecr_credential_provider_ver" {
+  description = "Version of ecr-credential-provider binary"
+  type        = string
+  default     = "v1.2.0"
+}
