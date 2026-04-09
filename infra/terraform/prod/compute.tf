@@ -25,10 +25,13 @@ resource "aws_instance" "k3s_master" {
 
   vpc_security_group_ids = [aws_security_group.k3s_nodes_sg.id]
   iam_instance_profile = aws_iam_instance_profile.ec2_node_profile.name
+  user_data_replace_on_change = true
 
   user_data = templatefile("${path.module}/scripts/install_k3s_master.sh", {
-    K3S_TOKEN      = var.k3s_token
-    MASTER_TLS_SAN = "127.0.0.1"
+    K3S_TOKEN                     = var.k3s_token
+    MASTER_TLS_SAN                = "127.0.0.1"
+    AWS_REGION                    = var.region
+    ECR_CREDENTIAL_PROVIDER_VER   = var.ecr_credential_provider_ver
     
     RDS_ENDPOINT = aws_db_instance.preg_postgres.address
     DB_NAME      = var.db_name
@@ -62,8 +65,10 @@ resource "aws_instance" "k3s_worker_a" {
   }
 
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
-    K3S_TOKEN = var.k3s_token
-    MASTER_IP = aws_instance.k3s_master.private_ip
+    K3S_TOKEN                     = var.k3s_token
+    MASTER_IP                     = aws_instance.k3s_master.private_ip
+    AWS_REGION                    = var.region
+    ECR_CREDENTIAL_PROVIDER_VER   = var.ecr_credential_provider_ver
   })
 
   depends_on = [aws_instance.k3s_master]
@@ -92,8 +97,10 @@ resource "aws_instance" "k3s_worker_b" {
   }
 
   user_data = templatefile("${path.module}/scripts/install_k3s_worker.sh", {
-    K3S_TOKEN = var.k3s_token
-    MASTER_IP = aws_instance.k3s_master.private_ip
+    K3S_TOKEN                     = var.k3s_token
+    MASTER_IP                     = aws_instance.k3s_master.private_ip
+    AWS_REGION                    = var.region
+    ECR_CREDENTIAL_PROVIDER_VER   = var.ecr_credential_provider_ver
   })
 
   depends_on = [aws_instance.k3s_master]
