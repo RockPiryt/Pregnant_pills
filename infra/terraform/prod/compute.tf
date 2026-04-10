@@ -16,6 +16,19 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+
+locals {
+  app_env = var.environment
+
+  database_url = var.environment == "production" ? (
+    "postgresql://${var.db_user}:${var.db_password}@${aws_db_instance.preg_postgres.address}:5432/${var.db_name}?sslmode=require"
+  ) : var.environment == "testing" ? (
+    "postgresql://${var.db_user}:${var.db_password}@${var.testing_db_host}:5432/${var.db_name}"
+  ) : (
+    ""
+  )
+}
+
 # K3s master (private subnet)
 resource "aws_instance" "k3s_master" {
   ami                         = data.aws_ami.ubuntu.id
@@ -33,13 +46,12 @@ resource "aws_instance" "k3s_master" {
     AWS_REGION                    = var.region
     ECR_CREDENTIAL_PROVIDER_VER   = var.ecr_credential_provider_ver
     
-    RDS_ENDPOINT = aws_db_instance.preg_postgres.address
-    DB_NAME      = var.db_name
-    DB_USER      = var.db_user
-    DB_PASSWORD  = var.db_password
-    DB_PORT      = 5432
+    APP_ENV      = local.app_env
+    DATABASE_URL = local.database_url
+    SECRET_KEY   = var.secret_key
 
-    SECRET_KEY = var.secret_key
+    RDS_ENDPOINT = aws_db_instance.preg_postgres.address
+    DB_PORT      = 5432
   })
 
   tags = { Name = "preg-k3s-master" }
