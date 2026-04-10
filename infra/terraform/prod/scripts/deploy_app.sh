@@ -41,16 +41,21 @@ INGRESS_DIR="${BASE_DIR}/ingress"
 [ -d "$CORE_DIR" ] || { echo "Missing directory: $CORE_DIR"; exit 1; }
 [ -d "$INGRESS_DIR" ] || { echo "Missing directory: $INGRESS_DIR"; exit 1; }
 
-echo "=== Creating .env for ${APP_ENV} ==="
-cat > "${CORE_DIR}/.env" <<EOF
-APP_ENV=${APP_ENV}
-SECRET_KEY=${SECRET_KEY}
-DATABASE_URL=${DATABASE_URL}
-EOF
-
-chmod 600 "${CORE_DIR}/.env"
-
 echo "=== Deploying ==="
+NAMESPACE="preg-prod"
+kubectl create namespace "${NAMESPACE}" --dry-run=client -o yaml | kubectl apply -f -
+
+echo "=== Create secret+cm ==="
+kubectl create secret generic prod-preg-secrets -n "${NAMESPACE}" \ 
+  --from-literal=SECRET_KEY="${SECRET_KEY}" \
+  --from-literal=DATABASE_URL="${DATABASE_URL}" \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+kubectl create configmap prod-preg-config -n "${NAMESPACE}" \ 
+  --from-literal=APP_ENV="${APP_ENV}" \
+  --from-literal=FLASK_APP="wsgi.py" \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 kubectl apply -k "$CORE_DIR"
 sleep 10
 kubectl apply -k "$INGRESS_DIR"

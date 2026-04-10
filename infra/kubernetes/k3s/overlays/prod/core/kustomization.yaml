@@ -1,6 +1,5 @@
 resources:
   - ../../../base
-  - ns-preg-prod.yaml
 
 namePrefix: prod-
 namespace: preg-prod
@@ -35,18 +34,3 @@ patches:
     target:
       kind: Deployment
       name: preg-care-app
-
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-secretGenerator:
-  - name: preg-secrets
-    envs:
-      - .env
-
-configMapGenerator:
-- name: preg-config
-  literals:
-    - APP_ENV=production
-    - FLASK_APP=wsgi.py
