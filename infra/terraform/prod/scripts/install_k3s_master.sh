@@ -77,38 +77,22 @@ export KUBECONFIG=/root/.kube/config
 
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
-CORE_DIR="/opt/Pregnant_pills/infra/kubernetes/k3s/overlays/prod/core"
-INGRESS_DIR="/opt/Pregnant_pills/infra/kubernetes/k3s/overlays/prod/ingress"
-
-[ -d "$CORE_DIR" ] || { echo "Missing directory: $CORE_DIR"; exit 1; }
-[ -d "$INGRESS_DIR" ] || { echo "Missing directory: $INGRESS_DIR"; exit 1; }
-
-echo "=== Waiting for RDS ==="
-until nc -z "${RDS_ENDPOINT}" "${DB_PORT}"; do
-  echo "Waiting for RDS at ${RDS_ENDPOINT}:${DB_PORT} ..."
-  sleep 5
-done
-
-echo "RDS is reachable."
-
-echo "=== Creating .env ==="
-cat > "$CORE_DIR/.env" <<EOF
-SECRET_KEY=${SECRET_KEY}
-DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${RDS_ENDPOINT}:${DB_PORT}/${DB_NAME}?sslmode=require
-EOF
-
-chmod 600 "$CORE_DIR/.env"
-
 echo "=== Waiting for nodes ==="
 until [ "$(k3s kubectl get nodes --no-headers 2>/dev/null | grep -c ' Ready ')" -ge 3 ]; do
   k3s kubectl get nodes || true
   sleep 10
 done
 
-echo "=== Deploying manifests ==="
-k3s kubectl apply -k "$CORE_DIR"
-sleep 10
-k3s kubectl apply -k "$INGRESS_DIR"
+echo "Cluster is ready."
 
+#--------------------Section to remove after using ArgoCD
+echo "=== Running script with deployment ==="
+APP_ENV="${APP_ENV}" \
+SECRET_KEY="${SECRET_KEY}" \
+DATABASE_URL="${DATABASE_URL}" \
+RDS_ENDPOINT="${RDS_ENDPOINT}" \
+DB_PORT="${DB_PORT}" \
+KUBECONFIG="/root/.kube/config" \
 
-echo "Application deployed."
+chmod +x /opt/Pregnant_pills/infra/kubernetes/k3s/bootstrap/deploy_app.sh
+/opt/Pregnant_pills/infra/kubernetes/k3s/bootstrap/deploy_app.sh
