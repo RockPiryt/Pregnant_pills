@@ -48,3 +48,16 @@ variable "ecr_credential_provider_ver" {
   type        = string
   default     = "v1.2.0"
 }
+
+variable "environment" {
+  description = "App environment"
+  type        = string
+  default     = "produciton"
+}
+
+
+variable "testing_db_host" {
+  description = "DB host in testing env"
+  type        = string
+  default     = ""
+}
