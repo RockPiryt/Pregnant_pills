@@ -34,7 +34,7 @@ install_ecr_credential_provider() {
       ;;
   esac
 
-  url="https://github.com/dntosas/ecr-credential-provider/releases/download/${ECR_CREDENTIAL_PROVIDER_VER}/ecr-credential-provider-linux-${provider_arch}"
+  url="https://github.com/dntosas/ecr-credential-provider/releases/download/${ECR_CREDENTIAL_PROVIDER_VER}/ecr-credential-provider-linux-$${provider_arch}"
 
   curl -fsSL "$url" -o /usr/local/bin/ecr-credential-provider
   chmod 0755 /usr/local/bin/ecr-credential-provider
