@@ -77,7 +77,7 @@ export KUBECONFIG=/root/.kube/config
 
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl || true
 
-echo "=== Waiting for nodes ==="
+echo " Waiting for nodes "
 until [ "$(k3s kubectl get nodes --no-headers 2>/dev/null | grep -c ' Ready ')" -ge 3 ]; do
   k3s kubectl get nodes || true
   sleep 10
@@ -86,13 +86,12 @@ done
 echo "Cluster is ready."
 
 #--------------------Section to remove after using ArgoCD
-echo "=== Running script with deployment ==="
+echo "Running script with deployment"
+chmod +x /opt/Pregnant_pills/infra/kubernetes/k3s/bootstrap/deploy_app.sh
 APP_ENV="${APP_ENV}" \
 SECRET_KEY="${SECRET_KEY}" \
 DATABASE_URL="${DATABASE_URL}" \
 RDS_ENDPOINT="${RDS_ENDPOINT}" \
 DB_PORT="${DB_PORT}" \
 KUBECONFIG="/root/.kube/config" \
-
-chmod +x /opt/Pregnant_pills/infra/kubernetes/k3s/bootstrap/deploy_app.sh
 /opt/Pregnant_pills/infra/kubernetes/k3s/bootstrap/deploy_app.sh
