@@ -1,39 +1,68 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: alertmanager
-  namespace: monitoring
-  labels:
-    app.kubernetes.io/name: dftd
-    app.kubernetes.io/component: alertmanager
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: alertmanager
-  template:
-    metadata:
-      name: alertmanager
-      labels:
-        app: alertmanager
-    spec:
-      containers:
-      - name: alertmanager
-        image: quay.io/prometheus/alertmanager
-        args:
-          - '--config.file=/etc/alertmanager/alertmanager.yml'
-          - '--storage.path=/alertmanager'
-        ports:
-        - name: alertmanager
-          containerPort: 9093
-        volumeMounts:
-        - name: config-volume
-          mountPath: /etc/alertmanager
-        - name: alertmanager
-          mountPath: /alertmanager
-      volumes:
-      - name: config-volume
-        configMap:
-          name: alertmanager-config
-      - name: alertmanager
-        emptyDir: {}
+grafana:
+  enabled: true
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: admin-user
+    passwordKey: admin-password
+
+  service:
+    type: ClusterIP
+
+  persistence:
+    enabled: true
+    size: 5Gi
+
+  defaultDashboardsEnabled: true
+
+  ingress:
+    enabled: true
+
+prometheus:
+  enabled: true
+
+  prometheusSpec:
+    retention: 7d
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+
+alertmanager:
+  enabled: true
+
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+
+kube-state-metrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+# k3s specific tweaks
+kubelet:
+  serviceMonitor:
+    https: true
+
+# disabled because k3s does not expose these components as scrapeable services
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
