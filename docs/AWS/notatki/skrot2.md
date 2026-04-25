@@ -194,4 +194,25 @@ terraform destroy \
     • aws_eip.preg_nat_eip_a 
     • aws_eip.preg_nat_eip_b 
 
+
+--------------------------------------
+
+aws ssm put-parameter \
+  --name "/enerlink/dev/SECRET_KEY" \
+  --value "camaro-sam-haha" \
+  --type "SecureString" \
+  --overwrite \
+  --region eu-west-1
+
+
+trzeba dodac policy dla usera
+
+aws ssm get-parameter \
+  --name "/enerlink/dev/SECRET_KEY" \
+  --with-decryption \
+  --region eu-west-1
+
+------------------------------------------
+terraform apply -replace=aws_instance.enerlink_ec2
+
     
